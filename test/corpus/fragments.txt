@@ -30,7 +30,7 @@ const
           (literalString))))))
 
 ===
-Fragment 2 - Type definitions (TODO: investigate)
+Fragment 2 - Type definitions (TODO: 'Name' keyword conflict)
 :skip
 ===
 
@@ -56,7 +56,7 @@ type
           (declField
             (identifier)
             (type
-              (declString
+              (typeref
                 (kString))))
           (declField
             (identifier)
@@ -98,7 +98,7 @@ var
       (declVar
         (identifier)
         (type
-          (declString
+          (typeref
             (kString)))))))
 
 ===

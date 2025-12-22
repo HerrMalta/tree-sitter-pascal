@@ -597,6 +597,7 @@ module.exports = grammar({
 			$.identifier, $.typerefDot,
 			...enable_if(templates, $.typerefTpl),
 			$.typerefPtr,
+			prec(1, $.kString),  // Allow 'string' keyword as a type reference (higher precedence than declString)
 		),
 
 		typerefDot:      $ => op.infix(1,$._typeref, $.kDot, $._typeref),

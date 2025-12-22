@@ -1,6 +1,5 @@
 ===
-Inline Variables (TODO: string keyword conflict)
-:skip
+Inline Variables
 ===
 procedure Test;
 begin
@@ -21,7 +20,7 @@ end;
           (kVar)
           (identifier)
           (typeref
-            (identifier)))
+            (kString)))
         (assignment
           (varAssignDef
             (kVar)

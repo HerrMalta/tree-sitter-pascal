@@ -4373,6 +4373,14 @@
         {
           "type": "SYMBOL",
           "name": "typerefPtr"
+        },
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "kString"
+          }
         }
       ]
     },

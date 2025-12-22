@@ -7172,6 +7172,10 @@
           "named": true
         },
         {
+          "type": "kString",
+          "named": true
+        },
+        {
           "type": "kTrue",
           "named": true
         },
@@ -7215,6 +7219,10 @@
           "named": true
         },
         {
+          "type": "kString",
+          "named": true
+        },
+        {
           "type": "typerefDot",
           "named": true
         },
@@ -7239,6 +7247,10 @@
         "types": [
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "kString",
             "named": true
           },
           {
@@ -7274,6 +7286,10 @@
             "named": true
           },
           {
+            "type": "kString",
+            "named": true
+          },
+          {
             "type": "typerefDot",
             "named": true
           },
@@ -7299,6 +7315,10 @@
         "types": [
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "kString",
             "named": true
           },
           {
@@ -7347,6 +7367,10 @@
         "types": [
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "kString",
             "named": true
           },
           {
