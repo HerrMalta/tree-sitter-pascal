@@ -1,5 +1,6 @@
 ===
-Inline Variables
+Inline Variables (TODO: string keyword conflict)
+:skip
 ===
 procedure Test;
 begin

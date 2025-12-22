@@ -1,5 +1,6 @@
 ===
-Declaration hints
+Declaration hints (TODO: has FPC features)
+:skip
 ===
 
 procedure a; cdecl; forward;
@@ -165,7 +166,8 @@ type
           (kEnd))))))
 
 ===
-FPC-style declaration hints
+FPC-style declaration hints (FPC)
+:skip
 ===
 
 procedure a; [public; alias: b; cdecl]; forward;

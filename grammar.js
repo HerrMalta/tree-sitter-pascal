@@ -10,11 +10,11 @@ const rtti        = true;
 // Support Delphi's anonymous procedures & functions.
 const lambda      = true;
 // Support fpc-specific features.
-const fpc         = true;
+const fpc         = false;
 // Support delphi-specific features.
 const delphi      = true;
 // Support FPC PasCocoa extensions (for objective c interopability)
-const objc        = true;
+const objc        = false;
 // Support generic types.
 const templates   = delphi || fpc;
 // Try to support preprocessor better.
@@ -276,6 +276,13 @@ module.exports = grammar({
 
 	extras: $ => [$._space, $.comment, $.pp],
 
+	// External scanner for identifier/keyword priority.
+	// This prevents keywords from being consumed as identifiers during error recovery.
+	// See src/scanner.c for implementation details.
+	externals: $ => [
+		$.identifier,
+	],
+
 	word: $ => $.identifier,
 
 	conflicts: $ => [
@@ -386,16 +393,20 @@ module.exports = grammar({
 		...statements(false),
 		...statements(true),
 
-		assignment:      $ => op.infix(1,
-			choice($._expr, $.varAssignDef),
-			choice(
+		// Assignment with optional RHS to support error recovery during typing.
+		// When user types "myVar := " without completing, we don't want to
+		// consume the next keyword (like 'end') as the expression.
+		// The LSP should check for missing RHS and report it as a syntax error.
+		assignment:      $ => prec.left(1, seq(
+			field('lhs', choice($._expr, $.varAssignDef)),
+			field('operator', choice(
 				$.kAssign,
 				...enable_if(fpc,
 					$.kAssignAdd, $.kAssignSub, $.kAssignMul, $.kAssignDiv
 				)
-			),
-			$._expr
-		),
+			)),
+			field('rhs', optional($._expr))
+		)),
 		varAssignDef:          $ => seq($.kVar, $.identifier,
 			optional(seq(
 				':',
@@ -1241,7 +1252,12 @@ module.exports = grammar({
 		kIfndef:           $ => /ifndef/i,
 		kEndif:            $ => /endif/i,
 
-		identifier:        $ => /[&]?[a-zA-Z_]+[0-9_a-zA-Z]*/,
+		// NOTE: identifier is now an external token handled by src/scanner.c
+		// This ensures keywords have priority over identifiers during error recovery.
+		// The external scanner handles:
+		// - Regular identifiers: myVar, foo123, _private
+		// - Escaped keywords: &end, &begin, &type (with & prefix)
+		// Original pattern was: /[&]?[a-zA-Z_]+[0-9_a-zA-Z]*/
 
 	  	_space:            $ => /[\s\r\n\t]+/,
 		pp:                $ => /\{\$[^}]*\}/,

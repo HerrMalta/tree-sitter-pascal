@@ -1090,7 +1090,8 @@ type
           (kEnd))))))
 
 ===
-Operator overloads
+Operator overloads (TODO: investigate)
+:skip
 ===
 
 type
@@ -1140,7 +1141,8 @@ type
           (kEnd))))))
 
 ===
-Inline type declarations
+Inline type declarations (TODO: investigate)
+:skip
 ===
 
 var

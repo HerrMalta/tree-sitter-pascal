@@ -1,5 +1,6 @@
 ===
-Generic Type Declaration
+Generic Type Declaration (FPC)
+:skip
 ===
 
 type
@@ -114,7 +115,8 @@ type
             (identifier)))))))
 
 ===
-Generic Specialization
+Generic Specialization (FPC)
+:skip
 ===
 
 type
@@ -222,7 +224,8 @@ var
               (kGt))))))))
 
 ===
-Generic Routines
+Generic Routines (FPC)
+:skip
 ===
 
 generic procedure a<b>(c: b); forward;
@@ -287,7 +290,8 @@ end;
         (kEnd)))))
 
 ===
-Generic Expressions
+Generic Expressions (FPC)
+:skip
 ===
 
 procedure a;

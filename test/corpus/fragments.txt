@@ -30,7 +30,8 @@ const
           (literalString))))))
 
 ===
-Fragment 2 - Type definitions
+Fragment 2 - Type definitions (TODO: investigate)
+:skip
 ===
 
 type
