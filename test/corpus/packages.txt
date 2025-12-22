@@ -1,0 +1,147 @@
+===
+Package 1 - Basic package with requires and contains
+===
+
+package MyPackage;
+
+requires
+  rtl,
+  vcl;
+
+contains
+  Unit1 in 'Unit1.pas',
+  Unit2 in 'Unit2.pas';
+
+end.
+
+---
+
+(root
+  (package
+    (kPackage)
+    (moduleName (identifier))
+    (declRequires
+      (kRequires)
+      (moduleName (identifier))
+      (moduleName (identifier)))
+    (declContains
+      (kContains)
+      (unitReference
+        (moduleName (identifier))
+        (kIn)
+        (literalString))
+      (unitReference
+        (moduleName (identifier))
+        (kIn)
+        (literalString)))
+    (kEnd)
+    (kEndDot)))
+
+===
+Package 2 - Package with multiple requires and contains
+===
+
+package MyPackage;
+
+requires
+  rtl,
+  vcl,
+  vclimg,
+  vclx;
+
+contains
+  Unit1 in 'Source\Unit1.pas',
+  System.Utils in 'Source\System.Utils.pas',
+  MyModule in 'Lib\MyModule.pas';
+
+end.
+
+---
+
+(root
+  (package
+    (kPackage)
+    (moduleName (identifier))
+    (declRequires
+      (kRequires)
+      (moduleName (identifier))
+      (moduleName (identifier))
+      (moduleName (identifier))
+      (moduleName (identifier)))
+    (declContains
+      (kContains)
+      (unitReference
+        (moduleName (identifier))
+        (kIn)
+        (literalString))
+      (unitReference
+        (moduleName
+          (identifier)
+          (kDot)
+          (identifier))
+        (kIn)
+        (literalString))
+      (unitReference
+        (moduleName (identifier))
+        (kIn)
+        (literalString)))
+    (kEnd)
+    (kEndDot)))
+
+===
+Package 3 - Package with preprocessor directives
+===
+
+package MyPackage;
+
+{$R *.res}
+{$IFDEF RELEASE}
+{$O+}
+{$ENDIF}
+
+requires
+  rtl;
+
+contains
+  Unit1 in 'Unit1.pas';
+
+end.
+
+---
+
+(root
+  (package
+    (kPackage)
+    (moduleName (identifier))
+    (pp)
+    (pp)
+    (pp)
+    (pp)
+    (declRequires
+      (kRequires)
+      (moduleName (identifier)))
+    (declContains
+      (kContains)
+      (unitReference
+        (moduleName (identifier))
+        (kIn)
+        (literalString)))
+    (kEnd)
+    (kEndDot)))
+
+===
+Package 4 - Minimal package
+===
+
+package Minimal;
+
+end.
+
+---
+
+(root
+  (package
+    (kPackage)
+    (moduleName (identifier))
+    (kEnd)
+    (kEndDot)))

@@ -27,50 +27,67 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (assignment
-        (identifier)
-        (kAssign)
-        (lambda (kProcedure)
-          (block
-            (kBegin)
-            (kEnd))))
-      (assignment
-        (identifier)
-        (kAssign)
-        (lambda (kFunction)
-          (declArgs
-            (declArg
-              (identifier)
-              (identifier)
-              (type (typeref (identifier)))))
-          (typeref (identifier))
-          (block
-            (kBegin)
-            (assignment (identifier) (kAssign) (literalNumber))
-            (kEnd))))
-      (assignment
-        (identifier)
-        (kAssign)
-        (exprCall
-          (exprParens
-            (lambda (kFunction)
-              (declArgs
-                (declArg
-                  (identifier)
-                  (type (typeref (identifier)))))
-              (typeref (identifier))
-              (block
-                (kBegin)
-                (assignment (identifier) (kAssign) (identifier))
-                (kEnd))))
-          (exprArgs
-            (literalNumber))))
-      (kEnd))))
-
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (lambda
+            (kProcedure)
+            (block
+              (kBegin)
+              (kEnd))))
+        (assignment
+          (identifier)
+          (kAssign)
+          (lambda
+            (kFunction)
+            (declArgs
+              (declArg
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (typeref
+              (identifier))
+            (block
+              (kBegin)
+              (assignment
+                (identifier)
+                (kAssign)
+                (literalNumber))
+              (kEnd))))
+        (assignment
+          (identifier)
+          (kAssign)
+          (exprCall
+            (exprParens
+              (lambda
+                (kFunction)
+                (declArgs
+                  (declArg
+                    (identifier)
+                    (type
+                      (typeref
+                        (identifier)))))
+                (typeref
+                  (identifier))
+                (block
+                  (kBegin)
+                  (assignment
+                    (identifier)
+                    (kAssign)
+                    (identifier))
+                  (kEnd))))
+            (exprArgs
+              (literalNumber))))
+        (kEnd)))))
 
 ===
 Reference to
@@ -85,27 +102,55 @@ type
 ---
 
 (root
-  (declTypes (kType)
-    (declType (identifier) (kEq)
-      (type
-        (declProcRef (kReference) (kTo) (kProcedure))))
-    (declType (identifier) (kEq)
-      (type
-        (declProcRef (kReference) (kTo) (kProcedure)
-          (declArgs
-            (declArg
-              (identifier)
-              (identifier)
-              (type (typeref (identifier))))))))
-    (declType (identifier) (kEq)
-      (type
-        (declProcRef (kReference) (kTo) (kFunction)
-          (typeref (identifier)))))
-    (declType (identifier) (kEq)
-      (type
-        (declProcRef (kReference) (kTo) (kFunction)
-          (declArgs
-            (declArg (identifier)
-              (type (typeref (identifier)))))
-          (typeref (identifier)))))))
-
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (declProcRef
+            (kReference)
+            (kTo)
+            (kProcedure))))
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (declProcRef
+            (kReference)
+            (kTo)
+            (kProcedure)
+            (declArgs
+              (declArg
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))))))
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (declProcRef
+            (kReference)
+            (kTo)
+            (kFunction)
+            (typeref
+              (identifier)))))
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (declProcRef
+            (kReference)
+            (kTo)
+            (kFunction)
+            (declArgs
+              (declArg
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (typeref
+              (identifier))))))))

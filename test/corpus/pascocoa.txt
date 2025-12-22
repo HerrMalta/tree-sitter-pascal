@@ -25,48 +25,127 @@ end;
 ---
 
 (root
-  (declTypes (kType)
-    (declType (identifier) (kEq)
-      (declClass (kObjcclass) (kExternal) (typeref (identifier))
-        (declSection (kPrivate)
-          (declField (identifier) (type (typeref (identifier)))))
-        (declSection (kPublic)
-          (declProc (kFunction) (identifier)
-            (declArgs
-              (declArg (identifier) (type (typeref (identifier)))))
-            (typeref (identifier))
-            (procAttribute (kMessage) (literalString)))
-          (declProc (kProcedure) (identifier)
-            (declArgs
-              (declArg (identifier) (type (typeref (identifier)))))
-            (procAttribute (kMessage) (literalString)))
-          (declProc (kProcedure) (identifier)
-            (declArgs
-              (declArg (identifier) (type (typeref (identifier)))))
-            (procAttribute (kMessage) (literalString)))
-          (declProc (kProcedure) (identifier)
-            (declArgs
-              (declArg (identifier) (type (typeref (identifier)))))
-            (procAttribute (kMessage) (literalString)))
-          (declProc (kProcedure) (identifier)
-            (declArgs
-              (declArg (identifier) (type (typeref (identifier)))))
-            (procAttribute (kMessage) (literalString))))
-        (kEnd)))
-    (declType (identifier) (kEq)
-      (declClass (kObjcclass)
-        (typeref (identifier))
-        (declSection (kPublic)
-          (declField (identifier) (type (typeref (identifier))))
-          (declProc (kProcedure) (identifier)
-            (declArgs
-              (declArg (identifier) (type (typeref (identifier)))))
-            (procAttribute (kMessage) (literalString)))
-          (declProc (kProcedure) (identifier)
-            (declArgs
-              (declArg (identifier) (type (typeref (identifier)))))
-            (procAttribute (kOverride))))
-        (kEnd)))))
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kObjcclass)
+          (kExternal)
+          (typeref
+            (identifier))
+          (declSection
+            (kPrivate)
+            (declField
+              (identifier)
+              (type
+                (typeref
+                  (identifier)))))
+          (declSection
+            (kPublic)
+            (declProc
+              (kFunction)
+              (identifier)
+              (declArgs
+                (declArg
+                  (identifier)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (typeref
+                (identifier))
+              (procAttribute
+                (kMessage)
+                (literalString)))
+            (declProc
+              (kProcedure)
+              (identifier)
+              (declArgs
+                (declArg
+                  (identifier)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (procAttribute
+                (kMessage)
+                (literalString)))
+            (declProc
+              (kProcedure)
+              (identifier)
+              (declArgs
+                (declArg
+                  (identifier)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (procAttribute
+                (kMessage)
+                (literalString)))
+            (declProc
+              (kProcedure)
+              (identifier)
+              (declArgs
+                (declArg
+                  (identifier)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (procAttribute
+                (kMessage)
+                (literalString)))
+            (declProc
+              (kProcedure)
+              (identifier)
+              (declArgs
+                (declArg
+                  (identifier)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (procAttribute
+                (kMessage)
+                (literalString))))
+          (kEnd)))
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kObjcclass)
+          (typeref
+            (identifier))
+          (declSection
+            (kPublic)
+            (declField
+              (identifier)
+              (type
+                (typeref
+                  (identifier))))
+            (declProc
+              (kProcedure)
+              (identifier)
+              (declArgs
+                (declArg
+                  (identifier)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (procAttribute
+                (kMessage)
+                (literalString)))
+            (declProc
+              (kProcedure)
+              (identifier)
+              (declArgs
+                (declArg
+                  (identifier)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (procAttribute
+                (kOverride))))
+          (kEnd))))))
 
 ===
 objcprotocol
@@ -91,32 +170,78 @@ type
 ---
 
 (root
-  (declTypes (kType)
-    (declType (identifier) (kEq)
-      (declClass (kObjcprotocol)
-        (declProc (kProcedure) (identifier) (procAttribute (kMessage) (literalString)))
-        (declSection (kOptional)
-          (declProc (kProcedure) (identifier)
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kObjcprotocol)
+          (declProc
+            (kProcedure)
+            (identifier)
+            (procAttribute
+              (kMessage)
+              (literalString)))
+          (declSection
+            (kOptional)
+            (declProc
+              (kProcedure)
+              (identifier)
+              (declArgs
+                (declArg
+                  (identifier)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (procAttribute
+                (kMessage)
+                (literalString)))
+            (declProc
+              (kProcedure)
+              (identifier)
+              (procAttribute
+                (kMessage)
+                (literalString))))
+          (declSection
+            (kRequired)
+            (declProc
+              (kFunction)
+              (identifier)
+              (typeref
+                (identifier))
+              (procAttribute
+                (kMessage)
+                (literalString))))
+          (kEnd)))
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kObjcclass)
+          (typeref
+            (identifier))
+          (typeref
+            (identifier))
+          (declProc
+            (kProcedure)
+            (identifier))
+          (declProc
+            (kProcedure)
+            (identifier)
             (declArgs
-              (declArg (identifier) (type (typeref (identifier)))))
-            (procAttribute (kMessage) (literalString)))
-          (declProc (kProcedure) (identifier)
-            (procAttribute (kMessage) (literalString))))
-        (declSection (kRequired)
-          (declProc (kFunction) (identifier) (typeref (identifier))
-            (procAttribute (kMessage) (literalString))))
-        (kEnd)))
-    (declType (identifier) (kEq)
-      (declClass (kObjcclass)
-        (typeref (identifier))
-        (typeref (identifier))
-        (declProc (kProcedure) (identifier))
-        (declProc (kProcedure) (identifier)
-          (declArgs
-            (declArg (identifier) (type (typeref (identifier))))))
-        (declProc (kFunction) (identifier) (typeref (identifier)))
-        (kEnd)))))
-
+              (declArg
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))))
+          (declProc
+            (kFunction)
+            (identifier)
+            (typeref
+              (identifier)))
+          (kEnd))))))
 
 ===
 objccategory
@@ -132,15 +257,33 @@ type
 ---
 
 (root
-  (declTypes (kType)
-    (declType (identifier) (kEq)
-      (declClass (kObjccategory)
-        (typeref (identifier))
-        (typeref (identifier))
-        (declProc (kFunction) (identifier) (typeref (identifier))
-          (procAttribute (kReintroduce)))
-        (declProc (kProcedure) (identifier))
-        (declProc (kClass) (kProcedure) (identifier)
-          (procAttribute (kMessage) (literalString)))
-        (kEnd)))))
-
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kObjccategory)
+          (typeref
+            (identifier))
+          (typeref
+            (identifier))
+          (declProc
+            (kFunction)
+            (identifier)
+            (typeref
+              (identifier))
+            (procAttribute
+              (kReintroduce)))
+          (declProc
+            (kProcedure)
+            (identifier))
+          (declProc
+            (kClass)
+            (kProcedure)
+            (identifier)
+            (procAttribute
+              (kMessage)
+              (literalString)))
+          (kEnd))))))

@@ -1,0 +1,195 @@
+===
+Fragment 1 - Constant definitions
+===
+
+const
+  MaxValue = 100;
+  MinValue = 0;
+  AppName = 'MyApp';
+
+---
+
+(root
+  (codeFragment
+    (declConsts
+      (kConst)
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalString))))))
+
+===
+Fragment 2 - Type definitions
+===
+
+type
+  TMyRecord = record
+    Name: string;
+    Value: Integer;
+  end;
+
+  TMyEnum = (meFirst, meSecond, meThird);
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (declField
+            (identifier)
+            (type
+              (declString
+                (kString))))
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (kEnd)))
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (declEnum
+            (declEnumValue
+              (identifier))
+            (declEnumValue
+              (identifier))
+            (declEnumValue
+              (identifier))))))))
+
+===
+Fragment 3 - Variable definitions
+===
+
+var
+  GlobalCounter: Integer;
+  AppPath: string;
+
+---
+
+(root
+  (codeFragment
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (declVar
+        (identifier)
+        (type
+          (declString
+            (kString)))))))
+
+===
+Fragment 4 - Mixed declarations
+===
+
+const
+  DefaultSize = 256;
+
+type
+  TBuffer = array[0..DefaultSize-1] of Byte;
+
+var
+  Buffer: TBuffer;
+
+---
+
+(root
+  (codeFragment
+    (declConsts
+      (kConst)
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber))))
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (declArray
+            (kArray)
+            (range
+              (literalNumber)
+              (exprBinary
+                (identifier)
+                (kSub)
+                (literalNumber)))
+            (kOf)
+            (type
+              (typeref
+                (identifier)))))))
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))))))
+
+===
+Fragment 5 - Procedure definitions
+===
+
+procedure DoSomething;
+begin
+  WriteLn('Hello');
+end;
+
+function GetValue: Integer;
+begin
+  Result := 42;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (kEnd)))
+    (defProc
+      (declProc
+        (kFunction)
+        (identifier)
+        (typeref
+          (identifier)))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (literalNumber))
+        (kEnd)))))

@@ -29,32 +29,51 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (if (kIf) (identifier) (kThen)
-        (statement (identifier)))
-      (ifElse (kIf) (identifier) (kThen)
-        (statement (identifier))
-        (kElse)
-        (statement (identifier)))
-      (if (kIf) (identifier) (kThen)
-        (block
-          (kBegin)
-          (kEnd)))
-      (ifElse
-        (kIf) (identifier) (kThen)
-        (block
-          (kBegin)
-          (statement (identifier))
-          (kEnd))
-        (kElse)
-        (block
-          (kBegin)
-          (statement (identifier))
-          (kEnd)))
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (if
+          (kIf)
+          (identifier)
+          (kThen)
+          (statement
+            (identifier)))
+        (ifElse
+          (kIf)
+          (identifier)
+          (kThen)
+          (statement
+            (identifier))
+          (kElse)
+          (statement
+            (identifier)))
+        (if
+          (kIf)
+          (identifier)
+          (kThen)
+          (block
+            (kBegin)
+            (kEnd)))
+        (ifElse
+          (kIf)
+          (identifier)
+          (kThen)
+          (block
+            (kBegin)
+            (statement
+              (identifier))
+            (kEnd))
+          (kElse)
+          (block
+            (kBegin)
+            (statement
+              (identifier))
+            (kEnd)))
+        (kEnd)))))
 
 ===
 nested if
@@ -85,28 +104,56 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (if (kIf) (identifier) (kThen)
-        (ifElse (kIf) (identifier) (kThen)
-          (statement (identifier))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (if
+          (kIf)
+          (identifier)
+          (kThen)
+          (ifElse
+            (kIf)
+            (identifier)
+            (kThen)
+            (statement
+              (identifier))
+            (kElse)
+            (statement
+              (identifier))))
+        (ifElse
+          (kIf)
+          (identifier)
+          (kThen)
+          (if
+            (kIf)
+            (identifier)
+            (kThen)
+            (statement
+              (identifier)))
           (kElse)
-          (statement (identifier))))
-      (ifElse (kIf) (identifier) (kThen)
-        (if (kIf) (identifier) (kThen)
-          (statement (identifier)))
-        (kElse)
-        (statement (identifier)))
-      (ifElse (kIf) (identifier) (kThen)
-        (statement (identifier))
-        (kElse)
-        (ifElse (kIf) (identifier) (kThen)
-          (statement (identifier))
+          (statement
+            (identifier)))
+        (ifElse
+          (kIf)
+          (identifier)
+          (kThen)
+          (statement
+            (identifier))
           (kElse)
-          (statement (identifier))))
-      (kEnd))))
+          (ifElse
+            (kIf)
+            (identifier)
+            (kThen)
+            (statement
+              (identifier))
+            (kElse)
+            (statement
+              (identifier))))
+        (kEnd)))))
 
 ===
 while loop
@@ -126,18 +173,29 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (while (kWhile) (identifier) (kDo)
-        (statement (identifier)))
-      (while (kWhile) (identifier) (kDo)
-        (block
-          (kBegin)
-          (statement (identifier))
-          (kEnd)))
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (while
+          (kWhile)
+          (identifier)
+          (kDo)
+          (statement
+            (identifier)))
+        (while
+          (kWhile)
+          (identifier)
+          (kDo)
+          (block
+            (kBegin)
+            (statement
+              (identifier))
+            (kEnd)))
+        (kEnd)))))
 
 ===
 repeat loop
@@ -161,25 +219,34 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (repeat
-        (kRepeat)
-        (statements
-          (statement (identifier)))
-        (kUntil) (identifier))
-      (repeat
-        (kRepeat)
-        (statements
-          (statement (identifier))
-          (statement (identifier)))
-        (kUntil) (identifier))
-      (repeat
-        (kRepeat)
-        (kUntil) (identifier))
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (repeat
+          (kRepeat)
+          (statements
+            (statement
+              (identifier)))
+          (kUntil)
+          (identifier))
+        (repeat
+          (kRepeat)
+          (statements
+            (statement
+              (identifier))
+            (statement
+              (identifier)))
+          (kUntil)
+          (identifier))
+        (repeat
+          (kRepeat)
+          (kUntil)
+          (identifier))
+        (kEnd)))))
 
 ===
 for loop
@@ -215,33 +282,83 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (for (kFor) (assignment (identifier) (kAssign) (identifier)) (kTo) (identifier) (kDo)
-        (statement (identifier)))
-      (for (kFor) (assignment (identifier) (kAssign) (identifier)) (kTo) (identifier) (kDo)
-        (block
-          (kBegin)
-          (statement
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (for
+          (kFor)
+          (assignment
+            (identifier)
+            (kAssign)
             (identifier))
-          (kEnd)))
-      (for (kFor) (assignment (identifier) (kAssign) (identifier)) (kDownto) (identifier) (kDo)
-        (statement (identifier)))
-      (for (kFor) (assignment (identifier) (kAssign) (identifier)) (kDownto) (identifier) (kDo)
-        (block
-          (kBegin)
-          (statement (identifier))
-          (kEnd)))
-      (foreach (kFor) (identifier) (kIn) (identifier) (kDo)
-        (statement (identifier)))
-      (foreach (kFor) (identifier) (kIn) (identifier) (kDo)
-        (block
-          (kBegin)
-          (statement (identifier))
-          (kEnd)))
-      (kEnd))))
+          (kTo)
+          (identifier)
+          (kDo)
+          (statement
+            (identifier)))
+        (for
+          (kFor)
+          (assignment
+            (identifier)
+            (kAssign)
+            (identifier))
+          (kTo)
+          (identifier)
+          (kDo)
+          (block
+            (kBegin)
+            (statement
+              (identifier))
+            (kEnd)))
+        (for
+          (kFor)
+          (assignment
+            (identifier)
+            (kAssign)
+            (identifier))
+          (kDownto)
+          (identifier)
+          (kDo)
+          (statement
+            (identifier)))
+        (for
+          (kFor)
+          (assignment
+            (identifier)
+            (kAssign)
+            (identifier))
+          (kDownto)
+          (identifier)
+          (kDo)
+          (block
+            (kBegin)
+            (statement
+              (identifier))
+            (kEnd)))
+        (foreach
+          (kFor)
+          (identifier)
+          (kIn)
+          (identifier)
+          (kDo)
+          (statement
+            (identifier)))
+        (foreach
+          (kFor)
+          (identifier)
+          (kIn)
+          (identifier)
+          (kDo)
+          (block
+            (kBegin)
+            (statement
+              (identifier))
+            (kEnd)))
+        (kEnd)))))
 
 ===
 case of
@@ -276,43 +393,78 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (case (kCase) (identifier) (kOf)
-        (caseCase
-          (caseLabel (identifier))
-          (statement (identifier)))
-        (kEnd))
-      (case (kCase) (identifier) (kOf)
-        (caseCase
-          (caseLabel (identifier))
-          (statement (identifier)))
-        (caseCase
-          (caseLabel (identifier))
-          (statement (identifier)))
-        (kElse)
-        (statement (identifier))
-        (kEnd))
-      (case (kCase) (identifier) (kOf)
-        (caseCase
-          (caseLabel (identifier) (identifier))
-          (statement (identifier)))
-        (kEnd))
-      (case (kCase) (identifier) (kOf)
-        (caseCase
-          (caseLabel (range (identifier) (identifier)))
-          (statement (identifier)))
-        (kEnd))
-      (case (kCase) (identifier) (kOf)
-        (caseCase
-          (caseLabel
-            (range (identifier) (identifier))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (case
+          (kCase)
+          (identifier)
+          (kOf)
+          (caseCase
+            (caseLabel
+              (identifier))
+            (statement
+              (identifier)))
+          (kEnd))
+        (case
+          (kCase)
+          (identifier)
+          (kOf)
+          (caseCase
+            (caseLabel
+              (identifier))
+            (statement
+              (identifier)))
+          (caseCase
+            (caseLabel
+              (identifier))
+            (statement
+              (identifier)))
+          (kElse)
+          (statement
             (identifier))
-          (statement (identifier)))
-        (kEnd))
-      (kEnd))))
+          (kEnd))
+        (case
+          (kCase)
+          (identifier)
+          (kOf)
+          (caseCase
+            (caseLabel
+              (identifier)
+              (identifier))
+            (statement
+              (identifier)))
+          (kEnd))
+        (case
+          (kCase)
+          (identifier)
+          (kOf)
+          (caseCase
+            (caseLabel
+              (range
+                (identifier)
+                (identifier)))
+            (statement
+              (identifier)))
+          (kEnd))
+        (case
+          (kCase)
+          (identifier)
+          (kOf)
+          (caseCase
+            (caseLabel
+              (range
+                (identifier)
+                (identifier))
+              (identifier))
+            (statement
+              (identifier)))
+          (kEnd))
+        (kEnd)))))
 
 ===
 try
@@ -349,38 +501,61 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (try (kTry)
-        (statements
-          (statement (identifier)))
-        (kFinally)
-        (statements
-          (statement (identifier)))
-        (kEnd))
-      (try (kTry)
-        (statements
-          (statement (identifier)))
-        (kExcept)
-        (statements
-          (statement (identifier)))
-        (kEnd))
-      (try (kTry)
-        (statements
-          (statement (identifier)))
-        (kExcept)
-        (exceptionHandler
-          (kOn) (identifier) (typeref (identifier)) (kDo)
-          (statement (identifier)))
-        (exceptionHandler
-          (kOn) (identifier) (typeref (identifier)) (kDo)
-          (statement (identifier)))
-        (exceptionElse (kElse)
-          (statement (identifier)))
-        (kEnd))
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (try
+          (kTry)
+          (statements
+            (statement
+              (identifier)))
+          (kFinally)
+          (statements
+            (statement
+              (identifier)))
+          (kEnd))
+        (try
+          (kTry)
+          (statements
+            (statement
+              (identifier)))
+          (kExcept)
+          (statements
+            (statement
+              (identifier)))
+          (kEnd))
+        (try
+          (kTry)
+          (statements
+            (statement
+              (identifier)))
+          (kExcept)
+          (exceptionHandler
+            (kOn)
+            (identifier)
+            (typeref
+              (identifier))
+            (kDo)
+            (statement
+              (identifier)))
+          (exceptionHandler
+            (kOn)
+            (identifier)
+            (typeref
+              (identifier))
+            (kDo)
+            (statement
+              (identifier)))
+          (exceptionElse
+            (kElse)
+            (statement
+              (identifier)))
+          (kEnd))
+        (kEnd)))))
 
 ===
 with
@@ -403,21 +578,36 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (with (kWith) (identifier) (kDo)
-        (statement (identifier)))
-      (with
-        (kWith) (identifier) (kDo)
-        (block
-          (kBegin)
-          (statement (identifier))
-          (kEnd)))
-      (with (kWith) (identifier) (identifier) (kDo)
-        (statement (identifier)))
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (with
+          (kWith)
+          (identifier)
+          (kDo)
+          (statement
+            (identifier)))
+        (with
+          (kWith)
+          (identifier)
+          (kDo)
+          (block
+            (kBegin)
+            (statement
+              (identifier))
+            (kEnd)))
+        (with
+          (kWith)
+          (identifier)
+          (identifier)
+          (kDo)
+          (statement
+            (identifier)))
+        (kEnd)))))
 
 ===
 asm
@@ -432,14 +622,17 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (asm
-        (kAsm)
-        (kEnd))
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (asm
+          (kAsm)
+          (kEnd))
+        (kEnd)))))
 
 ===
 raise
@@ -453,12 +646,17 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (raise (kRaise) (identifier))
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (raise
+          (kRaise)
+          (identifier))
+        (kEnd)))))
 
 ===
 goto + label
@@ -473,13 +671,19 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (label (identifier))
-      (goto (kGoto) (identifier))
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (label
+          (identifier))
+        (goto
+          (kGoto)
+          (identifier))
+        (kEnd)))))
 
 ===
 assignment
@@ -493,12 +697,18 @@ end;
 ---
 
 (root
-   (defProc
-     (declProc (kProcedure) (identifier))
-     (block
-       (kBegin)
-       (assignment (identifier) (kAssign) (identifier))
-       (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (identifier))
+        (kEnd)))))
 
 ===
 trailing
@@ -624,140 +834,221 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier) (declArgs))
-    (block
-      (kBegin)
-      (block
-        (kBegin)
-        (statement (identifier))
-        (statement (identifier))
-        (kEnd))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs))
       (block
         (kBegin)
         (block
           (kBegin)
+          (statement
+            (identifier))
+          (statement
+            (identifier))
           (kEnd))
-        (kEnd))
-      (block
-        (kBegin)
-        (if (kIf) (identifier) (kThen)
-          (statement (identifier)))
-        (kEnd))
-      (block
-        (kBegin)
-        (if (kIf) (identifier) (kThen)
-          (if (kIf) (identifier) (kThen)
-            (statement (identifier))))
-        (kEnd))
-      (block
-        (kBegin)
-        (if (kIf) (identifier) (kThen)
+        (block
+          (kBegin)
           (block
             (kBegin)
-            (statement (identifier))
-            (kEnd)))
-        (kEnd))
-      (block
-        (kBegin)
-        (ifElse (kIf) (identifier) (kThen)
-          (statement (identifier))
-          (kElse)
-          (statement (identifier)))
-        (kEnd))
-      (block
-        (kBegin)
-        (ifElse (kIf) (identifier) (kThen)
-          (block
-            (kBegin)
-            (statement (identifier))
             (kEnd))
-          (kElse)
-          (block
-            (kBegin)
-            (statement (identifier))
-            (kEnd)))
-        (kEnd))
-      (block
-        (kBegin)
-        (while (kWhile) (identifier) (kDo)
-          (statement (identifier)))
-        (kEnd))
-      (block
-        (kBegin)
-        (repeat (kRepeat)
-          (statements
-            (statement (identifier)))
-          (kUntil)
-          (identifier))
-        (kEnd))
-      (block
-        (kBegin)
-        (for (kFor) (assignment (identifier) (kAssign) (identifier)) (kTo) (identifier) (kDo)
-          (statement (identifier)))
-        (kEnd))
-      (block
-        (kBegin)
-        (for (kFor) (assignment (identifier) (kAssign) (identifier)) (kTo) (identifier) (kDo)
-          (block
-            (kBegin)
-            (statement (identifier))
-            (kEnd)))
-        (kEnd))
-      (block
-        (kBegin)
-        (case (kCase) (identifier) (kOf)
-          (caseCase
-            (caseLabel (identifier))
-            (statement (identifier)))
-          (caseCase
-            (caseLabel (identifier))
-            (statement (identifier)))
           (kEnd))
-        (kEnd))
-      (block
-        (kBegin)
-        (case (kCase) (identifier) (kOf)
-          (caseCase
-            (caseLabel (identifier))
-            (statement (identifier)))
-          (kElse)
-          (statement (identifier))
+        (block
+          (kBegin)
+          (if
+            (kIf)
+            (identifier)
+            (kThen)
+            (statement
+              (identifier)))
           (kEnd))
-        (kEnd))
-      (block
-        (kBegin)
-        (try
-          (kTry)
-          (statements
-            (statement (identifier)))
-          (kFinally)
-          (statements
-            (statement (identifier)))
+        (block
+          (kBegin)
+          (if
+            (kIf)
+            (identifier)
+            (kThen)
+            (if
+              (kIf)
+              (identifier)
+              (kThen)
+              (statement
+                (identifier))))
           (kEnd))
-        (kEnd))
-      (block
-        (kBegin)
-        (try
-          (kTry)
-          (statements
-            (statement (identifier)))
-          (kExcept)
-          (statements
-            (statement (identifier)))
+        (block
+          (kBegin)
+          (if
+            (kIf)
+            (identifier)
+            (kThen)
+            (block
+              (kBegin)
+              (statement
+                (identifier))
+              (kEnd)))
           (kEnd))
-        (kEnd))
-      (block
-        (kBegin)
-        (with (kWith) (identifier) (kDo)
-          (statement (identifier)))
-        (kEnd))
-      (block
-        (kBegin)
-        (assignment (identifier) (kAssign) (identifier))
-        (kEnd))
-      (block
-        (kBegin)
-        (goto (kGoto) (identifier))
-        (kEnd))
-      (kEnd))))
+        (block
+          (kBegin)
+          (ifElse
+            (kIf)
+            (identifier)
+            (kThen)
+            (statement
+              (identifier))
+            (kElse)
+            (statement
+              (identifier)))
+          (kEnd))
+        (block
+          (kBegin)
+          (ifElse
+            (kIf)
+            (identifier)
+            (kThen)
+            (block
+              (kBegin)
+              (statement
+                (identifier))
+              (kEnd))
+            (kElse)
+            (block
+              (kBegin)
+              (statement
+                (identifier))
+              (kEnd)))
+          (kEnd))
+        (block
+          (kBegin)
+          (while
+            (kWhile)
+            (identifier)
+            (kDo)
+            (statement
+              (identifier)))
+          (kEnd))
+        (block
+          (kBegin)
+          (repeat
+            (kRepeat)
+            (statements
+              (statement
+                (identifier)))
+            (kUntil)
+            (identifier))
+          (kEnd))
+        (block
+          (kBegin)
+          (for
+            (kFor)
+            (assignment
+              (identifier)
+              (kAssign)
+              (identifier))
+            (kTo)
+            (identifier)
+            (kDo)
+            (statement
+              (identifier)))
+          (kEnd))
+        (block
+          (kBegin)
+          (for
+            (kFor)
+            (assignment
+              (identifier)
+              (kAssign)
+              (identifier))
+            (kTo)
+            (identifier)
+            (kDo)
+            (block
+              (kBegin)
+              (statement
+                (identifier))
+              (kEnd)))
+          (kEnd))
+        (block
+          (kBegin)
+          (case
+            (kCase)
+            (identifier)
+            (kOf)
+            (caseCase
+              (caseLabel
+                (identifier))
+              (statement
+                (identifier)))
+            (caseCase
+              (caseLabel
+                (identifier))
+              (statement
+                (identifier)))
+            (kEnd))
+          (kEnd))
+        (block
+          (kBegin)
+          (case
+            (kCase)
+            (identifier)
+            (kOf)
+            (caseCase
+              (caseLabel
+                (identifier))
+              (statement
+                (identifier)))
+            (kElse)
+            (statement
+              (identifier))
+            (kEnd))
+          (kEnd))
+        (block
+          (kBegin)
+          (try
+            (kTry)
+            (statements
+              (statement
+                (identifier)))
+            (kFinally)
+            (statements
+              (statement
+                (identifier)))
+            (kEnd))
+          (kEnd))
+        (block
+          (kBegin)
+          (try
+            (kTry)
+            (statements
+              (statement
+                (identifier)))
+            (kExcept)
+            (statements
+              (statement
+                (identifier)))
+            (kEnd))
+          (kEnd))
+        (block
+          (kBegin)
+          (with
+            (kWith)
+            (identifier)
+            (kDo)
+            (statement
+              (identifier)))
+          (kEnd))
+        (block
+          (kBegin)
+          (assignment
+            (identifier)
+            (kAssign)
+            (identifier))
+          (kEnd))
+        (block
+          (kBegin)
+          (goto
+            (kGoto)
+            (identifier))
+          (kEnd))
+        (kEnd)))))

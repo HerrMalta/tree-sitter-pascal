@@ -29,41 +29,140 @@ type
 ---
 
 (root
-  (declProc (kProcedure) (identifier) (procAttribute (kCdecl)) (kForward))
-  (declProc (kProcedure) (identifier) (procAttribute (kPascal)) (kForward))
-  (declProc (kProcedure) (identifier) (procAttribute (kStdcall)) (kForward))
-  (declProc (kProcedure) (identifier) (procAttribute (kRegister)) (kForward))
-  (declProc (kProcedure) (identifier) (procExternal (kExternal) (identifier)))
-  (declProc (kProcedure) (identifier) (procAttribute (kCdecl)) (procExternal (kExternal) (identifier)))
-  (declProc (kProcedure) (identifier) (procExternal (kExternal) (kName) (identifier)))
-  (declProc (kProcedure) (identifier) (procExternal (kExternal) (kIndex) (identifier)))
-  (declProc (kProcedure) (identifier) (procExternal (kExternal) (identifier) (kName) (identifier)))
-  (declProc (kProcedure) (identifier) (procAttribute (kPublic) (kName) (identifier)) (kForward))
-  (declProc (kProcedure) (identifier) (procAttribute (kInline)) (kForward))
-  (declVars (kVar)
-    (declVar
+  (codeFragment
+    (declProc
+      (kProcedure)
       (identifier)
-      (type (typeref (identifier)))
-      (procAttribute (kCvar))
-      (procExternal (kExternal) (identifier))))
-  (declTypes (kType)
-    (declType (identifier) (kEq)
-      (declClass (kClass)
-        (declProc (kProcedure) (identifier) (procAttribute (kMessage) (identifier)))
-        (declProc (kProcedure) (identifier) (procAttribute (kVirtual)) (procAttribute (kAbstract)))
-        (declProc (kProcedure) (identifier) (procAttribute (kOverride)))
-        (declProc (kProcedure) (identifier) (procAttribute (kStdcall)))
-        (declProp (kProperty)
-          (identifier)
-          (declPropArgs
-            (declArg
-              (identifier)
-              (type (typeref (identifier)))))
-          (type (typeref (identifier)))
-          (kRead) (identifier)
-          (procAttribute (kDefault)))
-        (kEnd)))))
-
+      (procAttribute
+        (kCdecl))
+      (kForward))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procAttribute
+        (kPascal))
+      (kForward))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procAttribute
+        (kStdcall))
+      (kForward))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procAttribute
+        (kRegister))
+      (kForward))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procExternal
+        (kExternal)
+        (identifier)))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procAttribute
+        (kCdecl))
+      (procExternal
+        (kExternal)
+        (identifier)))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procExternal
+        (kExternal)
+        (kName)
+        (identifier)))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procExternal
+        (kExternal)
+        (kIndex)
+        (identifier)))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procExternal
+        (kExternal)
+        (identifier)
+        (kName)
+        (identifier)))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procAttribute
+        (kPublic)
+        (kName)
+        (identifier))
+      (kForward))
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procAttribute
+        (kInline))
+      (kForward))
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))
+        (procAttribute
+          (kCvar))
+        (procExternal
+          (kExternal)
+          (identifier))))
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declProc
+            (kProcedure)
+            (identifier)
+            (procAttribute
+              (kMessage)
+              (identifier)))
+          (declProc
+            (kProcedure)
+            (identifier)
+            (procAttribute
+              (kVirtual))
+            (procAttribute
+              (kAbstract)))
+          (declProc
+            (kProcedure)
+            (identifier)
+            (procAttribute
+              (kOverride)))
+          (declProc
+            (kProcedure)
+            (identifier)
+            (procAttribute
+              (kStdcall)))
+          (declProp
+            (kProperty)
+            (identifier)
+            (declPropArgs
+              (declArg
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier)))
+            (kRead)
+            (identifier)
+            (procAttribute
+              (kDefault)))
+          (kEnd))))))
 
 ===
 FPC-style declaration hints
@@ -74,12 +173,18 @@ procedure a; [public; alias: b; cdecl]; forward;
 ---
 
 (root
-  (declProc (kProcedure) (identifier)
-    (procAttribute (kPublic))
-    (procAttribute (kAlias) (identifier))
-    (procAttribute (kCdecl))
-    (kForward)))
-
+  (codeFragment
+    (declProc
+      (kProcedure)
+      (identifier)
+      (procAttribute
+        (kPublic))
+      (procAttribute
+        (kAlias)
+        (identifier))
+      (procAttribute
+        (kCdecl))
+      (kForward))))
 
 ===
 Extended RTTI
@@ -120,66 +225,109 @@ end;
 ---
 
 (root
-  (declTypes (kType)
-    (declType
-      (rttiAttributes (identifier))
-      (identifier) (kEq) (declClass (kClass)
-        (declProp
-          (rttiAttributes
-            (exprCall (identifier) (exprArgs (literalString))))
-          (kProperty)
-          (identifier)
-          (type (typeref (identifier)))
-          (kRead)
-          (identifier))
-        (declProc
-          (rttiAttributes
-            (exprCall (identifier))
-            (exprCall (identifier) (exprArgs (literalNumber)))
-            (exprCall (identifier) (exprArgs (literalNumber))))
-          (kProcedure)
-          (identifier))
-        (kEnd)))
-    (declType
-      (rttiAttributes
-        (exprCall (identifier) (exprArgs (literalNumber)))
-        (exprCall (identifier) (exprArgs (literalString))))
-      (identifier)
-      (kEq)
-      (type
-        (declEnum
-          (declEnumValue (identifier))
-          (declEnumValue (identifier)))))
-    (declType
-      (rttiAttributes
-        (exprCall (identifier) (exprArgs (identifier)))
-        (exprCall (identifier) (exprArgs (literalNumber))))
-      (identifier)
-      (kEq)
+  (codeFragment
+    (declTypes
       (kType)
-      (type (typeref (identifier))))
-    (declType (identifier) (kEq)
-      (declIntf
-        (kInterface)
-        (guid (literalString))
-        (declProc
-          (rttiAttributes
-            (exprCall (identifier) (exprArgs (literalNumber))))
-          (kProcedure)
+      (declType
+        (rttiAttributes
           (identifier))
-        (kEnd))))
-  (declVars
-    (kVar)
-    (declVar
-      (rttiAttributes (identifier))
-      (identifier)
-      (type (typeref (identifier)))))
-  (defProc
-    (declProc
-      (rttiAttributes (identifier))
-      (kProcedure)
-      (identifier))
-    (block
-      (kBegin)
-      (kEnd))))
-
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declProp
+            (rttiAttributes
+              (exprCall
+                (identifier)
+                (exprArgs
+                  (literalString))))
+            (kProperty)
+            (identifier)
+            (type
+              (typeref
+                (identifier)))
+            (kRead)
+            (identifier))
+          (declProc
+            (rttiAttributes
+              (exprCall
+                (identifier))
+              (exprCall
+                (identifier)
+                (exprArgs
+                  (literalNumber)))
+              (exprCall
+                (identifier)
+                (exprArgs
+                  (literalNumber))))
+            (kProcedure)
+            (identifier))
+          (kEnd)))
+      (declType
+        (rttiAttributes
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalNumber)))
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (identifier)
+        (kEq)
+        (type
+          (declEnum
+            (declEnumValue
+              (identifier))
+            (declEnumValue
+              (identifier)))))
+      (declType
+        (rttiAttributes
+          (exprCall
+            (identifier)
+            (exprArgs
+              (identifier)))
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalNumber))))
+        (identifier)
+        (kEq)
+        (kType)
+        (type
+          (typeref
+            (identifier))))
+      (declType
+        (identifier)
+        (kEq)
+        (declIntf
+          (kInterface)
+          (guid
+            (literalString))
+          (declProc
+            (rttiAttributes
+              (exprCall
+                (identifier)
+                (exprArgs
+                  (literalNumber))))
+            (kProcedure)
+            (identifier))
+          (kEnd))))
+    (declVars
+      (kVar)
+      (declVar
+        (rttiAttributes
+          (identifier))
+        (identifier)
+        (type
+          (typeref
+            (identifier)))))
+    (defProc
+      (declProc
+        (rttiAttributes
+          (identifier))
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (kEnd)))))

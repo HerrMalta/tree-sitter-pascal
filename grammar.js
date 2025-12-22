@@ -19,6 +19,12 @@ const objc        = true;
 const templates   = delphi || fpc;
 // Try to support preprocessor better.
 const use_pp      = true;
+// Support DPR program files (with 'in' clause for unit paths).
+const dpr_file    = true;
+// Support DPK package files.
+const dpk_file    = true;
+// Support INC include files (code fragments).
+const inc_file    = true;
 
 // Helpers
 
@@ -299,7 +305,25 @@ module.exports = grammar({
 			$.program,
 			$.library,
 			$.unit,
-			$._definitions // For include files
+			$.package,
+			$.codeFragment // For include files (.inc)
+		)),
+
+		// INC Include file support - allows any sequence of valid Pascal constructs
+		// Accepts declarations, type definitions, variable definitions, constant definitions
+		// For statement-level includes, the statements would typically be inside a procedure body
+		codeFragment:    $ => repeat1(choice(
+			// Declaration sections
+			$.declTypes,
+			$.declVars,
+			$.declConsts,
+			$.defProc,
+			alias($.declProcFwd, $.declProc),
+			$.declLabels,
+			$.declUses,
+			$.declExports,
+			// Allow block for statement-level includes (e.g., begin...end fragments)
+			prec(-1, $.blockTr)
 		)),
 
 		// HIGH LEVEL ----------------------------------------------------------
@@ -329,12 +353,33 @@ module.exports = grammar({
 			$.kEnd, $.kEndDot
 		),
 
+		// DPK Package file support
+		// E.g.: package MyPackage; requires rtl; contains Unit1 in 'Unit1.pas'; end.
+		package:         $ => seq(
+			$.kPackage, $.moduleName, ';',
+			repeat($.pp),  // Package directives like {$R *.res}
+			optional($.declRequires),
+			optional($.declContains),
+			$.kEnd, $.kEndDot
+		),
+		declRequires:    $ => seq($.kRequires, delimited1($.moduleName), ';'),
+		declContains:    $ => seq($.kContains, delimited1($.unitReference), ';'),
+
 		interface:       $ => seq($.kInterface, optional($._declarations)),
 		implementation:  $ => seq($.kImplementation, optional($._definitions)),
 		initialization:  $ => seq($.kInitialization, optional(tr($,'_statements'))),
 		finalization:    $ => seq($.kFinalization, optional(tr($,'_statements'))),
 
 		moduleName:      $ => delimited1($.identifier, $.kDot),
+
+		// Unit reference with optional 'in' clause for DPR/DPK files
+		// E.g.: Unit1, System.SysUtils in 'path\SysUtils.pas'
+		unitReference:   $ => seq(
+			field('name', $.moduleName),
+			...enable_if(dpr_file || dpk_file,
+				field('path', optional(seq($.kIn, $.literalString)))
+			)
+		),
 
 		// STATEMENTS ---------------------------------------------------------
 
@@ -641,7 +686,7 @@ module.exports = grammar({
 
 		// Declaration sections
 
-		declUses:        $ => seq($.kUses, delimited($.moduleName), ';'),
+		declUses:        $ => seq($.kUses, delimited($.unitReference), ';'),
 		declExports:     $ => seq($.kExports, delimited($.declExport), ';'),
 
 		declTypes:       $ => seq(
@@ -1018,6 +1063,9 @@ module.exports = grammar({
 		kProgram:          $ => /program/i,
 		kLibrary:          $ => /library/i,
 		kUnit:             $ => /unit/i,
+		kPackage:          $ => /package/i,
+		kRequires:         $ => /requires/i,
+		kContains:         $ => /contains/i,
 		kUses:             $ => /uses/i,
 		kInterface:        $ => /interface/i,
 		kDispInterface:    $ => /dispinterface/i,

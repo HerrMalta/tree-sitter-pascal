@@ -13,10 +13,20 @@ var
 (root
   (comment)
   (comment)
-  (declVars (kVar)
-    (declVar (identifier) (type (typeref (identifier))))
-    (comment)
-    (declVar (identifier) (type (typeref (identifier))))))
+  (codeFragment
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (comment)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))))))
 
 ===
 Block Comments 1
@@ -38,17 +48,27 @@ var
 
 (root
   (comment)
-  (declVars (kVar)
-    (declVar (identifier)
+  (codeFragment
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (comment)
+        (type
+          (typeref
+            (identifier))))
       (comment)
-      (type (typeref (identifier))))
-    (comment)
-    (declVar (identifier)
-      (type (typeref (identifier))))
-    (comment)
-    (declVar (identifier)
-      (type (typeref (identifier))))))
-
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (comment)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))))))
 
 ===
 Block Comments 2
@@ -74,26 +94,47 @@ var
 
 ---
 
-(root (comment)
-  (declVars (kVar)
-    (declVar (identifier)
+(root
+  (comment)
+  (codeFragment
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (comment)
+        (type
+          (typeref
+            (identifier))))
       (comment)
-      (type (typeref (identifier))))
-    (comment)
-    (declVar (identifier)
-      (type (typeref (identifier))))
-    (comment)
-    (declVar (identifier)
-      (type (typeref (identifier))))
-    (comment)
-    (declVar (identifier)
-      (type (typeref (identifier))))
-    (comment)
-    (declVar (identifier)
-      (type (typeref (identifier))))
-    (comment)
-    (declVar (identifier)
-      (type (typeref (identifier)))))
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (comment)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (comment)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (comment)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (comment)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))))
   (comment))
 
 ===
@@ -110,12 +151,12 @@ Preprocessor directives 1
 ---
 
 (root
-   (pp)
-   (pp)
-   (pp)
-   (pp)
-   (pp)
-   (pp))
+  (pp)
+  (pp)
+  (pp)
+  (pp)
+  (pp)
+  (pp))
 
 ===
 Preprocessor directives 2
@@ -128,18 +169,27 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier)
-      (declArgs
-        (declArg (identifier)
-          (type (typeref (identifier))))
-        (pp)
-        (declArg (identifier)
-          (type (typeref (identifier))))
-        (pp)))
-    (block
-      (kBegin)
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (pp)
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (pp)))
+      (block
+        (kBegin)
+        (kEnd)))))
 
 ===
 Preprocessor directives 3
@@ -152,19 +202,25 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier)
-      (declArgs
-        (declArg (identifier)
-          (type
-            (pp)
-            (typeref (identifier))
-            (pp)
-            (typeref (identifier))
-            (pp)))))
-    (block
-      (kBegin)
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (type
+              (pp)
+              (typeref
+                (identifier))
+              (pp)
+              (typeref
+                (identifier))
+              (pp)))))
+      (block
+        (kBegin)
+        (kEnd)))))
 
 ===
 Preprocessor directives 4
@@ -186,20 +242,41 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block
-      (kBegin)
-      (pp)
-      (if (kIf) (kTrue) (kThen)
-        (statement (exprCall (identifier) (exprArgs (literalString)))))
-      (pp)
-      (while (kWhile) (kTrue) (kDo)
-        (statement (exprCall (identifier) (exprArgs (literalString)))))
-      (pp)
-      (statement (exprCall (identifier) (exprArgs (literalString))))
-      (pp)
-      (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (pp)
+        (if
+          (kIf)
+          (kTrue)
+          (kThen)
+          (statement
+            (exprCall
+              (identifier)
+              (exprArgs
+                (literalString)))))
+        (pp)
+        (while
+          (kWhile)
+          (kTrue)
+          (kDo)
+          (statement
+            (exprCall
+              (identifier)
+              (exprArgs
+                (literalString)))))
+        (pp)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (pp)
+        (kEnd)))))
 
 ===
 Preprocessor directives 5
@@ -217,17 +294,20 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (pp)
-    (block
-      (kBegin)
-      (kEnd))
-    (pp)
-    (block
-      (kBegin)
-      (kEnd))
-    (pp)))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (pp)
+      (block
+        (kBegin)
+        (kEnd))
+      (pp)
+      (block
+        (kBegin)
+        (kEnd))
+      (pp))))
 
 ===
 Preprocessor directives 6
@@ -242,22 +322,29 @@ type
 ---
 
 (root
-  (declVars (kVar)
-    (declVar (identifier)
-      (type
-        (pp)
-        (typeref (identifier))
-        (pp)
-        (typeref (identifier))
-        (pp))))
-  (declTypes (kType)
-    (declType
-      (identifier)
-      (kEq)
-      (type
-        (pp)
-        (typeref (identifier))
-        (pp)
-        (typeref (identifier))
-        (pp)))))
-
+  (codeFragment
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (pp)
+          (typeref
+            (identifier))
+          (pp)
+          (typeref
+            (identifier))
+          (pp))))
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (pp)
+          (typeref
+            (identifier))
+          (pp)
+          (typeref
+            (identifier))
+          (pp))))))

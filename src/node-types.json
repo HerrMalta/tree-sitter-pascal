@@ -823,6 +823,53 @@
     }
   },
   {
+    "type": "codeFragment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "blockTr",
+          "named": true
+        },
+        {
+          "type": "declConsts",
+          "named": true
+        },
+        {
+          "type": "declExports",
+          "named": true
+        },
+        {
+          "type": "declLabels",
+          "named": true
+        },
+        {
+          "type": "declProc",
+          "named": true
+        },
+        {
+          "type": "declTypes",
+          "named": true
+        },
+        {
+          "type": "declUses",
+          "named": true
+        },
+        {
+          "type": "declVars",
+          "named": true
+        },
+        {
+          "type": "defProc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "declArg",
     "named": true,
     "fields": {
@@ -1262,6 +1309,25 @@
         },
         {
           "type": "kResourcestring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "declContains",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "kContains",
+          "named": true
+        },
+        {
+          "type": "unitReference",
           "named": true
         }
       ]
@@ -2437,6 +2503,25 @@
     }
   },
   {
+    "type": "declRequires",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "kRequires",
+          "named": true
+        },
+        {
+          "type": "moduleName",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "declSection",
     "named": true,
     "fields": {},
@@ -2719,7 +2804,7 @@
           "named": true
         },
         {
-          "type": "moduleName",
+          "type": "unitReference",
           "named": true
         }
       ]
@@ -6233,6 +6318,45 @@
     }
   },
   {
+    "type": "package",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "declContains",
+          "named": true
+        },
+        {
+          "type": "declRequires",
+          "named": true
+        },
+        {
+          "type": "kEnd",
+          "named": true
+        },
+        {
+          "type": "kEndDot",
+          "named": true
+        },
+        {
+          "type": "kPackage",
+          "named": true
+        },
+        {
+          "type": "moduleName",
+          "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "procAttribute",
     "named": true,
     "fields": {
@@ -7120,47 +7244,19 @@
     "root": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
-          "type": "blockTr",
-          "named": true
-        },
-        {
-          "type": "declConsts",
-          "named": true
-        },
-        {
-          "type": "declExports",
-          "named": true
-        },
-        {
-          "type": "declLabels",
-          "named": true
-        },
-        {
-          "type": "declProc",
-          "named": true
-        },
-        {
-          "type": "declTypes",
-          "named": true
-        },
-        {
-          "type": "declUses",
-          "named": true
-        },
-        {
-          "type": "declVars",
-          "named": true
-        },
-        {
-          "type": "defProc",
+          "type": "codeFragment",
           "named": true
         },
         {
           "type": "library",
+          "named": true
+        },
+        {
+          "type": "package",
           "named": true
         },
         {
@@ -7851,6 +7947,36 @@
     }
   },
   {
+    "type": "unitReference",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "moduleName",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "kIn",
+            "named": true
+          },
+          {
+            "type": "literalString",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "varAssignDef",
     "named": true,
     "fields": {
@@ -8383,6 +8509,10 @@
     "named": true
   },
   {
+    "type": "kContains",
+    "named": true
+  },
+  {
     "type": "kCppdecl",
     "named": true
   },
@@ -8699,6 +8829,10 @@
     "named": true
   },
   {
+    "type": "kPackage",
+    "named": true
+  },
+  {
     "type": "kPacked",
     "named": true
   },
@@ -8768,6 +8902,10 @@
   },
   {
     "type": "kRequired",
+    "named": true
+  },
+  {
+    "type": "kRequires",
     "named": true
   },
   {

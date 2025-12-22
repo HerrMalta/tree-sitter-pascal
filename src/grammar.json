@@ -23,7 +23,11 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_definitions"
+              "name": "package"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "codeFragment"
             }
           ]
         },
@@ -31,6 +35,59 @@
           "type": "BLANK"
         }
       ]
+    },
+    "codeFragment": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "declTypes"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "declVars"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "declConsts"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "defProc"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "declProcFwd"
+            },
+            "named": true,
+            "value": "declProc"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "declLabels"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "declUses"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "declExports"
+          },
+          {
+            "type": "PREC",
+            "value": -1,
+            "content": {
+              "type": "SYMBOL",
+              "name": "blockTr"
+            }
+          }
+        ]
+      }
     },
     "program": {
       "type": "SEQ",
@@ -174,6 +231,162 @@
         }
       ]
     },
+    "package": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "kPackage"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "moduleName"
+        },
+        {
+          "type": "STRING",
+          "value": ";"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "pp"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "declRequires"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "declContains"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kEnd"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kEndDot"
+        }
+      ]
+    },
+    "declRequires": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "kRequires"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "PREC",
+                    "value": 0,
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "moduleName"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "moduleName"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ";"
+        }
+      ]
+    },
+    "declContains": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "kContains"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "PREC",
+                    "value": 0,
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "unitReference"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "unitReference"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ";"
+        }
+      ]
+    },
     "interface": {
       "type": "SEQ",
       "members": [
@@ -292,6 +505,44 @@
         {
           "type": "SYMBOL",
           "name": "identifier"
+        }
+      ]
+    },
+    "unitReference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "moduleName"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "path",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "kIn"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "literalString"
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
         }
       ]
     },
@@ -5074,7 +5325,7 @@
                           "members": [
                             {
                               "type": "SYMBOL",
-                              "name": "moduleName"
+                              "name": "unitReference"
                             },
                             {
                               "type": "STRING",
@@ -5091,7 +5342,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "moduleName"
+                  "name": "unitReference"
                 }
               ]
             },
@@ -8757,6 +9008,21 @@
     "kUnit": {
       "type": "PATTERN",
       "value": "unit",
+      "flags": "i"
+    },
+    "kPackage": {
+      "type": "PATTERN",
+      "value": "package",
+      "flags": "i"
+    },
+    "kRequires": {
+      "type": "PATTERN",
+      "value": "requires",
+      "flags": "i"
+    },
+    "kContains": {
+      "type": "PATTERN",
+      "value": "contains",
       "flags": "i"
     },
     "kUses": {

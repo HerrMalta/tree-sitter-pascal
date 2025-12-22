@@ -41,80 +41,147 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kProcedure) (identifier)
-      (declArgs
-        (declArg
-          (identifier)
-          (type (typeref (identifier))))))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kProcedure) (identifier)
-      (declArgs
-        (declArg
-          (identifier)
-          (identifier)
-          (type (typeref (identifier))))))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kProcedure) (identifier)
-      (declArgs
-        (declArg
-          (identifier)
-          (identifier)
-          (type (typeref (identifier))))
-        (declArg
-          (identifier)
-          (identifier)
-          (type (typeref (identifier))))))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kProcedure) (identifier)
-      (declArgs
-        (declArg (kVar)
-          (identifier)
-          (type (typeref (identifier))))
-        (declArg (kConst)
-          (identifier)
-          (type (typeref (identifier))))
-        (declArg
-          (kOut)
-          (identifier)
-          (type (typeref (identifier))))))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kProcedure) (identifier)
-      (declArgs
-        (declArg (kVar) (identifier))
-        (declArg (kConst) (identifier))
-        (declArg (kOut) (identifier))))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kProcedure) (identifier)
-      (declArgs
-        (declArg (kVar)
-          (identifier)
-          (identifier)
-          (type (typeref (identifier))))
-        (declArg (kConst)
-          (identifier)
-          (identifier))))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kFunction) (identifier)
-      (typeref (identifier)))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kFunction) (identifier)
-      (declArgs
-        (declArg
-          (identifier)
-          (type (typeref (identifier)))))
-      (typeref (identifier)))
-    (block (kBegin) (kEnd))))
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier))))))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (identifier)
+            (type
+              (typeref
+                (identifier))))))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (declArg
+            (identifier)
+            (identifier)
+            (type
+              (typeref
+                (identifier))))))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (kVar)
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (declArg
+            (kConst)
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (declArg
+            (kOut)
+            (identifier)
+            (type
+              (typeref
+                (identifier))))))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (kVar)
+            (identifier))
+          (declArg
+            (kConst)
+            (identifier))
+          (declArg
+            (kOut)
+            (identifier))))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (kVar)
+            (identifier)
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (declArg
+            (kConst)
+            (identifier)
+            (identifier))))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kFunction)
+        (identifier)
+        (typeref
+          (identifier)))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kFunction)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (typeref
+          (identifier)))
+      (block
+        (kBegin)
+        (kEnd)))))
 
 ===
 Methods
@@ -143,49 +210,66 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure)
-      (genericDot
-        (identifier)
-        (kDot)
-        (identifier)))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc
-      (kProcedure)
-      (genericDot
-        (identifier)
-        (kDot)
-        (identifier))
-      (declArgs
-        (declArg
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (genericDot
           (identifier)
-          (type (typeref (identifier))))))
-    (block (kBegin) (kEnd)))
-  (defProc
-    (declProc (kProcedure)
-      (genericDot
+          (kDot)
+          (identifier)))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kProcedure)
         (genericDot
           (identifier)
           (kDot)
           (identifier))
-        (kDot)
-        (identifier)))
-    (block (kBegin) (kEnd)))
+        (declArgs
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier))))))
+      (block
+        (kBegin)
+        (kEnd)))
     (defProc
-      (declProc (kConstructor)
+      (declProc
+        (kProcedure)
+        (genericDot
+          (genericDot
+            (identifier)
+            (kDot)
+            (identifier))
+          (kDot)
+          (identifier)))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kConstructor)
         (genericDot
           (identifier)
           (kDot)
           (identifier)))
-      (block (kBegin) (kEnd)))
+      (block
+        (kBegin)
+        (kEnd)))
     (defProc
-      (declProc (kDestructor)
+      (declProc
+        (kDestructor)
         (genericDot
           (identifier)
           (kDot)
           (identifier)))
-      (block (kBegin) (kEnd))))
+      (block
+        (kBegin)
+        (kEnd)))))
 
 ===
 Operators
@@ -206,58 +290,75 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kOperator)
-      (genericDot
-        (identifier)
-        (kDot)
-        (operatorName (kAdd)))
-      (declArgs
-        (declArg
+  (codeFragment
+    (defProc
+      (declProc
+        (kOperator)
+        (genericDot
           (identifier)
+          (kDot)
+          (operatorName
+            (kAdd)))
+        (declArgs
+          (declArg
+            (identifier)
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (type
+          (typeref
+            (identifier))))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kOperator)
+        (genericDot
           (identifier)
-          (type (typeref (identifier)))))
-      (type (typeref (identifier))))
-    (block
-      (kBegin)
-      (kEnd)))
-  (defProc
-    (declProc (kOperator)
-      (genericDot
-        (identifier)
-        (kDot)
-        (identifier))
-      (declArgs
-        (declArg
-          (identifier)
-          (identifier)
-          (type (typeref (identifier)))))
-      (type (typeref (identifier))))
-    (block
-      (kBegin)
-      (kEnd)))
-  (defProc
-    (declProc (kOperator)
-      (genericDot
+          (kDot)
+          (identifier))
+        (declArgs
+          (declArg
+            (identifier)
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (type
+          (typeref
+            (identifier))))
+      (block
+        (kBegin)
+        (kEnd)))
+    (defProc
+      (declProc
+        (kOperator)
         (genericDot
           (genericDot
-            (identifier)
+            (genericDot
+              (identifier)
+              (kDot)
+              (identifier))
             (kDot)
             (identifier))
           (kDot)
-          (identifier))
-        (kDot)
-        (operatorName (kAdd)))
-      (declArgs
-        (declArg
-          (identifier)
-          (identifier)
-          (type (typeref (identifier)))))
-      (type (typeref (identifier))))
-    (block
-      (kBegin)
-      (kEnd))))
-
+          (operatorName
+            (kAdd)))
+        (declArgs
+          (declArg
+            (identifier)
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (type
+          (typeref
+            (identifier))))
+      (block
+        (kBegin)
+        (kEnd)))))
 
 ===
 Locals
@@ -276,18 +377,36 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
-    (declTypes (kType)
-      (declType (identifier) (kEq) (type (typeref (identifier)))))
-    (declVars (kVar)
-      (declVar (identifier) (type (typeref (identifier)))))
-    (declConsts (kConst)
-      (declConst (identifier) (defaultValue (kEq) (identifier))))
-    (block
-      (kBegin)
-      (kEnd))))
-
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (declTypes
+        (kType)
+        (declType
+          (identifier)
+          (kEq)
+          (type
+            (typeref
+              (identifier)))))
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (declConsts
+        (kConst)
+        (declConst
+          (identifier)
+          (defaultValue
+            (kEq)
+            (identifier))))
+      (block
+        (kBegin)
+        (kEnd)))))
 
 ===
 Nested routines
@@ -316,33 +435,57 @@ end;
 ---
 
 (root
-  (defProc
-    (declProc (kProcedure) (identifier))
+  (codeFragment
     (defProc
-      (declProc (kFunction) (identifier) (typeref (identifier)))
+      (declProc
+        (kProcedure)
+        (identifier))
       (defProc
-        (declProc (kProcedure) (identifier))
+        (declProc
+          (kFunction)
+          (identifier)
+          (typeref
+            (identifier)))
+        (defProc
+          (declProc
+            (kProcedure)
+            (identifier))
+          (block
+            (kBegin)
+            (kEnd)))
         (block
           (kBegin)
           (kEnd)))
       (block
         (kBegin)
         (kEnd)))
-    (block
-      (kBegin)
-      (kEnd)))
-  (defProc
-    (declProc (kFunction) (identifier) (typeref (identifier)))
-    (declVars (kVar)
-      (declVar (identifier) (type (typeref (identifier)))))
     (defProc
-      (declProc (kProcedure) (identifier))
-      (declVars (kVar)
-        (declVar (identifier) (type (typeref (identifier)))))
+      (declProc
+        (kFunction)
+        (identifier)
+        (typeref
+          (identifier)))
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (defProc
+        (declProc
+          (kProcedure)
+          (identifier))
+        (declVars
+          (kVar)
+          (declVar
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (block
+          (kBegin)
+          (kEnd)))
       (block
         (kBegin)
-        (kEnd)))
-    (block
-      (kBegin)
-      (kEnd))))
-
+        (kEnd)))))
