@@ -4743,6 +4743,10 @@
           {
             "type": "literalString",
             "named": true
+          },
+          {
+            "type": "varAssignDef",
+            "named": true
           }
         ]
       }
@@ -6373,7 +6377,7 @@
     "fields": {
       "exception": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "exprBinary",

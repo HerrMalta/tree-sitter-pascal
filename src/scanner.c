@@ -41,41 +41,48 @@ enum TokenType {
  * The keywords listed here are the "truly reserved" structural keywords that
  * delimit major syntactic blocks and control flow.
  */
+/**
+ * MINIMAL list of reserved keywords - only truly structural ones.
+ *
+ * These keywords, if consumed as identifiers during error recovery,
+ * would catastrophically break file structure. We intentionally keep
+ * this list small to avoid blocking legitimate identifiers.
+ *
+ * NOT included (commonly used as identifiers):
+ * - contains, requires, index, name, read, write, default, stored
+ * - file, array, set (type keywords that can be identifiers)
+ * - property, external, forward, reference
+ */
 static const char* keywords[] = {
-    // High-level structure - these delimit major file sections
+    // High-level file structure - these delimit major sections
     "program", "library", "unit", "package",
-    "interface", "dispinterface", "implementation",
+    "interface", "implementation",
     "initialization", "finalization",
 
     // Block delimiters - critical for structure
-    "begin", "end", "asm",
+    "begin", "end",
 
-    // Declaration section keywords - start major sections
-    "var", "threadvar", "const", "resourcestring", "type", "label",
-    "uses", "exports", "requires", "contains",
-    "out",  // Parameter modifier
-    "property", "external", "name", "index",  // Declaration modifiers
+    // Declaration section keywords
+    "var", "threadvar", "const", "type", "uses",
 
-    // Class/record/type structure
+    // Class/record structure - needed for type declarations
     "class", "object", "record",
-    "published", "public", "protected", "private", "strict",
-    "set", "array", "file", "packed", "string",  // Type keywords
-    "inherited",
+    "private", "protected", "public", "published", "strict",
+    "set", "array",  // Type keywords - needed for 'set of' and 'array of'
+    "string",  // Common type keyword - must be reserved
 
-    // Control flow - these must not be consumed as expression identifiers
+    // Control flow - must not be consumed as expression identifiers
     "if", "then", "else",
     "for", "to", "downto", "do",
     "while", "repeat", "until",
     "case", "of",
     "try", "except", "finally", "on",
-    "with", "goto", "raise",
+    "raise",
 
     // Routine declarations
     "function", "procedure", "constructor", "destructor",
-    "operator", "reference",
-    "forward",
 
-    // Operator keywords - these are operators, not identifiers
+    // Operator keywords
     "and", "or", "xor", "not",
     "div", "mod", "shl", "shr",
     "in", "is", "as",

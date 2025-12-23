@@ -785,8 +785,17 @@
           "type": "FIELD",
           "name": "iterator",
           "content": {
-            "type": "SYMBOL",
-            "name": "_expr"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expr"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "varAssignDef"
+              }
+            ]
           }
         },
         {
@@ -1297,8 +1306,16 @@
           "type": "FIELD",
           "name": "exception",
           "content": {
-            "type": "SYMBOL",
-            "name": "_expr"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expr"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         },
         {
@@ -1770,8 +1787,17 @@
           "type": "FIELD",
           "name": "iterator",
           "content": {
-            "type": "SYMBOL",
-            "name": "_expr"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expr"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "varAssignDef"
+              }
+            ]
           }
         },
         {
@@ -2306,8 +2332,16 @@
           "type": "FIELD",
           "name": "exception",
           "content": {
-            "type": "SYMBOL",
-            "name": "_expr"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expr"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         }
       ]
@@ -9348,6 +9382,10 @@
       "value": "endif",
       "flags": "i"
     },
+    "identifier": {
+      "type": "PATTERN",
+      "value": "[&]?[a-zA-Z_][0-9_a-zA-Z]*"
+    },
     "_space": {
       "type": "PATTERN",
       "value": "[\\s\\r\\n\\t]+"
@@ -9446,12 +9484,7 @@
     ]
   ],
   "precedences": [],
-  "externals": [
-    {
-      "type": "SYMBOL",
-      "name": "identifier"
-    }
-  ],
+  "externals": [],
   "inline": [],
   "supertypes": []
 }

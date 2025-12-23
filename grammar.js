@@ -161,7 +161,7 @@ function statements(trailing) {
 
 		[rn('foreach'),     $ => seq(
 			$.kFor,
-			field('iterator', $._expr), $.kIn,
+			field('iterator', choice($._expr, $.varAssignDef)), $.kIn,
 			field('iterable', $._expr), $.kDo,
 			field('body', lastStatement($))
 		)],
@@ -238,7 +238,7 @@ function statements(trailing) {
 
 		[rn('raise'),       $ => seq(
 			$.kRaise,
-			field('exception', $._expr),
+			field('exception', optional($._expr)),
 			...semicolon
 		)],
 
@@ -276,12 +276,15 @@ module.exports = grammar({
 
 	extras: $ => [$._space, $.comment, $.pp],
 
-	// External scanner for identifier/keyword priority.
-	// This prevents keywords from being consumed as identifiers during error recovery.
-	// See src/scanner.c for implementation details.
-	externals: $ => [
-		$.identifier,
-	],
+	// External scanner DISABLED - it was causing false syntax errors.
+	// When the scanner returns false for a keyword, tree-sitter's internal lexer
+	// matches it as a keyword token (e.g., kArray), but if that keyword isn't valid
+	// in the current context, it becomes a syntax error. The scanner effectively
+	// breaks tree-sitter's context-aware lexing.
+	// See src/scanner.c for the disabled implementation.
+	// externals: $ => [
+	// 	$.identifier,
+	// ],
 
 	word: $ => $.identifier,
 
@@ -1253,12 +1256,9 @@ module.exports = grammar({
 		kIfndef:           $ => /ifndef/i,
 		kEndif:            $ => /endif/i,
 
-		// NOTE: identifier is now an external token handled by src/scanner.c
-		// This ensures keywords have priority over identifiers during error recovery.
-		// The external scanner handles:
-		// - Regular identifiers: myVar, foo123, _private
-		// - Escaped keywords: &end, &begin, &type (with & prefix)
-		// Original pattern was: /[&]?[a-zA-Z_]+[0-9_a-zA-Z]*/
+		// Identifier rule - supports optional & prefix for escaping keywords
+		// e.g., &end, &begin, &type are valid identifiers
+		identifier:        $ => /[&]?[a-zA-Z_][0-9_a-zA-Z]*/,
 
 	  	_space:            $ => /[\s\r\n\t]+/,
 		pp:                $ => /\{\$[^}]*\}/,
