@@ -161,7 +161,7 @@ function statements(trailing) {
 
 		[rn('foreach'),     $ => seq(
 			$.kFor,
-			field('iterator', choice($._expr, $.varAssignDef)), $.kIn,
+			field('iterator', choice($.varAssignDef, $._expr)), $.kIn,
 			field('iterable', $._expr), $.kDo,
 			field('body', lastStatement($))
 		)],

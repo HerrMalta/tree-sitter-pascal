@@ -789,11 +789,11 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_expr"
+                "name": "varAssignDef"
               },
               {
                 "type": "SYMBOL",
-                "name": "varAssignDef"
+                "name": "_expr"
               }
             ]
           }
@@ -1791,11 +1791,11 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_expr"
+                "name": "varAssignDef"
               },
               {
                 "type": "SYMBOL",
-                "name": "varAssignDef"
+                "name": "_expr"
               }
             ]
           }
