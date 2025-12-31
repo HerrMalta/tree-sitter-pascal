@@ -793,3 +793,106 @@ end;
         (pp)
         (kEnd))
       (pp))))
+
+===
+IFDEF wrapping only local var declarations (single procedure)
+===
+
+function getRealDPI: Integer;
+{$IFDEF ANDROID}
+var
+  vDisp: Integer;
+{$ENDIF}
+begin
+  Result := 0;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kFunction)
+        (identifier)
+        (typeref
+          (identifier)))
+      (pp)
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (pp)
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (literalNumber))
+        (kEnd)))))
+
+===
+IFDEF wrapping only local var declarations (multiple procedures)
+===
+
+function getRealDPI: Integer;
+{$IFDEF ANDROID}
+var
+  vDisp: Integer;
+{$ENDIF}
+begin
+  Result := 0;
+end;
+
+procedure DelayedSetFocus(AControl: TControl);
+begin
+  WriteLn('Hi');
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kFunction)
+        (identifier)
+        (typeref
+          (identifier)))
+      (pp)
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (pp)
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (literalNumber))
+        (kEnd)))
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier))))))
+      (block
+        (kBegin)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (kEnd)))))

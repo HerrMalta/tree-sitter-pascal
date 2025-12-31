@@ -4849,6 +4849,66 @@
         }
       ]
     },
+    "_defProc_local": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_definitions"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_defProc_local"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_defProc_local"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
     "_defProc_body": {
       "type": "CHOICE",
       "members": [
@@ -4863,7 +4923,7 @@
                 "members": [
                   {
                     "type": "SYMBOL",
-                    "name": "_definitions"
+                    "name": "_defProc_local"
                   },
                   {
                     "type": "BLANK"
@@ -9469,6 +9529,9 @@
     ],
     [
       "declTypes"
+    ],
+    [
+      "_defProc_local"
     ]
   ],
   "precedences": [],

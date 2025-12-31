@@ -333,6 +333,11 @@ module.exports = grammar({
 		// make sense, but for Treesitter it does), so we need another conflict
 		// here.
 		//...enable_if(lambda, [ $.lambda ]),
+
+		// Conflict for _defProc_local: when local definitions follow declProc,
+		// they could be part of _defProc_local (single definitions) or nested
+		// within _definitions (multiple definitions). Prefer _defProc_local.
+		[ $._defProc_local ],
 	],
 
 	rules: {
@@ -699,10 +704,16 @@ module.exports = grammar({
 			prec(-1,$.blockTr)
 		),
 
+		// Recursive local definitions rule for IFDEF support around var/type/const sections
+		// Handles: {$IFDEF} var x: T; {$ENDIF} begin...end;
+		_defProc_local:  $ => ppRecursive($, '_defProc_local',
+			$._definitions
+		),
+
 		// Recursive body rule for nested IFDEF support in procedure bodies
 		_defProc_body:   $ => ppRecursive($, '_defProc_body',
 			seq(
-				field('local', optional($._definitions)),
+				field('local', optional($._defProc_local)),
 				field('body', choice(tr($, 'block'), tr($, 'asm'))),
 				';'
 			)

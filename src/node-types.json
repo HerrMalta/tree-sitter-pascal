@@ -2933,6 +2933,10 @@
           {
             "type": "defProc",
             "named": true
+          },
+          {
+            "type": "pp",
+            "named": true
           }
         ]
       }
