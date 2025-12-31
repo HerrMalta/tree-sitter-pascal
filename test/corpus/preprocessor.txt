@@ -212,11 +212,13 @@ end;
             (identifier)
             (type
               (pp)
-              (typeref
-                (identifier))
+              (type
+                (typeref
+                  (identifier)))
               (pp)
-              (typeref
-                (identifier))
+              (type
+                (typeref
+                  (identifier)))
               (pp)))))
       (block
         (kBegin)
@@ -329,11 +331,13 @@ type
         (identifier)
         (type
           (pp)
-          (typeref
-            (identifier))
+          (type
+            (typeref
+              (identifier)))
           (pp)
-          (typeref
-            (identifier))
+          (type
+            (typeref
+              (identifier)))
           (pp))))
     (declTypes
       (kType)
@@ -342,9 +346,450 @@ type
         (kEq)
         (type
           (pp)
-          (typeref
-            (identifier))
+          (type
+            (typeref
+              (identifier)))
           (pp)
-          (typeref
-            (identifier))
+          (type
+            (typeref
+              (identifier)))
           (pp))))))
+
+===
+Nested IFDEF in procedure body
+===
+
+procedure a;
+{$IFDEF OUTER}
+begin
+  {$IFDEF INNER}
+  WriteLn('Inner');
+  {$ENDIF}
+end;
+{$ENDIF}
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (pp)
+      (block
+        (kBegin)
+        (pp)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (pp)
+        (kEnd))
+      (pp))))
+
+===
+Nested IFDEF with else in procedure body
+===
+
+procedure a;
+{$IFDEF OUTER}
+begin
+  {$IFDEF INNER}
+  WriteLn('Inner');
+  {$ELSE}
+  WriteLn('NotInner');
+  {$ENDIF}
+end;
+{$ELSE}
+begin
+end;
+{$ENDIF}
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (pp)
+      (block
+        (kBegin)
+        (pp)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (pp)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (pp)
+        (kEnd))
+      (pp)
+      (block
+        (kBegin)
+        (kEnd))
+      (pp))))
+
+===
+Nested IFDEF in type declaration
+===
+
+type
+  TMyType = {$IFDEF OUTER}{$IFDEF INNER}Integer{$ELSE}String{$ENDIF}{$ELSE}Boolean{$ENDIF};
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (pp)
+          (type
+            (pp)
+            (type
+              (typeref
+                (identifier)))
+            (pp)
+            (type
+              (typeref
+                (kString)))
+            (pp))
+          (pp)
+          (type
+            (typeref
+              (identifier)))
+          (pp))))))
+
+===
+Nested IFDEF wrapping complete procedures
+===
+
+{$IFDEF OUTER}
+procedure A;
+begin
+end;
+{$IFDEF INNER}
+procedure B;
+begin
+end;
+{$ENDIF}
+{$ENDIF}
+
+---
+
+(root
+  (pp)
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (kEnd)))
+    (pp)
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (kEnd))))
+  (pp)
+  (pp))
+
+===
+IFDEF in uses clause - single level
+===
+
+uses
+  SysUtils,
+  {$IFDEF WIN32}
+  Windows,
+  {$ENDIF}
+  Classes;
+
+---
+
+(root
+  (codeFragment
+    (declUses
+      (kUses)
+      (unitReference
+        (moduleName
+          (identifier)))
+      (unitReference
+        (pp)
+        (moduleName
+          (identifier))
+        (pp))
+      (unitReference
+        (moduleName
+          (identifier))))))
+
+===
+IFDEF in class declaration
+===
+
+type
+  TMyClass = class
+  private
+    FField1: Integer;
+    {$IFDEF FEATURE}
+    FField2: String;
+    {$ENDIF}
+  public
+    procedure DoSomething;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declSection
+            (kPrivate)
+            (declField
+              (identifier)
+              (type
+                (typeref
+                  (identifier))))
+            (pp)
+            (declField
+              (identifier)
+              (type
+                (typeref
+                  (kString))))
+            (pp))
+          (declSection
+            (kPublic)
+            (declProc
+              (kProcedure)
+              (identifier)))
+          (kEnd))))))
+
+===
+Nested IFDEF in variable declaration section
+===
+
+var
+  a: Integer;
+  {$IFDEF OUTER}
+  b: Integer;
+  {$IFDEF INNER}
+  c: Integer;
+  {$ENDIF}
+  {$ENDIF}
+  d: Integer;
+
+---
+
+(root
+  (codeFragment
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (pp)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (pp)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier))))
+      (pp)
+      (pp)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))))))
+
+===
+Nested IFDEF in interface section
+===
+
+unit TestUnit;
+
+interface
+
+type
+  TOuterType = Integer;
+  {$IFDEF OUTER}
+  TMiddleType = Boolean;
+  {$IFDEF INNER}
+  TInnerType = String;
+  {$ENDIF}
+  {$ENDIF}
+
+implementation
+
+end.
+
+---
+
+(root
+  (unit
+    (kUnit)
+    (moduleName
+      (identifier))
+    (interface
+      (kInterface)
+      (declTypes
+        (kType)
+        (declType
+          (identifier)
+          (kEq)
+          (type
+            (typeref
+              (identifier))))
+        (pp)
+        (declType
+          (identifier)
+          (kEq)
+          (type
+            (typeref
+              (identifier))))
+        (pp)
+        (declType
+          (identifier)
+          (kEq)
+          (type
+            (typeref
+              (kString))))
+        (pp)
+        (pp)))
+    (implementation
+      (kImplementation))
+    (kEnd)
+    (kEndDot)))
+
+===
+Nested IFDEF in implementation section
+===
+
+unit TestUnit;
+
+interface
+
+implementation
+
+procedure OuterProc;
+begin
+end;
+
+{$IFDEF OUTER}
+procedure MiddleProc;
+begin
+end;
+{$IFDEF INNER}
+procedure InnerProc;
+begin
+end;
+{$ENDIF}
+{$ENDIF}
+
+end.
+
+---
+
+(root
+  (unit
+    (kUnit)
+    (moduleName
+      (identifier))
+    (interface
+      (kInterface))
+    (implementation
+      (kImplementation)
+      (defProc
+        (declProc
+          (kProcedure)
+          (identifier))
+        (block
+          (kBegin)
+          (kEnd)))
+      (pp)
+      (defProc
+        (declProc
+          (kProcedure)
+          (identifier))
+        (block
+          (kBegin)
+          (kEnd)))
+      (pp)
+      (defProc
+        (declProc
+          (kProcedure)
+          (identifier))
+        (block
+          (kBegin)
+          (kEnd)))
+      (pp)
+      (pp))
+    (kEnd)
+    (kEndDot)))
+
+===
+Triple nested IFDEF
+===
+
+procedure a;
+{$IFDEF LEVEL1}
+begin
+  {$IFDEF LEVEL2}
+  {$IFDEF LEVEL3}
+  WriteLn('Level3');
+  {$ENDIF}
+  {$ENDIF}
+end;
+{$ENDIF}
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (pp)
+      (block
+        (kBegin)
+        (pp)
+        (pp)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (pp)
+        (pp)
+        (kEnd))
+      (pp))))

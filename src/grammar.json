@@ -508,43 +508,103 @@
         }
       ]
     },
-    "unitReference": {
-      "type": "SEQ",
+    "_unitReference": {
+      "type": "CHOICE",
       "members": [
         {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "SYMBOL",
-            "name": "moduleName"
-          }
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "name",
+              "content": {
+                "type": "SYMBOL",
+                "name": "moduleName"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "path",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "kIn"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "literalString"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            }
+          ]
         },
         {
-          "type": "FIELD",
-          "name": "path",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_unitReference"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "SYMBOL",
-                    "name": "kIn"
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "literalString"
+                    "name": "_unitReference"
                   }
                 ]
-              },
-              {
-                "type": "BLANK"
               }
-            ]
-          }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
         }
       ]
+    },
+    "unitReference": {
+      "type": "SYMBOL",
+      "name": "_unitReference"
     },
     "if": {
       "type": "SEQ",
@@ -4199,46 +4259,36 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "typeref"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declMetaClass"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declEnum"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declSet"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declArray"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declFile"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declString"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declProcRef"
-                }
-              ]
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "typeref"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declMetaClass"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declEnum"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declSet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declArray"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declFile"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declProcRef"
         },
         {
           "type": "SEQ",
@@ -4254,41 +4304,8 @@
               "value": "pp"
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "typeref"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declMetaClass"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declEnum"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declSet"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declArray"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declFile"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declString"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "declProcRef"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "type"
             },
             {
               "type": "REPEAT",
@@ -4306,41 +4323,8 @@
                     "value": "pp"
                   },
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "typeref"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "declMetaClass"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "declEnum"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "declSet"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "declArray"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "declFile"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "declString"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "declProcRef"
-                      }
-                    ]
+                    "type": "SYMBOL",
+                    "name": "type"
                   }
                 ]
               }
@@ -4922,6 +4906,165 @@
             "type": "SYMBOL",
             "name": "blockTr"
           }
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_definition"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_definition"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
+    "_defProc_body": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "local",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_definitions"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "body",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "blockTr"
+                    },
+                    "named": true,
+                    "value": "block"
+                  },
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "asmTr"
+                    },
+                    "named": true,
+                    "value": "asm"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "STRING",
+              "value": ";"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_defProc_body"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_defProc_body"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
         }
       ]
     },
@@ -4937,198 +5080,8 @@
           }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "FIELD",
-                  "name": "local",
-                  "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_definitions"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "type": "FIELD",
-                  "name": "body",
-                  "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "blockTr"
-                        },
-                        "named": true,
-                        "value": "block"
-                      },
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "asmTr"
-                        },
-                        "named": true,
-                        "value": "asm"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "type": "STRING",
-                  "value": ";"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "\\{\\$if[^}]*\\}",
-                    "flags": "i"
-                  },
-                  "named": true,
-                  "value": "pp"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "local",
-                  "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_definitions"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "type": "FIELD",
-                  "name": "body",
-                  "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "blockTr"
-                        },
-                        "named": true,
-                        "value": "block"
-                      },
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "asmTr"
-                        },
-                        "named": true,
-                        "value": "asm"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "type": "STRING",
-                  "value": ";"
-                },
-                {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "\\{\\$else[^}]*\\}",
-                          "flags": "i"
-                        },
-                        "named": true,
-                        "value": "pp"
-                      },
-                      {
-                        "type": "FIELD",
-                        "name": "local",
-                        "content": {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "SYMBOL",
-                              "name": "_definitions"
-                            },
-                            {
-                              "type": "BLANK"
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "type": "FIELD",
-                        "name": "body",
-                        "content": {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "SYMBOL",
-                                "name": "blockTr"
-                              },
-                              "named": true,
-                              "value": "block"
-                            },
-                            {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "SYMBOL",
-                                "name": "asmTr"
-                              },
-                              "named": true,
-                              "value": "asm"
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "type": "STRING",
-                        "value": ";"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "\\{\\$end[^}]*\\}",
-                    "flags": "i"
-                  },
-                  "named": true,
-                  "value": "pp"
-                }
-              ]
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_defProc_body"
         }
       ]
     },
@@ -5191,81 +5144,191 @@
         }
       ]
     },
+    "_declaration": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declTypes"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declVars"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declConsts"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declProc"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declProp"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "declProcFwd"
+          },
+          "named": true,
+          "value": "declProc"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declUses"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declLabels"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declExports"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_declaration"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_declaration"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
     "_declarations": {
       "type": "REPEAT1",
       "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "declTypes"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declVars"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declConsts"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declProc"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declProp"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "declProcFwd"
-            },
-            "named": true,
-            "value": "declProc"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declUses"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declLabels"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declExports"
-          }
-        ]
+        "type": "SYMBOL",
+        "name": "_declaration"
       }
+    },
+    "_classDeclaration": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declTypes"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declVars"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declConsts"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declProc"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declProp"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_classDeclaration"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_classDeclaration"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
     },
     "_classDeclarations": {
       "type": "REPEAT1",
       "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "declTypes"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declVars"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declConsts"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declProc"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declProp"
-          }
-        ]
+        "type": "SYMBOL",
+        "name": "_classDeclaration"
       }
     },
     "defaultValue": {
@@ -5397,6 +5460,186 @@
         }
       ]
     },
+    "_declTypeItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declType"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_declTypeItem"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_declTypeItem"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
+    "_declVarItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declVar"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_declVarItem"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_declVarItem"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
+    "_declConstItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declConst"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_declConstItem"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_declConstItem"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
     "declTypes": {
       "type": "SEQ",
       "members": [
@@ -5408,7 +5651,7 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "declType"
+            "name": "_declTypeItem"
           }
         }
       ]
@@ -5445,7 +5688,7 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "declVar"
+            "name": "_declVarItem"
           }
         }
       ]
@@ -5482,7 +5725,7 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "declConst"
+            "name": "_declConstItem"
           }
         }
       ]
@@ -6793,11 +7036,71 @@
         }
       ]
     },
+    "_declField": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declField"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_declField"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_declField"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
     "_declFields": {
       "type": "REPEAT1",
       "content": {
         "type": "SYMBOL",
-        "name": "declField"
+        "name": "_declField"
       }
     },
     "declField": {

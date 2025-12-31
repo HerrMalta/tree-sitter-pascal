@@ -1095,6 +1095,10 @@
         {
           "type": "kSealed",
           "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
         }
       ]
     }
@@ -1177,6 +1181,10 @@
         },
         {
           "type": "kResourcestring",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
@@ -1513,6 +1521,10 @@
           "named": true
         },
         {
+          "type": "pp",
+          "named": true
+        },
+        {
           "type": "typeref",
           "named": true
         }
@@ -1606,6 +1618,10 @@
         },
         {
           "type": "kPacked",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
@@ -2390,6 +2406,10 @@
         {
           "type": "kStrict",
           "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
         }
       ]
     }
@@ -2584,6 +2604,10 @@
         },
         {
           "type": "kType",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
@@ -2834,6 +2858,10 @@
         {
           "type": "kVar",
           "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
         }
       ]
     }
@@ -2904,6 +2932,10 @@
           },
           {
             "type": "defProc",
+            "named": true
+          },
+          {
+            "type": "pp",
             "named": true
           }
         ]
@@ -5472,6 +5504,10 @@
         {
           "type": "kImplementation",
           "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
         }
       ]
     }
@@ -5621,6 +5657,10 @@
         {
           "type": "kInterface",
           "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
         }
       ]
     }
@@ -5716,6 +5756,10 @@
           },
           {
             "type": "defProc",
+            "named": true
+          },
+          {
+            "type": "pp",
             "named": true
           }
         ]
@@ -5883,6 +5927,10 @@
         },
         {
           "type": "moduleName",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
@@ -6366,6 +6414,10 @@
         },
         {
           "type": "moduleName",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
@@ -7109,6 +7161,10 @@
           "named": true
         },
         {
+          "type": "type",
+          "named": true
+        },
+        {
           "type": "typeref",
           "named": true
         }
@@ -7455,7 +7511,7 @@
     "named": true,
     "fields": {
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
@@ -7478,6 +7534,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "pp",
+          "named": true
+        }
+      ]
     }
   },
   {

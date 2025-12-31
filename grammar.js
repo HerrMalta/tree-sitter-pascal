@@ -107,6 +107,31 @@ function pp($, ...rule) {
 	);
 }
 
+// Recursive preprocessor wrapper for nested IFDEF support.
+// Unlike pp(), this creates a self-referencing rule that can handle
+// arbitrarily nested {$IFDEF}...{$ENDIF} blocks while preserving
+// full AST structure inside the blocks.
+//
+// Usage: ppRecursive($, 'ruleName', ...baseChoices)
+// - ruleName: The name of the rule being defined (for self-reference)
+// - baseChoices: The actual grammar choices (non-preprocessor paths)
+function ppRecursive($, ruleName, ...baseChoices) {
+	if (!use_pp)
+		return choice(...baseChoices);
+	return choice(
+		...baseChoices,
+		seq(
+			alias(/\{\$if[^}]*\}/i, $.pp),
+			$[ruleName],  // Recursive reference for nested IFDEFs
+			repeat(seq(
+				alias(/\{\$else[^}]*\}/i, $.pp),
+				$[ruleName]  // Recursive reference
+			)),
+			alias(/\{\$end[^}]*\}/i, $.pp)
+		)
+	);
+}
+
 // tr = Trailing
 // Return the trailing equivalent of a rule, aliased to the non-trailing version.
 const tr = ($,rule) =>
@@ -384,12 +409,16 @@ module.exports = grammar({
 
 		// Unit reference with optional 'in' clause for DPR/DPK files
 		// E.g.: Unit1, System.SysUtils in 'path\SysUtils.pas'
-		unitReference:   $ => seq(
-			field('name', $.moduleName),
-			...enable_if(dpr_file || dpk_file,
-				field('path', optional(seq($.kIn, $.literalString)))
+		// Also supports nested IFDEFs within uses clauses
+		_unitReference:  $ => ppRecursive($, '_unitReference',
+			seq(
+				field('name', $.moduleName),
+				...enable_if(dpr_file || dpk_file,
+					field('path', optional(seq($.kIn, $.literalString)))
+				)
 			)
 		),
+		unitReference:   $ => $._unitReference,
 
 		// STATEMENTS ---------------------------------------------------------
 
@@ -579,7 +608,7 @@ module.exports = grammar({
 
 		// TYPES ---------------------------------------------------------------
 
-		type:            $ => pp($,choice(
+		type:            $ => ppRecursive($, 'type',
 			$.typeref,
 			$.declMetaClass,
 			$.declEnum,
@@ -588,7 +617,7 @@ module.exports = grammar({
 			$.declFile,
 			$.declString,
 			$.declProcRef,
-		)),
+		),
 
 		typeref:         $ => seq(
 			...enable_if(fpc, field('_dummy', optional($.kSpecialize))),
@@ -657,7 +686,7 @@ module.exports = grammar({
 		// DEFINITIONS --------------------------------------------------------
 
 		_definitions:    $ => repeat1($._definition),
-		_definition:     $ => choice(
+		_definition:     $ => ppRecursive($, '_definition',
 			$.declTypes, $.declVars, $.declConsts, $.defProc,
 			alias($.declProcFwd, $.declProc),
 			$.declLabels, $.declUses, $.declExports,
@@ -666,14 +695,18 @@ module.exports = grammar({
 			prec(-1,$.blockTr)
 		),
 
-		defProc:         $ => seq(
-			/*pp($,*/ field('header', $.declProc)/*)*/,
-			pp(
-			 	$,
+		// Recursive body rule for nested IFDEF support in procedure bodies
+		_defProc_body:   $ => ppRecursive($, '_defProc_body',
+			seq(
 				field('local', optional($._definitions)),
 				field('body', choice(tr($, 'block'), tr($, 'asm'))),
 				';'
 			)
+		),
+
+		defProc:         $ => seq(
+			field('header', $.declProc),
+			$._defProc_body
 		),
 
 		declProcFwd:     $ => seq(
@@ -688,14 +721,19 @@ module.exports = grammar({
 			$.kPublished, $.kPublic, $.kProtected, $.kPrivate
 		),
 
-		_declarations:   $ => repeat1(choice(
+		// Recursive declaration rule for nested IFDEF support in interface section
+		_declaration:    $ => ppRecursive($, '_declaration',
 			$.declTypes, $.declVars, $.declConsts, $.declProc, $.declProp,
 			alias($.declProcFwd, $.declProc),
 			$.declUses, $.declLabels, $.declExports
-		)),
-		_classDeclarations: $ => repeat1(choice(
+		),
+		_declarations:   $ => repeat1($._declaration),
+
+		// Recursive class declaration rule for nested IFDEF support in class bodies
+		_classDeclaration: $ => ppRecursive($, '_classDeclaration',
 			$.declTypes, $.declVars, $.declConsts, $.declProc, $.declProp
-		)),
+		),
+		_classDeclarations: $ => repeat1($._classDeclaration),
 
 		defaultValue:    $ => seq($.kEq, $._initializer),
 
@@ -704,21 +742,26 @@ module.exports = grammar({
 		declUses:        $ => seq($.kUses, delimited($.unitReference), ';'),
 		declExports:     $ => seq($.kExports, delimited($.declExport), ';'),
 
+		// Recursive wrappers for declarations within type/var/const sections
+		_declTypeItem:   $ => ppRecursive($, '_declTypeItem', $.declType),
+		_declVarItem:    $ => ppRecursive($, '_declVarItem', $.declVar),
+		_declConstItem:  $ => ppRecursive($, '_declConstItem', $.declConst),
+
 		declTypes:       $ => seq(
 			$.kType,
-			repeat($.declType)
+			repeat($._declTypeItem)
 		),
 
 		declVars:        $ => seq(
 			optional($.kClass),
 			choice($.kVar, $.kThreadvar),
-			repeat($.declVar)
+			repeat($._declVarItem)
 		),
 
 		declConsts:      $ => seq(
 			optional($.kClass),
 			choice($.kConst, $.kResourcestring),
-			repeat($.declConst),
+			repeat($._declConstItem),
 		),
 
 		// Declarations
@@ -857,7 +900,9 @@ module.exports = grammar({
 			optional($._classDeclarations)
 		),
 
-		_declFields:     $ => repeat1($.declField),
+		// Recursive field rule for nested IFDEF support in class field declarations
+		_declField:      $ => ppRecursive($, '_declField', $.declField),
+		_declFields:     $ => repeat1($._declField),
 
 		declField:       $ =>  seq(
 			...enable_if(rtti, optional($.rttiAttributes)),
