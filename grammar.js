@@ -409,16 +409,16 @@ module.exports = grammar({
 
 		// Unit reference with optional 'in' clause for DPR/DPK files
 		// E.g.: Unit1, System.SysUtils in 'path\SysUtils.pas'
-		// Also supports nested IFDEFs within uses clauses
-		_unitReference:  $ => ppRecursive($, '_unitReference',
-			seq(
-				field('name', $.moduleName),
-				...enable_if(dpr_file || dpk_file,
-					field('path', optional(seq($.kIn, $.literalString)))
-				)
+		// Note: IFDEFs in uses clauses span across commas, so we cannot use
+		// ppRecursive here. Individual {$IFDEF} and {$ENDIF} directives are
+		// captured via $.pp in extras. The directives appear as siblings to
+		// unitReference nodes, not wrapped around them.
+		unitReference:  $ => seq(
+			field('name', $.moduleName),
+			...enable_if(dpr_file || dpk_file,
+				field('path', optional(seq($.kIn, $.literalString)))
 			)
 		),
-		unitReference:   $ => $._unitReference,
 
 		// STATEMENTS ---------------------------------------------------------
 
@@ -686,7 +686,11 @@ module.exports = grammar({
 		// DEFINITIONS --------------------------------------------------------
 
 		_definitions:    $ => repeat1($._definition),
-		_definition:     $ => ppRecursive($, '_definition',
+		// Definition in implementation section.
+		// Note: We don't use ppRecursive here because IFDEFs spanning multiple
+		// definitions need to be captured via extras as siblings to the defProc nodes,
+		// not wrapping them.
+		_definition:     $ => choice(
 			$.declTypes, $.declVars, $.declConsts, $.defProc,
 			alias($.declProcFwd, $.declProc),
 			$.declLabels, $.declUses, $.declExports,
@@ -721,8 +725,11 @@ module.exports = grammar({
 			$.kPublished, $.kPublic, $.kProtected, $.kPrivate
 		),
 
-		// Recursive declaration rule for nested IFDEF support in interface section
-		_declaration:    $ => ppRecursive($, '_declaration',
+		// Declaration in interface section.
+		// Note: We don't use ppRecursive here because IFDEFs within type/var/const
+		// sections need to be captured at the lower level (inside declTypes, etc.)
+		// rather than at the _declaration level.
+		_declaration:    $ => choice(
 			$.declTypes, $.declVars, $.declConsts, $.declProc, $.declProp,
 			alias($.declProcFwd, $.declProc),
 			$.declUses, $.declLabels, $.declExports
@@ -742,26 +749,26 @@ module.exports = grammar({
 		declUses:        $ => seq($.kUses, delimited($.unitReference), ';'),
 		declExports:     $ => seq($.kExports, delimited($.declExport), ';'),
 
-		// Recursive wrappers for declarations within type/var/const sections
-		_declTypeItem:   $ => ppRecursive($, '_declTypeItem', $.declType),
-		_declVarItem:    $ => ppRecursive($, '_declVarItem', $.declVar),
-		_declConstItem:  $ => ppRecursive($, '_declConstItem', $.declConst),
+		// Note: IFDEFs in type/var/const sections span multiple declarations.
+		// We explicitly allow $.pp as an alternative in the repeat to ensure
+		// IFDEFs can appear between declaration items within unit structures
+		// where extras alone don't work correctly.
 
 		declTypes:       $ => seq(
 			$.kType,
-			repeat($._declTypeItem)
+			repeat(choice($.declType, $.pp))
 		),
 
 		declVars:        $ => seq(
 			optional($.kClass),
 			choice($.kVar, $.kThreadvar),
-			repeat($._declVarItem)
+			repeat(choice($.declVar, $.pp))
 		),
 
 		declConsts:      $ => seq(
 			optional($.kClass),
 			choice($.kConst, $.kResourcestring),
-			repeat($._declConstItem),
+			repeat(choice($.declConst, $.pp)),
 		),
 
 		// Declarations

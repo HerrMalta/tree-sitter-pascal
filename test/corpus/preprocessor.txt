@@ -530,11 +530,11 @@ uses
       (unitReference
         (moduleName
           (identifier)))
+      (pp)
       (unitReference
-        (pp)
         (moduleName
-          (identifier))
-        (pp))
+          (identifier)))
+      (pp)
       (unitReference
         (moduleName
           (identifier))))))
@@ -750,9 +750,9 @@ end.
           (identifier))
         (block
           (kBegin)
-          (kEnd)))
-      (pp)
-      (pp))
+          (kEnd))))
+    (pp)
+    (pp)
     (kEnd)
     (kEndDot)))
 
