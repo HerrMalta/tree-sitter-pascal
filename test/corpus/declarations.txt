@@ -1246,3 +1246,46 @@ end;
       (block
         (kBegin)
         (kEnd)))))
+
+===
+Subrange types
+===
+
+type
+  TByte = 0..255;
+  TLetter = 'A'..'Z';
+  TAlign = TAlignment.taLeftJustify..TAlignment.taRightJustify;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (range
+            (literalNumber)
+            (literalNumber))))
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (range
+            (literalString)
+            (literalString))))
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (range
+            (exprDot
+              (identifier)
+              (kDot)
+              (identifier))
+            (exprDot
+              (identifier)
+              (kDot)
+              (identifier))))))))

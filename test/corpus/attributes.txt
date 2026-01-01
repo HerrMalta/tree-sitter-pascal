@@ -333,3 +333,106 @@ end;
       (block
         (kBegin)
         (kEnd)))))
+
+===
+Deprecated hints on declarations
+===
+
+const
+  a = 1 deprecated;
+  b = 2 deprecated 'Use something else';
+
+type
+  c = class
+    d: Integer deprecated;
+    e: Boolean deprecated 'obsolete field';
+    property f: Integer read d deprecated;
+    property g: Boolean read e deprecated 'obsolete property';
+  end;
+
+var
+  h: Integer deprecated;
+  i: AnsiString deprecated 'old variable';
+
+---
+
+(root
+  (codeFragment
+    (declConsts
+      (kConst)
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber))
+        (hintDirective
+          (kDeprecated)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber))
+        (hintDirective
+          (kDeprecated)
+          (literalString))))
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier)))
+            (hintDirective
+              (kDeprecated)))
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier)))
+            (hintDirective
+              (kDeprecated)
+              (literalString)))
+          (declProp
+            (kProperty)
+            (identifier)
+            (type
+              (typeref
+                (identifier)))
+            (kRead)
+            (identifier)
+            (hintDirective
+              (kDeprecated)))
+          (declProp
+            (kProperty)
+            (identifier)
+            (type
+              (typeref
+                (identifier)))
+            (kRead)
+            (identifier)
+            (hintDirective
+              (kDeprecated)
+              (literalString)))
+          (kEnd))))
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))
+        (hintDirective
+          (kDeprecated)))
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))
+        (hintDirective
+          (kDeprecated)
+          (literalString))))))

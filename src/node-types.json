@@ -1149,9 +1149,13 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "hintDirective",
+          "named": true
+        },
         {
           "type": "rttiAttributes",
           "named": true
@@ -1400,9 +1404,13 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "hintDirective",
+          "named": true
+        },
         {
           "type": "rttiAttributes",
           "named": true
@@ -2275,6 +2283,10 @@
       "required": true,
       "types": [
         {
+          "type": "hintDirective",
+          "named": true
+        },
+        {
           "type": "kClass",
           "named": true
         },
@@ -2580,6 +2592,10 @@
       "required": true,
       "types": [
         {
+          "type": "hintDirective",
+          "named": true
+        },
+        {
           "type": "kEq",
           "named": true
         },
@@ -2715,6 +2731,10 @@
         },
         {
           "type": "exprUnary",
+          "named": true
+        },
+        {
+          "type": "hintDirective",
           "named": true
         },
         {
@@ -5056,6 +5076,93 @@
     }
   },
   {
+    "type": "hintDirective",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprBinary",
+          "named": true
+        },
+        {
+          "type": "exprBrackets",
+          "named": true
+        },
+        {
+          "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprDot",
+          "named": true
+        },
+        {
+          "type": "exprParens",
+          "named": true
+        },
+        {
+          "type": "exprSubscript",
+          "named": true
+        },
+        {
+          "type": "exprTpl",
+          "named": true
+        },
+        {
+          "type": "exprUnary",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "inherited",
+          "named": true
+        },
+        {
+          "type": "kDeprecated",
+          "named": true
+        },
+        {
+          "type": "kExperimental",
+          "named": true
+        },
+        {
+          "type": "kFalse",
+          "named": true
+        },
+        {
+          "type": "kNil",
+          "named": true
+        },
+        {
+          "type": "kPlatform",
+          "named": true
+        },
+        {
+          "type": "kTrue",
+          "named": true
+        },
+        {
+          "type": "lambda",
+          "named": true
+        },
+        {
+          "type": "literalNumber",
+          "named": true
+        },
+        {
+          "type": "literalString",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "if",
     "named": true,
     "fields": {
@@ -7141,6 +7248,10 @@
           "named": true
         },
         {
+          "type": "range",
+          "named": true
+        },
+        {
           "type": "type",
           "named": true
         },
@@ -7156,79 +7267,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "exprBinary",
-          "named": true
-        },
-        {
-          "type": "exprBrackets",
-          "named": true
-        },
-        {
-          "type": "exprCall",
-          "named": true
-        },
-        {
-          "type": "exprDot",
-          "named": true
-        },
-        {
-          "type": "exprParens",
-          "named": true
-        },
-        {
-          "type": "exprSubscript",
-          "named": true
-        },
-        {
-          "type": "exprTpl",
-          "named": true
-        },
-        {
-          "type": "exprUnary",
-          "named": true
-        },
         {
           "type": "identifier",
           "named": true
         },
         {
-          "type": "inherited",
-          "named": true
-        },
-        {
-          "type": "kDeprecated",
-          "named": true
-        },
-        {
-          "type": "kFalse",
-          "named": true
-        },
-        {
-          "type": "kNil",
-          "named": true
-        },
-        {
           "type": "kString",
-          "named": true
-        },
-        {
-          "type": "kTrue",
-          "named": true
-        },
-        {
-          "type": "lambda",
-          "named": true
-        },
-        {
-          "type": "literalNumber",
-          "named": true
-        },
-        {
-          "type": "literalString",
           "named": true
         },
         {
@@ -8290,6 +8337,10 @@
   },
   {
     "type": "kPascal",
+    "named": true
+  },
+  {
+    "type": "kPlatform",
     "named": true
   },
   {

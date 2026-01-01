@@ -4231,6 +4231,10 @@
           "name": "declProcRef"
         },
         {
+          "type": "SYMBOL",
+          "name": "range"
+        },
+        {
           "type": "SEQ",
           "members": [
             {
@@ -4289,27 +4293,6 @@
         {
           "type": "SYMBOL",
           "name": "_typeref"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "kDeprecated"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expr"
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
         }
       ]
     },
@@ -5554,6 +5537,18 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "hintDirective"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": ";"
         },
@@ -5699,6 +5694,18 @@
           ]
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "hintDirective"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": ";"
         },
@@ -5775,6 +5782,18 @@
             "type": "SYMBOL",
             "name": "defaultValue"
           }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "hintDirective"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -6933,6 +6952,18 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "hintDirective"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": ";"
         }
@@ -7176,6 +7207,18 @@
               }
             ]
           }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "hintDirective"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -8119,6 +8162,36 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      ]
+    },
+    "hintDirective": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "kDeprecated"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kPlatform"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kExperimental"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "kDeprecated"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_expr"
             }
           ]
         }
@@ -9532,6 +9605,14 @@
     ],
     [
       "_defProc_local"
+    ],
+    [
+      "_ref",
+      "_typeref"
+    ],
+    [
+      "_ref",
+      "declEnumValue"
     ]
   ],
   "precedences": [],

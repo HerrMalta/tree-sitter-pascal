@@ -338,6 +338,16 @@ module.exports = grammar({
 		// they could be part of _defProc_local (single definitions) or nested
 		// within _definitions (multiple definitions). Prefer _defProc_local.
 		[ $._defProc_local ],
+
+		// Conflict for subrange types: when parsing `TEnum.Val1..TEnum.Val2` as a type,
+		// the parser sees `identifier.` which could be either _ref (expression for range)
+		// or _typeref (type reference). We need both to be valid.
+		[ $._ref, $._typeref ],
+
+		// Conflict for enum type vs range expression: when parsing `(identifier)` in type
+		// context, it could be an enum declaration `(val1, val2)` or a parenthesized expression
+		// for a range bound.
+		[ $._ref, $.declEnumValue ],
 	],
 
 	rules: {
@@ -622,12 +632,15 @@ module.exports = grammar({
 			$.declFile,
 			$.declString,
 			$.declProcRef,
+			$.range,  // Subrange type: 0..255, 'A'..'Z', TEnum.Val1..TEnum.Val2
 		),
 
 		typeref:         $ => seq(
 			...enable_if(fpc, field('_dummy', optional($.kSpecialize))),
 			$._typeref,
-			...enable_if(delphi, optional(seq($.kDeprecated, $._expr))),
+			// Note: deprecated/platform/experimental hints are now handled at the
+			// declaration level (declVar, declConst, declField, declProp) via hintDirective,
+			// not in typeref, to avoid ambiguity.
 		),
 
 		_typeref:        $ => choice(
@@ -797,6 +810,7 @@ module.exports = grammar({
 					$.declHelper,
 				)
 			),
+			optional($.hintDirective),
 			';',
 			repeat($._procAttribute)
 		),
@@ -815,6 +829,7 @@ module.exports = grammar({
 				seq($.kAbsolute, $._ref),
 				field('defaultValue', $.defaultValue)
 			)),
+			optional($.hintDirective),
 			';',
 			repeat(choice($._procAttribute, $.procExternal))
 		),
@@ -824,6 +839,7 @@ module.exports = grammar({
 			field('name', $.identifier),
 			optional(seq(':', field('type', $.type))),
 			field('defaultValue', $.defaultValue),
+			optional($.hintDirective),
 			';',
 			repeat($._procAttribute)
 		),
@@ -928,6 +944,7 @@ module.exports = grammar({
 			':',
 			field('type', $.type),
 			field('defaultValue', optional($.defaultValue)),
+			optional($.hintDirective),
 			';'
 		),
 
@@ -949,6 +966,7 @@ module.exports = grammar({
 				seq($.kStored, field('stored', $._expr)),
 				$.kNodefault,
 			)),
+			optional($.hintDirective),
 			';',
 			repeat($._procAttribute)
 		),
@@ -1047,6 +1065,15 @@ module.exports = grammar({
 				field('type', $.type),
 				field('defaultValue', optional($.defaultValue))
 			)
+		),
+
+		// Hint directives for deprecated/platform/experimental that appear inline (before semicolon)
+		// Used for constants, variables, fields, properties
+		hintDirective:   $ => choice(
+			$.kDeprecated,
+			$.kPlatform,
+			$.kExperimental,
+			seq($.kDeprecated, $._expr),  // deprecated 'message'
 		),
 
 		// Attributes & declaration hints
