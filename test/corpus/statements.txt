@@ -659,6 +659,38 @@ end;
         (kEnd)))))
 
 ===
+raise at address
+===
+
+procedure Main;
+begin
+  raise Exception.Create('Error') at ReturnAddress;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (raise
+          (kRaise)
+          (exprCall
+            (exprDot
+              (identifier)
+              (kDot)
+              (identifier))
+            (exprArgs
+              (literalString)))
+          (kAtAddress)
+          (identifier))
+        (kEnd)))))
+
+===
 goto + label
 ===
 

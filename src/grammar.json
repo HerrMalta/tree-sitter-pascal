@@ -1319,6 +1319,31 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "kAtAddress"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "address",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_expr"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": ";"
         }
@@ -2343,6 +2368,31 @@
               }
             ]
           }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "kAtAddress"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "address",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_expr"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -2794,7 +2844,7 @@
           },
           {
             "type": "PATTERN",
-            "value": "[.,:;+\\-*\\[\\]<>&%$]"
+            "value": "[.,:;+\\-*\\[\\]<>&%$@]"
           },
           {
             "type": "PATTERN",
@@ -5649,7 +5699,7 @@
                         "members": [
                           {
                             "type": "SYMBOL",
-                            "name": "identifier"
+                            "name": "_ident"
                           },
                           {
                             "type": "STRING",
@@ -5666,7 +5716,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "identifier"
+                "name": "_ident"
               }
             ]
           }
@@ -5771,7 +5821,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "_ident"
           }
         },
         {
@@ -7015,7 +7065,7 @@
                             "members": [
                               {
                                 "type": "SYMBOL",
-                                "name": "identifier"
+                                "name": "_ident"
                               },
                               {
                                 "type": "STRING",
@@ -7032,7 +7082,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "identifier"
+                    "name": "_ident"
                   }
                 ]
               }
@@ -7129,7 +7179,7 @@
                             "members": [
                               {
                                 "type": "SYMBOL",
-                                "name": "identifier"
+                                "name": "_ident"
                               },
                               {
                                 "type": "STRING",
@@ -7146,7 +7196,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "identifier"
+                    "name": "_ident"
                   }
                 ]
               }
@@ -9391,6 +9441,11 @@
       "value": "raise",
       "flags": "i"
     },
+    "kAtAddress": {
+      "type": "PATTERN",
+      "value": "at",
+      "flags": "i"
+    },
     "kOn": {
       "type": "PATTERN",
       "value": "on",
@@ -9749,6 +9804,19 @@
     "identifier": {
       "type": "PATTERN",
       "value": "[&]?[a-zA-Z_][0-9_a-zA-Z]*"
+    },
+    "_ident": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kDefault"
+        }
+      ]
     },
     "_space": {
       "type": "PATTERN",

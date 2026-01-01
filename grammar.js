@@ -264,6 +264,7 @@ function statements(trailing) {
 		[rn('raise'),       $ => seq(
 			$.kRaise,
 			field('exception', optional($._expr)),
+			optional(seq($.kAtAddress, field('address', $._expr))),
 			...semicolon
 		)],
 
@@ -493,7 +494,7 @@ module.exports = grammar({
 			///([a-zA-Z0-9_]+([eE][nN][dD])|[eE][nN][dD][a-zA-Z0-9_]+|([^eE]|[eE][^nN]|[eE][nN][^dD]))+/,
 			$.identifier,       // Identifiers
 			/[0-9a-fA-F]/,      // Numbers
-			/[.,:;+\-*\[\]<>&%$]/, // Punctuation
+			/[.,:;+\-*\[\]<>&%$@]/, // Punctuation (includes @ for local labels like @@1)
 			/\([^*]|\)/         // Parentheses that are not comments
 		)),
 
@@ -839,7 +840,7 @@ module.exports = grammar({
 
 		declVar:         $ => seq(
 			...enable_if(rtti, optional($.rttiAttributes)),
-			field('name', delimited1($.identifier)),
+			field('name', delimited1($._ident)),
 			':',
 			field('type', $.type),
 			optional(choice(
@@ -853,7 +854,7 @@ module.exports = grammar({
 
 		declConst:       $ => seq(
 			...enable_if(rtti, optional($.rttiAttributes)),
-			field('name', $.identifier),
+			field('name', $._ident),
 			optional(seq(':', field('type', $.type))),
 			field('defaultValue', $.defaultValue),
 			optional($.hintDirective),
@@ -967,7 +968,7 @@ module.exports = grammar({
 			// Standard field with optional RTTI attributes
 			seq(
 				...enable_if(rtti, optional($.rttiAttributes)),
-				field('name', delimited1($.identifier)),
+				field('name', delimited1($._ident)),
 				':',
 				field('type', $.type),
 				field('defaultValue', optional($.defaultValue)),
@@ -980,7 +981,7 @@ module.exports = grammar({
 				alias(/\{\$if[^}]*\}/i, $.pp),
 				$.rttiAttributes,
 				alias(/\{\$end[^}]*\}/i, $.pp),
-				field('name', delimited1($.identifier)),
+				field('name', delimited1($._ident)),
 				':',
 				field('type', $.type),
 				field('defaultValue', optional($.defaultValue)),
@@ -1308,6 +1309,7 @@ module.exports = grammar({
 		kExcept:           $ => /except/i,
 		kFinally:          $ => /finally/i,
 		kRaise:            $ => /raise/i,
+		kAtAddress:        $ => /at/i,  // 'at' keyword for raise statements: raise E at Address
 		kOn:               $ => /on/i,
 		kCase:             $ => /case/i,
 		kWith:             $ => /with/i,
@@ -1391,6 +1393,11 @@ module.exports = grammar({
 		// Identifier rule - supports optional & prefix for escaping keywords
 		// e.g., &end, &begin, &type are valid identifiers
 		identifier:        $ => /[&]?[a-zA-Z_][0-9_a-zA-Z]*/,
+
+		// Extended identifier that also allows directive keywords to be used as identifiers
+		// In Delphi/Pascal, directives like 'default' are context-sensitive keywords,
+		// not reserved words. They can be used as variable/field/const names.
+		_ident:            $ => choice($.identifier, $.kDefault),
 
 	  	_space:            $ => /[\s\r\n\t]+/,
 		pp:                $ => /\{\$[^}]*\}/,
