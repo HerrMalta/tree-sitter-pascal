@@ -963,14 +963,30 @@ module.exports = grammar({
 		_declField:      $ => ppRecursive($, '_declField', $.declField),
 		_declFields:     $ => repeat1($._declField),
 
-		declField:       $ =>  seq(
-			...enable_if(rtti, optional($.rttiAttributes)),
-			field('name', delimited1($.identifier)),
-			':',
-			field('type', $.type),
-			field('defaultValue', optional($.defaultValue)),
-			optional($.hintDirective),
-			';'
+		declField:       $ =>  choice(
+			// Standard field with optional RTTI attributes
+			seq(
+				...enable_if(rtti, optional($.rttiAttributes)),
+				field('name', delimited1($.identifier)),
+				':',
+				field('type', $.type),
+				field('defaultValue', optional($.defaultValue)),
+				optional($.hintDirective),
+				';'
+			),
+			// Field with RTTI attribute wrapped in preprocessor block
+			// Handles: {$IFDEF X} [Attr] {$ENDIF} fieldName: Type;
+			...enable_if(rtti, seq(
+				alias(/\{\$if[^}]*\}/i, $.pp),
+				$.rttiAttributes,
+				alias(/\{\$end[^}]*\}/i, $.pp),
+				field('name', delimited1($.identifier)),
+				':',
+				field('type', $.type),
+				field('defaultValue', optional($.defaultValue)),
+				optional($.hintDirective),
+				';'
+			))
 		),
 
 		declProp:        $ => seq(
