@@ -5440,6 +5440,72 @@
         }
       ]
     },
+    "_declVarItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declVar"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_declVarItem"
+              }
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_declVarItem"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
     "declVars": {
       "type": "SEQ",
       "members": [
@@ -5471,18 +5537,75 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "declVar"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "pp"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_declVarItem"
           }
+        }
+      ]
+    },
+    "_declConstItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declConst"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_declConstItem"
+              }
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_declConstItem"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
         }
       ]
     },
@@ -5517,17 +5640,8 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "declConst"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "pp"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_declConstItem"
           }
         }
       ]

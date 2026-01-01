@@ -801,16 +801,24 @@ module.exports = grammar({
 			repeat(choice($.declType, $.pp))
 		),
 
+		// Recursive rule for variable declarations with nested IFDEF support
+		// Handles: var x: int; {$IFDEF X} y: int; {$ENDIF}
+		_declVarItem:    $ => ppRecursive($, '_declVarItem', $.declVar),
+
 		declVars:        $ => seq(
 			optional($.kClass),
 			choice($.kVar, $.kThreadvar),
-			repeat(choice($.declVar, $.pp))
+			repeat($._declVarItem)
 		),
+
+		// Recursive rule for constant declarations with nested IFDEF support
+		// Handles: const x = 1; {$IFDEF X} y = 2; {$ENDIF}
+		_declConstItem:  $ => ppRecursive($, '_declConstItem', $.declConst),
 
 		declConsts:      $ => seq(
 			optional($.kClass),
 			choice($.kConst, $.kResourcestring),
-			repeat(choice($.declConst, $.pp)),
+			repeat($._declConstItem),
 		),
 
 		// Declarations
