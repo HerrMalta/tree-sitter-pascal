@@ -8377,6 +8377,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "kFinal"
+        },
+        {
+          "type": "SYMBOL",
           "name": "kOverload"
         },
         {
@@ -8442,6 +8446,10 @@
         {
           "type": "SYMBOL",
           "name": "kExperimental"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kPlatform"
         },
         {
           "type": "SEQ",
@@ -9371,7 +9379,7 @@
     },
     "kSealed": {
       "type": "PATTERN",
-      "value": "seled",
+      "value": "sealed",
       "flags": "i"
     },
     "kDynamic": {
@@ -9382,6 +9390,11 @@
     "kOverride": {
       "type": "PATTERN",
       "value": "override",
+      "flags": "i"
+    },
+    "kFinal": {
+      "type": "PATTERN",
+      "value": "final",
       "flags": "i"
     },
     "kOverload": {

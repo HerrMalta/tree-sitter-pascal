@@ -6270,6 +6270,10 @@
           "named": true
         },
         {
+          "type": "kFinal",
+          "named": true
+        },
+        {
           "type": "kInline",
           "named": true
         },
@@ -6311,6 +6315,10 @@
         },
         {
           "type": "kPascal",
+          "named": true
+        },
+        {
+          "type": "kPlatform",
           "named": true
         },
         {
@@ -8153,6 +8161,10 @@
   },
   {
     "type": "kFile",
+    "named": true
+  },
+  {
+    "type": "kFinal",
     "named": true
   },
   {

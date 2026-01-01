@@ -23,6 +23,7 @@ type
     procedure b; message c;
     procedure b; virtual; abstract;
     procedure b; override;
+    procedure b; override; final;
     procedure b; stdcall;
     property b[i: integer]: c read getb; default;
   end;
@@ -142,6 +143,13 @@ type
             (identifier)
             (procAttribute
               (kOverride)))
+          (declProc
+            (kProcedure)
+            (identifier)
+            (procAttribute
+              (kOverride))
+            (procAttribute
+              (kFinal)))
           (declProc
             (kProcedure)
             (identifier)

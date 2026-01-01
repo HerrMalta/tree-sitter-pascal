@@ -1119,11 +1119,11 @@ module.exports = grammar({
 		)/*)*/,
 
 		procAttribute:   $ => choice(
-			$.kStatic, $.kVirtual, $.kDynamic, $.kAbstract, $.kOverride,
+			$.kStatic, $.kVirtual, $.kDynamic, $.kAbstract, $.kOverride, $.kFinal,
 			$.kOverload, $.kReintroduce, $.kInline, $.kStdcall,
 			$.kCdecl, $.kPascal, $.kRegister, $.kSafecall, $.kAssembler,
 			$.kNoreturn, $.kLocal,  $.kFar, $.kNear,
-			$.kDefault, $.kNodefault, $.kDeprecated, $.kExperimental,
+			$.kDefault, $.kNodefault, $.kDeprecated, $.kExperimental, $.kPlatform,
 
 			seq(
 				choice(
@@ -1317,9 +1317,10 @@ module.exports = grammar({
 		kStatic:           $ => /static/i,
 		kVirtual:          $ => /virtual/i,
 		kAbstract:         $ => /abstract/i,
-		kSealed:           $ => /seled/i,
+		kSealed:           $ => /sealed/i,
 		kDynamic:          $ => /dynamic/i,
 		kOverride:         $ => /override/i,
+		kFinal:            $ => /final/i,
 		kOverload:         $ => /overload/i,
 		kReintroduce:      $ => /reintroduce/i,
 		kInherited:        $ => /inherited/i,
