@@ -2892,7 +2892,7 @@
     "fields": {
       "body": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "asm",

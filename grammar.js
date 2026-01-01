@@ -122,10 +122,10 @@ function ppRecursive($, ruleName, ...baseChoices) {
 		...baseChoices,
 		seq(
 			alias(/\{\$if[^}]*\}/i, $.pp),
-			$[ruleName],  // Recursive reference for nested IFDEFs
+			repeat($[ruleName]),  // Allow multiple items in IF branch (including nested IFDEFs)
 			repeat(seq(
 				alias(/\{\$else[^}]*\}/i, $.pp),
-				$[ruleName]  // Recursive reference
+				repeat($[ruleName])  // Allow multiple items in ELSE/ELIF branches
 			)),
 			alias(/\{\$end[^}]*\}/i, $.pp)
 		)
@@ -339,6 +339,19 @@ module.exports = grammar({
 		// within _definitions (multiple definitions). Prefer _defProc_local.
 		[ $._defProc_local ],
 
+		// Conflict between _defProc_local and _defProc_body: with optional content
+		// in ppRecursive, both rules can match empty IFDEF blocks, creating ambiguity.
+		[ $._defProc_local, $._defProc_body ],
+
+		// Conflict between _classDeclaration and _declField: with optional content
+		// in ppRecursive, both rules can match empty IFDEF blocks in class bodies.
+		[ $._classDeclaration, $._declField ],
+
+		// Conflict for _sectionMember: combines fields and class declarations,
+		// creating potential ambiguity with other similar rules.
+		[ $._sectionMember, $._declField ],
+		[ $._sectionMember, $._classDeclaration ],
+
 		// Conflict for subrange types: when parsing `TEnum.Val1..TEnum.Val2` as a type,
 		// the parser sees `identifier.` which could be either _ref (expression for range)
 		// or _typeref (type reference). We need both to be valid.
@@ -348,6 +361,10 @@ module.exports = grammar({
 		// context, it could be an enum declaration `(val1, val2)` or a parenthesized expression
 		// for a range bound.
 		[ $._ref, $.declEnumValue ],
+
+		// Conflict for literalString: string concatenation like 'A''B' can be parsed
+		// as one multi-part string or two separate strings.
+		[ $.literalString ],
 	],
 
 	rules: {
@@ -930,11 +947,19 @@ module.exports = grammar({
 		declSection:     $ => seq(
 			optional($.kStrict),
 			choice($._visibility, ...enable_if(objc, $.kRequired, $.kOptional)),
-			optional($._declFields),
-			optional($._classDeclarations)
+			optional($._sectionMembers)
 		),
 
-		// Recursive field rule for nested IFDEF support in class field declarations
+		// Unified section member rule for nested IFDEF support in class bodies.
+		// This handles both fields and methods together, allowing them to be
+		// intermixed and wrapped in preprocessor blocks.
+		_sectionMember:  $ => ppRecursive($, '_sectionMember',
+			$.declField,
+			$.declTypes, $.declVars, $.declConsts, $.declProc, $.declProp
+		),
+		_sectionMembers: $ => repeat1($._sectionMember),
+
+		// Keep _declFields for backward compatibility with _declClass structure
 		_declField:      $ => ppRecursive($, '_declField', $.declField),
 		_declFields:     $ => repeat1($._declField),
 
