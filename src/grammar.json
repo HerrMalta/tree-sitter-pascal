@@ -4838,6 +4838,19 @@
           }
         },
         {
+          "type": "PREC",
+          "value": -1,
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "declVar"
+            },
+            "named": true,
+            "value": "orphanedVar"
+          }
+        },
+        {
           "type": "SEQ",
           "members": [
             {
@@ -5137,6 +5150,19 @@
         {
           "type": "SYMBOL",
           "name": "declExports"
+        },
+        {
+          "type": "PREC",
+          "value": -1,
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "declVar"
+            },
+            "named": true,
+            "value": "orphanedVar"
+          }
         },
         {
           "type": "SEQ",

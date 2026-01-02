@@ -718,7 +718,10 @@ module.exports = grammar({
 			$.declLabels, $.declUses, $.declExports,
 
 			// Not actually valid syntax, but helps the parser recover:
-			prec(-1,$.blockTr)
+			prec(-1,$.blockTr),
+			// Orphaned variable declaration (without 'var' keyword) - occurs in Delphi RTL
+			// when conditional compilation splits a var block across {$IFDEF}/{$ENDIF}
+			prec(-1, alias($.declVar, $.orphanedVar))
 		),
 
 		// Local definitions rule for procedure bodies.
@@ -757,7 +760,10 @@ module.exports = grammar({
 		_declaration:    $ => ppRecursive($, '_declaration',
 			$.declTypes, $.declVars, $.declConsts, $.declProc, $.declProp,
 			alias($.declProcFwd, $.declProc),
-			$.declUses, $.declLabels, $.declExports
+			$.declUses, $.declLabels, $.declExports,
+			// Orphaned variable declaration (without 'var' keyword) - occurs in Delphi RTL
+			// when conditional compilation splits a var block across {$IFDEF}/{$ENDIF}
+			prec(-1, alias($.declVar, $.orphanedVar))
 		),
 		_declarations:   $ => repeat1($._declaration),
 
