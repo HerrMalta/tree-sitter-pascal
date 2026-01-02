@@ -37,57 +37,8 @@
       ]
     },
     "codeFragment": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "declTypes"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declVars"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declConsts"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "defProc"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "declProcFwd"
-            },
-            "named": true,
-            "value": "declProc"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declLabels"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declUses"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "declExports"
-          },
-          {
-            "type": "PREC",
-            "value": -1,
-            "content": {
-              "type": "SYMBOL",
-              "name": "blockTr"
-            }
-          }
-        ]
-      }
+      "type": "SYMBOL",
+      "name": "_definitions"
     },
     "program": {
       "type": "SEQ",
@@ -4885,15 +4836,6 @@
             "type": "SYMBOL",
             "name": "blockTr"
           }
-        }
-      ]
-    },
-    "_defProc_local": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_definitions"
         },
         {
           "type": "SEQ",
@@ -4912,7 +4854,7 @@
               "type": "REPEAT",
               "content": {
                 "type": "SYMBOL",
-                "name": "_defProc_local"
+                "name": "_definition"
               }
             },
             {
@@ -4934,7 +4876,7 @@
                     "type": "REPEAT",
                     "content": {
                       "type": "SYMBOL",
-                      "name": "_defProc_local"
+                      "name": "_definition"
                     }
                   }
                 ]
@@ -4953,6 +4895,14 @@
           ]
         }
       ]
+    },
+    "_defProc_local": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SYMBOL",
+        "name": "_definitions"
+      }
     },
     "_defProc_body": {
       "type": "CHOICE",
@@ -5187,6 +5137,63 @@
         {
           "type": "SYMBOL",
           "name": "declExports"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_declaration"
+              }
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_declaration"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
         }
       ]
     },
@@ -5415,6 +5422,72 @@
         }
       ]
     },
+    "_declTypeItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declType"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$if[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_declTypeItem"
+              }
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_declTypeItem"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$end[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            }
+          ]
+        }
+      ]
+    },
     "declTypes": {
       "type": "SEQ",
       "members": [
@@ -5425,17 +5498,8 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "declType"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "pp"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_declTypeItem"
           }
         }
       ]
@@ -10029,11 +10093,12 @@
       "declTypes"
     ],
     [
-      "_defProc_local"
+      "_definition",
+      "_defProc_body"
     ],
     [
-      "_defProc_local",
-      "_defProc_body"
+      "_definition",
+      "_defProc_local"
     ],
     [
       "_classDeclaration",

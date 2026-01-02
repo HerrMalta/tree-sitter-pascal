@@ -153,10 +153,11 @@ Preprocessor directives 1
 (root
   (pp)
   (pp)
-  (pp)
-  (pp)
-  (pp)
-  (pp))
+  (codeFragment
+    (pp)
+    (pp)
+    (pp)
+    (pp)))
 
 ===
 Preprocessor directives 2
@@ -490,8 +491,8 @@ end;
 ---
 
 (root
-  (pp)
   (codeFragment
+    (pp)
     (defProc
       (declProc
         (kProcedure)
@@ -506,9 +507,9 @@ end;
         (identifier))
       (block
         (kBegin)
-        (kEnd))))
-  (pp)
-  (pp))
+        (kEnd)))
+    (pp)
+    (pp)))
 
 ===
 IFDEF in uses clause - single level
@@ -750,9 +751,9 @@ end.
           (identifier))
         (block
           (kBegin)
-          (kEnd))))
-    (pp)
-    (pp)
+          (kEnd)))
+      (pp)
+      (pp))
     (kEnd)
     (kEndDot)))
 
@@ -896,3 +897,65 @@ end;
             (exprArgs
               (literalString))))
         (kEnd)))))
+
+===
+IFDEF wrapping multiple declaration sections (type + var)
+===
+
+unit TestUnit;
+interface
+implementation
+
+var
+  a: Integer;
+
+{$IFDEF MSWINDOWS}
+type
+  TMyType = (optA, optB);
+
+var
+  b: TMyType;
+{$ENDIF}
+
+end.
+
+---
+
+(root
+  (unit
+    (kUnit)
+    (moduleName
+      (identifier))
+    (interface
+      (kInterface))
+    (implementation
+      (kImplementation)
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (pp)
+      (declTypes
+        (kType)
+        (declType
+          (identifier)
+          (kEq)
+          (type
+            (declEnum
+              (declEnumValue
+                (identifier))
+              (declEnumValue
+                (identifier))))))
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (pp))
+    (kEnd)
+    (kEndDot)))

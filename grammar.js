@@ -335,14 +335,13 @@ module.exports = grammar({
 		// here.
 		//...enable_if(lambda, [ $.lambda ]),
 
-		// Conflict for _defProc_local: when local definitions follow declProc,
-		// they could be part of _defProc_local (single definitions) or nested
-		// within _definitions (multiple definitions). Prefer _defProc_local.
-		[ $._defProc_local ],
+		// Conflict for _definition and _defProc_body: both use ppRecursive,
+		// creating ambiguity when IFDEF blocks appear in procedure bodies.
+		[ $._definition, $._defProc_body ],
 
-		// Conflict between _defProc_local and _defProc_body: with optional content
-		// in ppRecursive, both rules can match empty IFDEF blocks, creating ambiguity.
-		[ $._defProc_local, $._defProc_body ],
+		// Conflict between _definition and _defProc_local: when parsing local
+		// definitions in a procedure, both rules can consume _definitions.
+		[ $._definition, $._defProc_local ],
 
 		// Conflict between _classDeclaration and _declField: with optional content
 		// in ppRecursive, both rules can match empty IFDEF blocks in class bodies.
@@ -380,19 +379,8 @@ module.exports = grammar({
 		// INC Include file support - allows any sequence of valid Pascal constructs
 		// Accepts declarations, type definitions, variable definitions, constant definitions
 		// For statement-level includes, the statements would typically be inside a procedure body
-		codeFragment:    $ => repeat1(choice(
-			// Declaration sections
-			$.declTypes,
-			$.declVars,
-			$.declConsts,
-			$.defProc,
-			alias($.declProcFwd, $.declProc),
-			$.declLabels,
-			$.declUses,
-			$.declExports,
-			// Allow block for statement-level includes (e.g., begin...end fragments)
-			prec(-1, $.blockTr)
-		)),
+		// Uses _definition (which has ppRecursive) to support IFDEFs wrapping multiple sections.
+		codeFragment:    $ => $._definitions,
 
 		// HIGH LEVEL ----------------------------------------------------------
 
@@ -723,10 +711,8 @@ module.exports = grammar({
 
 		_definitions:    $ => repeat1($._definition),
 		// Definition in implementation section.
-		// Note: We don't use ppRecursive here because IFDEFs spanning multiple
-		// definitions need to be captured via extras as siblings to the defProc nodes,
-		// not wrapping them.
-		_definition:     $ => choice(
+		// Uses ppRecursive to support IFDEFs wrapping multiple definitions (e.g., type + var together).
+		_definition:     $ => ppRecursive($, '_definition',
 			$.declTypes, $.declVars, $.declConsts, $.defProc,
 			alias($.declProcFwd, $.declProc),
 			$.declLabels, $.declUses, $.declExports,
@@ -735,11 +721,10 @@ module.exports = grammar({
 			prec(-1,$.blockTr)
 		),
 
-		// Recursive local definitions rule for IFDEF support around var/type/const sections
-		// Handles: {$IFDEF} var x: T; {$ENDIF} begin...end;
-		_defProc_local:  $ => ppRecursive($, '_defProc_local',
-			$._definitions
-		),
+		// Local definitions rule for procedure bodies.
+		// Uses the same definitions as unit-level, which now includes ppRecursive
+		// support for IFDEF blocks.
+		_defProc_local:  $ => prec.left($._definitions),
 
 		// Recursive body rule for nested IFDEF support in procedure bodies
 		_defProc_body:   $ => ppRecursive($, '_defProc_body',
@@ -768,10 +753,8 @@ module.exports = grammar({
 		),
 
 		// Declaration in interface section.
-		// Note: We don't use ppRecursive here because IFDEFs within type/var/const
-		// sections need to be captured at the lower level (inside declTypes, etc.)
-		// rather than at the _declaration level.
-		_declaration:    $ => choice(
+		// Uses ppRecursive to support IFDEFs wrapping multiple declarations (e.g., type + var together).
+		_declaration:    $ => ppRecursive($, '_declaration',
 			$.declTypes, $.declVars, $.declConsts, $.declProc, $.declProp,
 			alias($.declProcFwd, $.declProc),
 			$.declUses, $.declLabels, $.declExports
@@ -796,9 +779,13 @@ module.exports = grammar({
 		// IFDEFs can appear between declaration items within unit structures
 		// where extras alone don't work correctly.
 
+		// Recursive rule for type declarations with nested IFDEF support
+		// Handles: type T1 = ...; {$IFDEF X} T2 = ...; {$ENDIF}
+		_declTypeItem:   $ => ppRecursive($, '_declTypeItem', $.declType),
+
 		declTypes:       $ => seq(
 			$.kType,
-			repeat(choice($.declType, $.pp))
+			repeat($._declTypeItem)
 		),
 
 		// Recursive rule for variable declarations with nested IFDEF support

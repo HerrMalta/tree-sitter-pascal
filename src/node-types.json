@@ -792,7 +792,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "blockTr",
@@ -828,6 +828,10 @@
         },
         {
           "type": "defProc",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
@@ -5627,6 +5631,10 @@
         {
           "type": "kImplementation",
           "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
         }
       ]
     }
@@ -5776,6 +5784,10 @@
         {
           "type": "kInterface",
           "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
         }
       ]
     }
@@ -5871,6 +5883,10 @@
           },
           {
             "type": "defProc",
+            "named": true
+          },
+          {
+            "type": "pp",
             "named": true
           }
         ]
@@ -6038,6 +6054,10 @@
         },
         {
           "type": "moduleName",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
@@ -6529,6 +6549,10 @@
         },
         {
           "type": "moduleName",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
