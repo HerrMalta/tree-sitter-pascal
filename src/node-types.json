@@ -455,6 +455,37 @@
     }
   },
   {
+    "type": "callingConvention",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "kCdecl",
+          "named": true
+        },
+        {
+          "type": "kPascal",
+          "named": true
+        },
+        {
+          "type": "kRegister",
+          "named": true
+        },
+        {
+          "type": "kSafecall",
+          "named": true
+        },
+        {
+          "type": "kStdcall",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "case",
     "named": true,
     "fields": {},
@@ -1829,6 +1860,16 @@
         "types": [
           {
             "type": "declArgs",
+            "named": true
+          }
+        ]
+      },
+      "convention": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "callingConvention",
             "named": true
           }
         ]

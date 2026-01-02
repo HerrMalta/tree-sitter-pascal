@@ -887,8 +887,15 @@ module.exports = grammar({
 				':',
 				field('type', $.typeref),
 			)),
-			optional(seq($.kOf, $.kObject))
+			optional(seq($.kOf, $.kObject)),
+			// Calling convention for anonymous procedure/function types
+			optional(field('convention', $.callingConvention))
 		)),
+
+		// Calling conventions for procedure/function types
+		callingConvention: $ => choice(
+			$.kCdecl, $.kStdcall, $.kPascal, $.kRegister, $.kSafecall
+		),
 
 		declMetaClass:   $ => seq($.kClass, $.kOf, $.typeref),
 

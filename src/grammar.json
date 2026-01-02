@@ -6535,9 +6535,50 @@
                 "type": "BLANK"
               }
             ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "convention",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "callingConvention"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
+    },
+    "callingConvention": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "kCdecl"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kStdcall"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kPascal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kRegister"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kSafecall"
+        }
+      ]
     },
     "declMetaClass": {
       "type": "SEQ",
