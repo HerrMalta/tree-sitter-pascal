@@ -294,10 +294,11 @@ bool tree_sitter_pascal_external_scanner_scan(
     // - If we see a newline followed by a non-continuation token, insert virtual semicolon
     // - Real semicolons are handled by the literal ';' in the grammar, not here
     //
-    // IMPORTANT: Only check for ASI if CLASS_BODY_START is NOT also valid.
-    // When both are valid, we're likely at a class/record body start and should
-    // not interfere with that parsing.
-    if (valid_symbols[AUTOMATIC_SEMICOLON] && !valid_symbols[CLASS_BODY_START]) {
+    // Note: CLASS_BODY_START is checked first (above) with higher priority.
+    // ASI can safely run even when CLASS_BODY_START is valid because:
+    // 1. CLASS_BODY_START will be handled first if applicable
+    // 2. Inside class bodies, ASI is needed for missing semicolons between fields
+    if (valid_symbols[AUTOMATIC_SEMICOLON]) {
         lexer->mark_end(lexer);  // Mark the insertion point (zero-width)
         bool saw_newline = false;
 

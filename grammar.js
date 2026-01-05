@@ -304,8 +304,9 @@ module.exports = grammar({
 
 	// External tokens for ASI (Automatic Semicolon Insertion) and class body disambiguation.
 	// See src/scanner.c for the implementation.
+	// Note: automatic_semicolon is named (no underscore) so it appears in the tree output.
 	externals: $ => [
-		$._automatic_semicolon,
+		$.automatic_semicolon,
 		$._class_body_start,
 	],
 
@@ -383,7 +384,7 @@ module.exports = grammar({
 		// Accepts either a real semicolon or an automatically inserted one (zero-width token).
 		// Used in declaration rules to enable error recovery for missing semicolons.
 		// The literal ';' is listed first to ensure it's preferred when present.
-		_semicolon: $ => choice(';', $._automatic_semicolon),
+		_semicolon: $ => choice(';', $.automatic_semicolon),
 
 		// HIGH LEVEL ----------------------------------------------------------
 

@@ -1,13 +1,12 @@
 ================================================================================
-Error Recovery Tests
+Automatic Semicolon Insertion (ASI) Tests
 ================================================================================
 
-These tests verify that tree-sitter produces specific MISSING nodes for common
-syntax errors, rather than generic ERROR nodes.
+These tests verify that tree-sitter correctly inserts automatic_semicolon
+tokens when semicolons are missing but can be recovered.
 
 ================================================================================
 Missing semicolon in var declaration
-:skip
 ================================================================================
 
 var
@@ -25,16 +24,15 @@ var
         (type
           (typeref
             (identifier)))
-        (MISSING ";"))
+        (automatic_semicolon))
       (declVar
         (identifier)
         (type
           (typeref
-            (identifier)))))))
+            (kString)))))))
 
 ================================================================================
 Missing semicolon in const declaration
-:skip
 ================================================================================
 
 const
@@ -52,7 +50,7 @@ const
         (defaultValue
           (kEq)
           (literalNumber))
-        (MISSING ";"))
+        (automatic_semicolon))
       (declConst
         (identifier)
         (defaultValue
@@ -61,7 +59,6 @@ const
 
 ================================================================================
 Missing semicolon in type declaration
-:skip
 ================================================================================
 
 type
@@ -80,17 +77,16 @@ type
         (type
           (typeref
             (identifier)))
-        (MISSING ";"))
+        (automatic_semicolon))
       (declType
         (identifier)
         (kEq)
         (type
           (typeref
-            (identifier)))))))
+            (kString)))))))
 
 ================================================================================
 Missing semicolon in procedure var block
-:skip
 ================================================================================
 
 procedure Test;
@@ -115,19 +111,18 @@ end;
           (type
             (typeref
               (identifier)))
-          (MISSING ";"))
+          (automatic_semicolon))
         (declVar
           (identifier)
           (type
             (typeref
-              (identifier)))))
+              (kString)))))
       (block
         (kBegin)
         (kEnd)))))
 
 ================================================================================
 Missing semicolon after last var declaration before begin
-:skip
 ================================================================================
 
 procedure Test;
@@ -151,14 +146,13 @@ end;
           (type
             (typeref
               (identifier)))
-          (MISSING ";")))
+          (automatic_semicolon)))
       (block
         (kBegin)
         (kEnd)))))
 
 ================================================================================
 Missing semicolon in class field declaration
-:skip
 ================================================================================
 
 type
@@ -183,17 +177,16 @@ type
             (type
               (typeref
                 (identifier)))
-            (MISSING ";"))
+            (automatic_semicolon))
           (declField
             (identifier)
             (type
               (typeref
-                (identifier))))
+                (kString))))
           (kEnd))))))
 
 ================================================================================
 Missing semicolon in record field declaration
-:skip
 ================================================================================
 
 type
@@ -218,10 +211,10 @@ type
             (type
               (typeref
                 (identifier)))
-            (MISSING ";"))
+            (automatic_semicolon))
           (declField
             (identifier)
             (type
               (typeref
-                (identifier))))
+                (kString))))
           (kEnd))))))

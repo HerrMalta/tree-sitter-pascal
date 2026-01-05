@@ -1192,6 +1192,10 @@
       "required": false,
       "types": [
         {
+          "type": "automatic_semicolon",
+          "named": true
+        },
+        {
           "type": "hintDirective",
           "named": true
         },
@@ -1450,6 +1454,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "automatic_semicolon",
+          "named": true
+        },
         {
           "type": "hintDirective",
           "named": true
@@ -1811,6 +1819,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "automatic_semicolon",
+          "named": true
+        },
         {
           "type": "kClass",
           "named": true
@@ -2340,6 +2352,10 @@
       "required": true,
       "types": [
         {
+          "type": "automatic_semicolon",
+          "named": true
+        },
+        {
           "type": "hintDirective",
           "named": true
         },
@@ -2649,6 +2665,10 @@
       "required": true,
       "types": [
         {
+          "type": "automatic_semicolon",
+          "named": true
+        },
+        {
           "type": "hintDirective",
           "named": true
         },
@@ -2762,6 +2782,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "automatic_semicolon",
+          "named": true
+        },
         {
           "type": "exprBinary",
           "named": true
@@ -8153,6 +8177,10 @@
   {
     "type": "]",
     "named": false
+  },
+  {
+    "type": "automatic_semicolon",
+    "named": true
   },
   {
     "type": "comment",
