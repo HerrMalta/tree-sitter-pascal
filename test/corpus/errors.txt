@@ -1,0 +1,227 @@
+================================================================================
+Error Recovery Tests
+================================================================================
+
+These tests verify that tree-sitter produces specific MISSING nodes for common
+syntax errors, rather than generic ERROR nodes.
+
+================================================================================
+Missing semicolon in var declaration
+:skip
+================================================================================
+
+var
+  a: Integer
+  b: String;
+
+---
+
+(root
+  (codeFragment
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))
+        (MISSING ";"))
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (identifier)))))))
+
+================================================================================
+Missing semicolon in const declaration
+:skip
+================================================================================
+
+const
+  a = 1
+  b = 2;
+
+---
+
+(root
+  (codeFragment
+    (declConsts
+      (kConst)
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber))
+        (MISSING ";"))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber))))))
+
+================================================================================
+Missing semicolon in type declaration
+:skip
+================================================================================
+
+type
+  TMyType = Integer
+  TMyType2 = String;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (typeref
+            (identifier)))
+        (MISSING ";"))
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (typeref
+            (identifier)))))))
+
+================================================================================
+Missing semicolon in procedure var block
+:skip
+================================================================================
+
+procedure Test;
+var
+  a: Integer
+  b: String;
+begin
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))
+          (MISSING ";"))
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (block
+        (kBegin)
+        (kEnd)))))
+
+================================================================================
+Missing semicolon after last var declaration before begin
+:skip
+================================================================================
+
+procedure Test;
+var
+  a: Integer
+begin
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))
+          (MISSING ";")))
+      (block
+        (kBegin)
+        (kEnd)))))
+
+================================================================================
+Missing semicolon in class field declaration
+:skip
+================================================================================
+
+type
+  TMyClass = class
+    FField1: Integer
+    FField2: String;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier)))
+            (MISSING ";"))
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (kEnd))))))
+
+================================================================================
+Missing semicolon in record field declaration
+:skip
+================================================================================
+
+type
+  TMyRecord = record
+    Field1: Integer
+    Field2: String;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier)))
+            (MISSING ";"))
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (kEnd))))))

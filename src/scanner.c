@@ -1,126 +1,64 @@
 /**
  * External Scanner for Tree-sitter Pascal Grammar
  *
- * This scanner handles identifier lexing with keyword priority.
- * It prevents keywords from being consumed as identifiers during error recovery.
+ * This scanner handles two external tokens:
  *
- * Problem solved:
- * When parsing incomplete code like "myVar := \n end;", tree-sitter's context-aware
- * lexing would consume 'end' as an identifier (the RHS of assignment) because
- * identifier is valid for expressions but kEnd is not. This breaks file structure.
+ * 1. AUTOMATIC_SEMICOLON: Implements ASI (Automatic Semicolon Insertion) for error recovery.
+ *    When a semicolon is expected but missing, and a newline followed by a new declaration
+ *    is detected, a zero-width _automatic_semicolon token is emitted.
  *
- * Solution:
- * The external scanner matches identifier-like text and checks if it's a keyword.
- * If it's a keyword, it returns false to let tree-sitter's internal lexer handle it.
- * If it's not a keyword, it returns true with the identifier token.
+ * 2. CLASS_BODY_START: Zero-width sentinel token that disambiguates class/record bodies
+ *    from forward declarations. Emitted when we detect class body content ahead.
  *
- * The & prefix is handled specially - &keyword is always an identifier (escaped keyword).
+ * Priority order in scan():
+ * 1. CLASS_BODY_START (highest) - must be checked before ASI to avoid false positives
+ * 2. AUTOMATIC_SEMICOLON - ASI for missing semicolons in declarations
  */
 
 #include "tree_sitter/parser.h"
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
+// Token types must match the order in grammar.js externals array:
+// externals: $ => [ $._automatic_semicolon, $._class_body_start ]
 enum TokenType {
-    IDENTIFIER,
+    AUTOMATIC_SEMICOLON = 0, // Index 0: matches $._automatic_semicolon
+    CLASS_BODY_START = 1,    // Index 1: matches $._class_body_start
 };
 
 /**
- * List of "structural" Pascal keywords that should NEVER be consumed as identifiers.
- *
- * These are the keywords that, if consumed as identifiers during error recovery,
- * would completely break the file structure and make the parser produce unusable
- * parse trees.
- *
- * We intentionally do NOT include all keywords here. Many Pascal keywords can
- * legitimately be used as identifiers in certain contexts:
- * - `string` - keyword for declString but also a type name in typerefs
- * - `specialize` - keyword for generics but can be a procedure name
- * - Many declaration hints like `deprecated`, `inline`, etc.
- *
- * The keywords listed here are the "truly reserved" structural keywords that
- * delimit major syntactic blocks and control flow.
+ * Keywords that are valid class/record member starters.
+ * When we see one of these after 'class' or 'record', we emit CLASS_BODY_START.
  */
-/**
- * MINIMAL list of reserved keywords - only truly structural ones.
- *
- * These keywords, if consumed as identifiers during error recovery,
- * would catastrophically break file structure. We intentionally keep
- * this list small to avoid blocking legitimate identifiers.
- *
- * NOT included (commonly used as identifiers):
- * - contains, requires, index, name, read, write, default, stored
- * - file, array, set (type keywords that can be identifiers)
- * - property, external, forward, reference
- */
-static const char* keywords[] = {
-    // High-level file structure - these delimit major sections
-    "program", "library", "unit", "package",
-    "interface", "implementation",
-    "initialization", "finalization",
-
-    // Block delimiters - critical for structure
-    "begin", "end",
-
-    // Declaration section keywords
-    "var", "threadvar", "const", "type", "uses",
-
-    // Class/record structure - needed for type declarations
-    "class", "object", "record",
-    "private", "protected", "public", "published", "strict",
-    "set", "array",  // Type keywords - needed for 'set of' and 'array of'
-    "string",  // Common type keyword - must be reserved
-
-    // Control flow - must not be consumed as expression identifiers
-    "if", "then", "else",
-    "for", "to", "downto", "do",
-    "while", "repeat", "until",
-    "case", "of",
-    "try", "except", "finally", "on",
-    "raise",
-
-    // Routine declarations
-    "function", "procedure", "constructor", "destructor",
-
-    // Operator keywords
-    "and", "or", "xor", "not",
-    "div", "mod", "shl", "shr",
-    "in", "is", "as",
-
-    // Literals
-    "nil", "true", "false",
-
-    NULL  // Sentinel
+static const char* class_member_keywords[] = {
+    // Section starters
+    "var", "const", "type", "class",
+    // Methods
+    "procedure", "function", "constructor", "destructor", "operator",
+    // Visibility
+    "private", "public", "protected", "published", "strict",
+    // Other class members
+    "property", "case", "end",
+    NULL
 };
 
 /**
- * Check if a word is a Pascal keyword (case-insensitive comparison).
- *
- * @param word The word to check
- * @param len Length of the word
- * @return true if it's a keyword, false otherwise
+ * Keywords that should prevent ASI (Automatic Semicolon Insertion).
+ * These are "soft" keywords that validly continue a construct across a newline.
+ * If we see one of these after a newline, we do NOT insert a semicolon.
  */
-static bool is_keyword(const char* word, size_t len) {
-    for (int i = 0; keywords[i] != NULL; i++) {
-        size_t kw_len = strlen(keywords[i]);
-        if (kw_len == len) {
-            bool match = true;
-            for (size_t j = 0; j < len; j++) {
-                // Case-insensitive comparison (keywords array is lowercase)
-                char c = word[j];
-                if (c >= 'A' && c <= 'Z') {
-                    c = c - 'A' + 'a';
-                }
-                if (c != keywords[i][j]) {
-                    match = false;
-                    break;
-                }
-            }
-            if (match) return true;
-        }
-    }
-    return false;
-}
+static const char* no_insert_keywords[] = {
+    // Control flow continuations
+    "else", "then", "do", "of", "to", "downto", "until",
+    // Exception handling
+    "except", "finally",
+    // Property specifiers
+    "read", "write", "implements", "stored", "default", "nodefault", "index", "dispid",
+    // Other modifiers
+    "absolute", "helper", "forward", "external", "name",
+    NULL
+};
 
 /**
  * Check if character is alphanumeric or underscore.
@@ -139,6 +77,163 @@ static inline bool is_identifier_start(int32_t c) {
     return (c >= 'a' && c <= 'z') ||
            (c >= 'A' && c <= 'Z') ||
            c == '_';
+}
+
+/**
+ * Check if character is whitespace (space, tab, carriage return).
+ */
+static inline bool is_whitespace(int32_t c) {
+    return c == ' ' || c == '\t' || c == '\r';
+}
+
+/**
+ * Check if character is a newline.
+ */
+static inline bool is_newline(int32_t c) {
+    return c == '\n';
+}
+
+/**
+ * Convert character to lowercase.
+ */
+static inline char to_lower(char c) {
+    if (c >= 'A' && c <= 'Z') {
+        return c - 'A' + 'a';
+    }
+    return c;
+}
+
+/**
+ * Case-insensitive comparison of a word against a keyword list.
+ * @param word The word to check (not null-terminated, use len)
+ * @param len Length of the word
+ * @param keyword_list Null-terminated array of lowercase keywords
+ * @return true if the word matches any keyword in the list
+ */
+static bool is_in_keyword_list(const char* word, size_t len, const char** keyword_list) {
+    for (int i = 0; keyword_list[i] != NULL; i++) {
+        size_t kw_len = strlen(keyword_list[i]);
+        if (kw_len == len) {
+            bool match = true;
+            for (size_t j = 0; j < len; j++) {
+                if (to_lower(word[j]) != keyword_list[i][j]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Skip whitespace (spaces, tabs) without consuming newlines.
+ * @param lexer The tree-sitter lexer
+ */
+static void skip_whitespace_not_newline(TSLexer* lexer) {
+    while (is_whitespace(lexer->lookahead)) {
+        lexer->advance(lexer, true);  // true = skip (don't include in token)
+    }
+}
+
+/**
+ * Skip all whitespace including newlines.
+ * @param lexer The tree-sitter lexer
+ * @param saw_newline Output parameter - set to true if we saw a newline
+ */
+static void skip_whitespace_and_newlines(TSLexer* lexer, bool* saw_newline) {
+    while (is_whitespace(lexer->lookahead) || is_newline(lexer->lookahead)) {
+        if (is_newline(lexer->lookahead)) {
+            *saw_newline = true;
+        }
+        lexer->advance(lexer, true);
+    }
+}
+
+/**
+ * Check if the lookahead indicates a class member start.
+ * This is used to emit CLASS_BODY_START token.
+ *
+ * Class member starters:
+ * - Identifier followed by ':' (field declaration)
+ * - Keywords: var, const, type, class, procedure, function, etc.
+ * - '[' (RTTI attributes)
+ * - 'end' (empty body)
+ * - 'case' (variant part)
+ *
+ * NOT class member starters:
+ * - ';' (forward declaration: `type T = class;`)
+ * - '(' (class heritage: `type T = class(TBase)`)
+ */
+static bool is_class_member_start(TSLexer* lexer) {
+    // Skip whitespace and newlines for lookahead
+    bool saw_newline = false;
+    skip_whitespace_and_newlines(lexer, &saw_newline);
+
+    int32_t c = lexer->lookahead;
+
+    // '[' could be RTTI attributes or GUID
+    // GUID format: ['string'] - starts with string literal after [
+    // RTTI format: [Identifier] or [Identifier(args)]
+    // If it's a GUID (string literal), it's NOT a class body start
+    if (c == '[') {
+        lexer->advance(lexer, true);  // Skip [
+        skip_whitespace_not_newline(lexer);
+        // Check if next char is a string delimiter (GUID)
+        if (lexer->lookahead == '\'' || lexer->lookahead == '#') {
+            // It's a GUID like ['{...}'] or ['...'] - NOT a class body start
+            return false;
+        }
+        // It's an RTTI attribute - IS a class body start
+        return true;
+    }
+
+    // ';' means forward declaration - NOT a class body
+    if (c == ';') {
+        return false;
+    }
+
+    // '(' means class heritage - NOT directly a class body start
+    if (c == '(') {
+        return false;
+    }
+
+    // Check for identifier or keyword
+    if (is_identifier_start(c)) {
+        char buffer[256];
+        size_t len = 0;
+
+        // Collect the word
+        while (is_identifier_char(lexer->lookahead) && len < 255) {
+            buffer[len++] = (char)lexer->lookahead;
+            lexer->advance(lexer, true);
+        }
+        buffer[len] = '\0';
+
+        // Check if it's a class member keyword
+        if (is_in_keyword_list(buffer, len, class_member_keywords)) {
+            return true;
+        }
+
+        // Skip whitespace after the identifier
+        skip_whitespace_not_newline(lexer);
+
+        // If followed by ':', it's a field declaration
+        if (lexer->lookahead == ':') {
+            return true;
+        }
+
+        // If followed by ',', it's also a field (multiple fields: a, b: Type)
+        if (lexer->lookahead == ',') {
+            return true;
+        }
+
+        // Otherwise, it's not clearly a class member start
+        return false;
+    }
+
+    return false;
 }
 
 // Required external scanner functions
@@ -163,77 +258,106 @@ void tree_sitter_pascal_external_scanner_deserialize(void* payload, const char* 
  * Main scanning function.
  *
  * Called by tree-sitter to scan for external tokens.
- * We only handle IDENTIFIER tokens.
  *
- * Logic:
- * 1. Skip leading whitespace (handled by tree-sitter, but we need to be safe)
- * 2. Check for & prefix (escaped identifier)
- * 3. Match identifier characters
- * 4. If & prefix present, always return as identifier
- * 5. Otherwise, check if it's a keyword - if so, return false to let internal lexer handle it
- * 6. If not a keyword, return true with IDENTIFIER token
- *
- * @param payload External scanner state (unused)
- * @param lexer Tree-sitter lexer
- * @param valid_symbols Array indicating which tokens are valid in current context
- * @return true if we produced a token, false otherwise
+ * Priority order:
+ * 1. CLASS_BODY_START - Zero-width sentinel for class/record body disambiguation
+ * 2. AUTOMATIC_SEMICOLON - ASI for missing semicolons
  */
 bool tree_sitter_pascal_external_scanner_scan(
     void* payload,
     TSLexer* lexer,
     const bool* valid_symbols
 ) {
-    // Only proceed if IDENTIFIER is a valid token in current context
-    if (!valid_symbols[IDENTIFIER]) {
-        return false;
-    }
+    // =========================================================================
+    // 1. Check for CLASS_BODY_START (highest priority)
+    // =========================================================================
+    // This is a zero-width sentinel token that disambiguates class/record bodies
+    // from forward declarations. We check this BEFORE ASI to ensure class bodies
+    // are properly recognized.
+    if (valid_symbols[CLASS_BODY_START]) {
+        // Save the current position - we need to peek without consuming
+        lexer->mark_end(lexer);
 
-    // Check for & prefix (escaped identifier, e.g., &end, &begin)
-    bool has_ampersand = false;
-    if (lexer->lookahead == '&') {
-        has_ampersand = true;
-        lexer->advance(lexer, false);
-    }
-
-    // Must start with letter or underscore
-    if (!is_identifier_start(lexer->lookahead)) {
-        return false;
-    }
-
-    // Buffer to collect the identifier (for keyword checking)
-    // 256 chars should be more than enough for any reasonable identifier
-    char buffer[256];
-    size_t len = 0;
-
-    // Collect identifier characters
-    while (is_identifier_char(lexer->lookahead)) {
-        if (len < sizeof(buffer) - 1) {
-            buffer[len++] = (char)lexer->lookahead;
+        if (is_class_member_start(lexer)) {
+            // Don't consume anything - this is a zero-width token
+            lexer->result_symbol = CLASS_BODY_START;
+            return true;
         }
-        lexer->advance(lexer, false);
+        // If not a class body start, fall through to check other tokens
     }
-    buffer[len] = '\0';
 
-    // If no characters were collected (shouldn't happen given is_identifier_start check)
-    if (len == 0) {
+    // =========================================================================
+    // 2. Check for AUTOMATIC_SEMICOLON (ASI)
+    // =========================================================================
+    // Implements Automatic Semicolon Insertion:
+    // - This is a ZERO-WIDTH token - we never consume any characters
+    // - If we see a newline followed by a non-continuation token, insert virtual semicolon
+    // - Real semicolons are handled by the literal ';' in the grammar, not here
+    //
+    // IMPORTANT: Only check for ASI if CLASS_BODY_START is NOT also valid.
+    // When both are valid, we're likely at a class/record body start and should
+    // not interfere with that parsing.
+    if (valid_symbols[AUTOMATIC_SEMICOLON] && !valid_symbols[CLASS_BODY_START]) {
+        lexer->mark_end(lexer);  // Mark the insertion point (zero-width)
+        bool saw_newline = false;
+
+        // Skip whitespace and track newlines (for lookahead only)
+        while (is_whitespace(lexer->lookahead) || is_newline(lexer->lookahead)) {
+            if (is_newline(lexer->lookahead)) {
+                saw_newline = true;
+            }
+            lexer->advance(lexer, true);  // skip = true, don't include in token
+        }
+
+        // If there's a real semicolon, let the grammar's literal ';' handle it
+        // We only insert virtual semicolons when the semicolon is missing
+        if (lexer->lookahead == ';') {
+            return false;
+        }
+
+        // Insert virtual semicolon if we saw a newline
+        // and the next token is NOT a continuation keyword
+        if (saw_newline) {
+            // Check what's next
+            if (is_identifier_start(lexer->lookahead)) {
+                // Peek at the word to check if it's a continuation keyword
+                char word[256];
+                size_t len = 0;
+                int32_t c = lexer->lookahead;
+
+                // Collect the word characters (lookahead only, already skipping)
+                while (is_identifier_char(c) && len < sizeof(word) - 1) {
+                    word[len++] = (char)c;
+                    lexer->advance(lexer, true);
+                    c = lexer->lookahead;
+                }
+                word[len] = '\0';
+
+                // Check if it's a continuation keyword
+                if (!is_in_keyword_list(word, len, no_insert_keywords)) {
+                    // Not a continuation keyword - insert virtual semicolon
+                    // The token is zero-width at the mark_end position
+                    lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                    return true;
+                }
+            } else if (lexer->lookahead != 0) {
+                // Not an identifier - check for symbols that start new statements
+                // We should insert semicolon before these
+                if (lexer->lookahead == '[' ||   // RTTI attributes
+                    lexer->lookahead == '{') {   // Comment/preprocessor start
+                    lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                    return true;
+                }
+            } else {
+                // EOF - insert semicolon at end of file
+                lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                return true;
+            }
+        }
+
+        // No ASI possible
         return false;
     }
 
-    // If it starts with &, it's always an identifier (escaped keyword syntax)
-    // e.g., &end, &begin, &type are valid identifiers
-    if (has_ampersand) {
-        lexer->result_symbol = IDENTIFIER;
-        return true;
-    }
-
-    // Check if it's a keyword
-    if (is_keyword(buffer, len)) {
-        // Return false - let the internal lexer handle it as a keyword
-        // This ensures keywords are never consumed as identifiers during error recovery
-        return false;
-    }
-
-    // It's a regular identifier
-    lexer->result_symbol = IDENTIFIER;
-    return true;
+    return false;
 }

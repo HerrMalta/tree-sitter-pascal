@@ -862,10 +862,6 @@
           "named": true
         },
         {
-          "type": "orphanedVar",
-          "named": true
-        },
-        {
           "type": "pp",
           "named": true
         }
@@ -3017,10 +3013,6 @@
           },
           {
             "type": "defProc",
-            "named": true
-          },
-          {
-            "type": "orphanedVar",
             "named": true
           },
           {
@@ -5682,10 +5674,6 @@
           "named": true
         },
         {
-          "type": "orphanedVar",
-          "named": true
-        },
-        {
           "type": "pp",
           "named": true
         }
@@ -5839,10 +5827,6 @@
           "named": true
         },
         {
-          "type": "orphanedVar",
-          "named": true
-        },
-        {
           "type": "pp",
           "named": true
         }
@@ -5940,10 +5924,6 @@
           },
           {
             "type": "defProc",
-            "named": true
-          },
-          {
-            "type": "orphanedVar",
             "named": true
           },
           {
@@ -6118,10 +6098,6 @@
           "named": true
         },
         {
-          "type": "orphanedVar",
-          "named": true
-        },
-        {
           "type": "pp",
           "named": true
         }
@@ -6167,146 +6143,6 @@
         },
         {
           "type": "kDot",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "orphanedVar",
-    "named": true,
-    "fields": {
-      "attribute": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "procAttribute",
-            "named": true
-          }
-        ]
-      },
-      "defaultValue": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "defaultValue",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "kDefault",
-            "named": true
-          }
-        ]
-      },
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "type",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "exprBinary",
-          "named": true
-        },
-        {
-          "type": "exprBrackets",
-          "named": true
-        },
-        {
-          "type": "exprCall",
-          "named": true
-        },
-        {
-          "type": "exprDot",
-          "named": true
-        },
-        {
-          "type": "exprParens",
-          "named": true
-        },
-        {
-          "type": "exprSubscript",
-          "named": true
-        },
-        {
-          "type": "exprTpl",
-          "named": true
-        },
-        {
-          "type": "exprUnary",
-          "named": true
-        },
-        {
-          "type": "hintDirective",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "inherited",
-          "named": true
-        },
-        {
-          "type": "kAbsolute",
-          "named": true
-        },
-        {
-          "type": "kFalse",
-          "named": true
-        },
-        {
-          "type": "kNil",
-          "named": true
-        },
-        {
-          "type": "kTrue",
-          "named": true
-        },
-        {
-          "type": "lambda",
-          "named": true
-        },
-        {
-          "type": "literalNumber",
-          "named": true
-        },
-        {
-          "type": "literalString",
-          "named": true
-        },
-        {
-          "type": "procExternal",
-          "named": true
-        },
-        {
-          "type": "rttiAttributes",
           "named": true
         }
       ]
@@ -6754,10 +6590,6 @@
         },
         {
           "type": "moduleName",
-          "named": true
-        },
-        {
-          "type": "orphanedVar",
           "named": true
         },
         {

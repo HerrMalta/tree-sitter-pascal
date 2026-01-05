@@ -302,15 +302,12 @@ module.exports = grammar({
 
 	extras: $ => [$._space, $.comment, $.pp],
 
-	// External scanner DISABLED - it was causing false syntax errors.
-	// When the scanner returns false for a keyword, tree-sitter's internal lexer
-	// matches it as a keyword token (e.g., kArray), but if that keyword isn't valid
-	// in the current context, it becomes a syntax error. The scanner effectively
-	// breaks tree-sitter's context-aware lexing.
-	// See src/scanner.c for the disabled implementation.
-	// externals: $ => [
-	// 	$.identifier,
-	// ],
+	// External tokens for ASI (Automatic Semicolon Insertion) and class body disambiguation.
+	// See src/scanner.c for the implementation.
+	externals: $ => [
+		$._automatic_semicolon,
+		$._class_body_start,
+	],
 
 	word: $ => $.identifier,
 
@@ -381,6 +378,12 @@ module.exports = grammar({
 		// For statement-level includes, the statements would typically be inside a procedure body
 		// Uses _definition (which has ppRecursive) to support IFDEFs wrapping multiple sections.
 		codeFragment:    $ => $._definitions,
+
+		// Automatic Semicolon Insertion (ASI)
+		// Accepts either a real semicolon or an automatically inserted one (zero-width token).
+		// Used in declaration rules to enable error recovery for missing semicolons.
+		// The literal ';' is listed first to ensure it's preferred when present.
+		_semicolon: $ => choice(';', $._automatic_semicolon),
 
 		// HIGH LEVEL ----------------------------------------------------------
 
@@ -718,10 +721,7 @@ module.exports = grammar({
 			$.declLabels, $.declUses, $.declExports,
 
 			// Not actually valid syntax, but helps the parser recover:
-			prec(-1,$.blockTr),
-			// Orphaned variable declaration (without 'var' keyword) - occurs in Delphi RTL
-			// when conditional compilation splits a var block across {$IFDEF}/{$ENDIF}
-			prec(-1, alias($.declVar, $.orphanedVar))
+			prec(-1,$.blockTr)
 		),
 
 		// Local definitions rule for procedure bodies.
@@ -760,10 +760,7 @@ module.exports = grammar({
 		_declaration:    $ => ppRecursive($, '_declaration',
 			$.declTypes, $.declVars, $.declConsts, $.declProc, $.declProp,
 			alias($.declProcFwd, $.declProc),
-			$.declUses, $.declLabels, $.declExports,
-			// Orphaned variable declaration (without 'var' keyword) - occurs in Delphi RTL
-			// when conditional compilation splits a var block across {$IFDEF}/{$ENDIF}
-			prec(-1, alias($.declVar, $.orphanedVar))
+			$.declUses, $.declLabels, $.declExports
 		),
 		_declarations:   $ => repeat1($._declaration),
 
@@ -830,7 +827,7 @@ module.exports = grammar({
 				)
 			),
 			optional($.hintDirective),
-			';',
+			$._semicolon,
 			repeat($._procAttribute)
 		),
 
@@ -849,7 +846,7 @@ module.exports = grammar({
 				field('defaultValue', $.defaultValue)
 			)),
 			optional($.hintDirective),
-			';',
+			$._semicolon,
 			repeat(choice($._procAttribute, $.procExternal))
 		),
 
@@ -859,7 +856,7 @@ module.exports = grammar({
 			optional(seq(':', field('type', $.type))),
 			field('defaultValue', $.defaultValue),
 			optional($.hintDirective),
-			';',
+			$._semicolon,
 			repeat($._procAttribute)
 		),
 
@@ -946,6 +943,7 @@ module.exports = grammar({
 		guid:            $ => prec(1,seq('[', $._ref, ']')),
 
 		_declClass:      $ => seq(
+			$._class_body_start, // Zero-width sentinel to disambiguate class bodies from forward declarations
 			optional($._declFields),
 			optional($._classDeclarations),
 			repeat($.declSection),
@@ -981,7 +979,7 @@ module.exports = grammar({
 				field('type', $.type),
 				field('defaultValue', optional($.defaultValue)),
 				optional($.hintDirective),
-				';'
+				$._semicolon
 			),
 			// Field with RTTI attribute wrapped in preprocessor block
 			// Handles: {$IFDEF X} [Attr] {$ENDIF} fieldName: Type;
@@ -994,7 +992,7 @@ module.exports = grammar({
 				field('type', $.type),
 				field('defaultValue', optional($.defaultValue)),
 				optional($.hintDirective),
-				';'
+				$._semicolon
 			))
 		),
 
@@ -1017,7 +1015,7 @@ module.exports = grammar({
 				$.kNodefault,
 			)),
 			optional($.hintDirective),
-			';',
+			$._semicolon,
 			repeat($._procAttribute)
 		),
 
@@ -1064,7 +1062,7 @@ module.exports = grammar({
 				field('type', $.typeref),
 			)),
 			field('assign', optional($.defaultValue)),
-			';',
+			$._semicolon,
 			repeat($._procAttributeNoExt)
 		),
 
@@ -1077,7 +1075,7 @@ module.exports = grammar({
 			':',
 			field('type', $.type),
 			field('assign', optional($.defaultValue)),
-			';',
+			$._semicolon,
 			repeat($._procAttributeNoExt)
 		),
 
