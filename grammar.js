@@ -735,7 +735,7 @@ module.exports = grammar({
 			seq(
 				field('local', optional($._defProc_local)),
 				field('body', choice(tr($, 'block'), tr($, 'asm'))),
-				';'
+				$._semicolon
 			)
 		),
 

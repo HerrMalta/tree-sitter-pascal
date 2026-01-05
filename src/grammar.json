@@ -4967,8 +4967,8 @@
               }
             },
             {
-              "type": "STRING",
-              "value": ";"
+              "type": "SYMBOL",
+              "name": "_semicolon"
             }
           ]
         },

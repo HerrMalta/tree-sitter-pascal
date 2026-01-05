@@ -249,3 +249,35 @@ end;
           (kAssign)
           (literalNumber))
         (kEnd)))))
+
+================================================================================
+Missing semicolon after procedure body
+================================================================================
+
+procedure First;
+begin
+end
+
+procedure Second;
+begin
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (kEnd))
+      (automatic_semicolon))
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (kEnd)))))
