@@ -49,6 +49,8 @@ static const char* class_member_keywords[] = {
  * If we see one of these after a newline, we do NOT insert a semicolon.
  */
 static const char* no_insert_keywords[] = {
+    // Block terminators (trailing statements don't need semicolons before these)
+    "end",
     // Control flow continuations
     "else", "then", "do", "of", "to", "downto", "until",
     // Exception handling

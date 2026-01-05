@@ -218,3 +218,34 @@ type
               (typeref
                 (kString))))
           (kEnd))))))
+
+================================================================================
+Missing semicolon in statement list
+================================================================================
+
+procedure Test;
+begin
+  a := 1
+  b := 2;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (literalNumber))
+        (automatic_semicolon)
+        (assignment
+          (identifier)
+          (kAssign)
+          (literalNumber))
+        (kEnd)))))

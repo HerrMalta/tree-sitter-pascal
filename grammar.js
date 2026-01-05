@@ -269,15 +269,15 @@ function statements(trailing) {
 		)],
 
 		[rn('statement'),   $ => choice(
-			seq($._expr, ...semicolon),
+			trailing ? seq($._expr, ...semicolon) : seq($._expr, $._semicolon),
 		)],
 
 		[rn('goto'),        $ => seq($.kGoto, $.identifier, ...semicolon)],
 
 		[rn('_statement'),   $ => choice(
 			...semicolon,
-			seq($.assignment, ...semicolon),
-			seq($.varDef, ...semicolon),
+			trailing ? seq($.assignment, ...semicolon) : seq($.assignment, $._semicolon),
+			trailing ? seq($.varDef, ...semicolon) : seq($.varDef, $._semicolon),
 			alias($[rn('statement')], $.statement),
 			alias($[rn('if')],        $.if),
 			alias($[rn('ifElse')],    $.ifElse),

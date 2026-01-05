@@ -1324,8 +1324,8 @@
               "name": "_expr"
             },
             {
-              "type": "STRING",
-              "value": ";"
+              "type": "SYMBOL",
+              "name": "_semicolon"
             }
           ]
         }
@@ -1363,8 +1363,8 @@
               "name": "assignment"
             },
             {
-              "type": "STRING",
-              "value": ";"
+              "type": "SYMBOL",
+              "name": "_semicolon"
             }
           ]
         },
@@ -1376,8 +1376,8 @@
               "name": "varDef"
             },
             {
-              "type": "STRING",
-              "value": ";"
+              "type": "SYMBOL",
+              "name": "_semicolon"
             }
           ]
         },
