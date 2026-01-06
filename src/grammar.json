@@ -2576,16 +2576,8 @@
             "type": "FIELD",
             "name": "rhs",
             "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_expr"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_expr"
             }
           }
         ]

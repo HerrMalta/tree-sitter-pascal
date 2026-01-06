@@ -36,9 +36,10 @@
 	(kDispInterface)
 	(kObject)
 	(kRecord)
-	(kObjcclass)
-	(kObjccategory)
-	(kObjcprotocol)
+	; ObjC keywords (only available when objc=true in grammar.js)
+	; (kObjcclass)
+	; (kObjccategory)
+	; (kObjcprotocol)
 	(kArray)
 	(kFile)
 	(kString)
@@ -47,8 +48,9 @@
 	(kHelper)
 	(kPacked)
 
-	(kGeneric)
-	(kSpecialize)
+	; FPC generic keywords (only available when fpc=true in grammar.js)
+	; (kGeneric)
+	; (kSpecialize)
 
 	(kFunction)
 	(kProcedure)
@@ -67,8 +69,9 @@
 	(kProtected)
 	(kPrivate)
 	(kStrict)
-	(kRequired)
-	(kOptional)
+	; ObjC protocol modifiers (only available when objc=true in grammar.js)
+	; (kRequired)
+	; (kOptional)
 
 	(kForward)
 
@@ -85,39 +88,39 @@
 
 	(kStdcall)
 	(kCdecl)
-	(kCppdecl)
+	; (kCppdecl)  ; FPC only
 	(kPascal)
 	(kRegister)
-	(kMwpascal)
+	; (kMwpascal)  ; FPC only
 	(kExternal)
 	(kName)
 	(kMessage)
 	(kDeprecated)
 	(kExperimental)
 	(kPlatform)
-	(kUnimplemented)
-	(kCvar)
-	(kExport)
+	; (kUnimplemented)  ; FPC only
+	; (kCvar)  ; FPC only
+	; (kExport)  ; FPC only
 	(kFar)
 	(kNear)
 	(kSafecall)
 	(kAssembler)
-	(kNostackframe)
-	(kInterrupt)
+	; (kNostackframe)  ; FPC only
+	; (kInterrupt)  ; FPC only
 	(kNoreturn)
-	(kIocheck)
+	; (kIocheck)  ; FPC only
 	(kLocal)
-	(kHardfloat)
-	(kSoftfloat)
-	(kMs_abi_default)
-	(kMs_abi_cdecl)
-	(kSaveregisters)
-	(kSysv_abi_default)
-	(kSysv_abi_cdecl)
-	(kVectorcall)
-	(kVarargs)
-	(kWinapi)
-	(kAlias)
+	; (kHardfloat)  ; FPC only
+	; (kSoftfloat)  ; FPC only
+	; (kMs_abi_default)  ; FPC only
+	; (kMs_abi_cdecl)  ; FPC only
+	; (kSaveregisters)  ; FPC only
+	; (kSysv_abi_default)  ; FPC only
+	; (kSysv_abi_cdecl)  ; FPC only
+	; (kVectorcall)  ; FPC only
+	; (kVarargs)  ; FPC only
+	; (kWinapi)  ; FPC only
+	; (kAlias)  ; FPC only
 	(kDelayed)
 
 	(kFor)
@@ -164,10 +167,11 @@
 	(kMul)
 	(kFdiv)
 	(kAssign)
-	(kAssignAdd)
-	(kAssignSub)
-	(kAssignMul)
-	(kAssignDiv)
+	; FPC compound assignment operators (only available when fpc=true in grammar.js)
+	; (kAssignAdd)
+	; (kAssignSub)
+	; (kAssignMul)
+	; (kAssignDiv)
 	(kEq)
 	(kLt)
 	(kLte)

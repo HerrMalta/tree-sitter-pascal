@@ -210,7 +210,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "exprBinary",

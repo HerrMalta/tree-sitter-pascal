@@ -450,10 +450,13 @@ module.exports = grammar({
 		...statements(false),
 		...statements(true),
 
-		// Assignment with optional RHS to support error recovery during typing.
-		// When user types "myVar := " without completing, we don't want to
-		// consume the next keyword (like 'end') as the expression.
-		// The LSP should check for missing RHS and report it as a syntax error.
+		// Assignment with required RHS. The RHS is required because making it optional
+		// would cause ASI (Automatic Semicolon Insertion) to incorrectly break
+		// assignments with lambda expressions on the next line:
+		//   a :=
+		//     procedure begin end;  // This is a lambda, not a new procedure!
+		// Tree-sitter's built-in error recovery will handle incomplete assignments
+		// like "myVar := " during typing.
 		assignment:      $ => prec.left(1, seq(
 			field('lhs', choice($._expr, $.varAssignDef)),
 			field('operator', choice(
@@ -462,7 +465,7 @@ module.exports = grammar({
 					$.kAssignAdd, $.kAssignSub, $.kAssignMul, $.kAssignDiv
 				)
 			)),
-			field('rhs', optional($._expr))
+			field('rhs', $._expr)
 		)),
 		varAssignDef:          $ => seq($.kVar, $.identifier,
 			optional(seq(
