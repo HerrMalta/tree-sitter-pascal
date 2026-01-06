@@ -59,6 +59,8 @@ static const char* no_insert_keywords[] = {
     "read", "write", "implements", "stored", "default", "nodefault", "index", "dispid",
     // Other modifiers
     "absolute", "helper", "forward", "external", "name",
+    // Binary operators that can continue expressions across lines
+    "or", "and", "xor", "div", "mod", "shl", "shr", "in", "is", "as",
     NULL
 };
 

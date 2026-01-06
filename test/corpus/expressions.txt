@@ -289,6 +289,74 @@ end;
         (kEnd)))))
 
 ===
+Multi-line expression with OR at line start
+===
+
+function Test: Boolean;
+begin
+  Result := (a < b) and (b <= c)
+    or (c < a) and (b > a)
+    or (c < a) and (b <= c)
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kFunction)
+        (identifier)
+        (typeref
+          (identifier)))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (exprBinary
+            (exprBinary
+              (exprBinary
+                (exprParens
+                  (exprBinary
+                    (identifier)
+                    (kLt)
+                    (identifier)))
+                (kAnd)
+                (exprParens
+                  (exprBinary
+                    (identifier)
+                    (kLte)
+                    (identifier))))
+              (kOr)
+              (exprBinary
+                (exprParens
+                  (exprBinary
+                    (identifier)
+                    (kLt)
+                    (identifier)))
+                (kAnd)
+                (exprParens
+                  (exprBinary
+                    (identifier)
+                    (kGt)
+                    (identifier)))))
+            (kOr)
+            (exprBinary
+              (exprParens
+                (exprBinary
+                  (identifier)
+                  (kLt)
+                  (identifier)))
+              (kAnd)
+              (exprParens
+                (exprBinary
+                  (identifier)
+                  (kLte)
+                  (identifier))))))
+        (kEnd)))))
+
+===
 Parentheses
 ===
 
