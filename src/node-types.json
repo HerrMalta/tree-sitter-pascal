@@ -630,6 +630,10 @@
           "named": true
         },
         {
+          "type": "pp",
+          "named": true
+        },
+        {
           "type": "raise",
           "named": true
         },

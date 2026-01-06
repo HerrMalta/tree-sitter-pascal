@@ -232,14 +232,41 @@ function statements(trailing) {
 			field('body', lastStatement($))
 		)],
 
+		// Recursive rule for case branches with nested IFDEF support
+		// Handles: {$IF} caseCase {$ENDIF} within case statement
+		[rn('_caseBranch'), $ => ppRecursive($, '_caseBranch',
+			$.caseCase
+		)],
+
 		[rn('case'),        $ => prec(2,seq(
 			$.kCase, $._expr, $.kOf,
-			repeat($.caseCase),
+			repeat($._caseBranch),
 			optional(tr($,'caseCase')),
-			optional(seq(
-				$.kElse,
-				optional(':'),
-				optional(tr($,'_statements'))
+			// Handle optional else, potentially split by preprocessor directives
+			// Pattern: {$IF} else... {$ELSE} moreCases... else... {$ENDIF}
+			optional(choice(
+				// Normal case: just else section
+				seq(
+					$.kElse,
+					optional(':'),
+					optional(tr($,'_statements'))
+				),
+				// Preprocessor split: {$IF} else {$ELSE} cases+else {$ENDIF}
+				seq(
+					alias(/\{\$if[^}]*\}/i, $.pp),
+					$.kElse,
+					optional(':'),
+					optional(tr($,'_statements')),
+					alias(/\{\$else[^}]*\}/i, $.pp),
+					repeat($._caseBranch),
+					optional(tr($,'caseCase')),
+					optional(seq(
+						$.kElse,
+						optional(':'),
+						optional(tr($,'_statements'))
+					)),
+					alias(/\{\$end[^}]*\}/i, $.pp)
+				)
 			)),
 			$.kEnd, ...semicolon
 		))],

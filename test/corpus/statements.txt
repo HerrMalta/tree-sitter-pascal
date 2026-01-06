@@ -1084,3 +1084,141 @@ end;
             (identifier))
           (kEnd))
         (kEnd)))))
+
+===
+case with IFDEF splitting else and labels
+===
+
+procedure Main;
+begin
+  case x of
+    1: a;
+    2: b;
+    3: c;
+{$IF SizeOf(Pointer) <= 4}
+  else
+     d;
+{$ELSE}
+    4: e;
+    5: f;
+  else
+    g;
+{$ENDIF}
+  end;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (case
+          (kCase)
+          (identifier)
+          (kOf)
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (pp)
+          (kElse)
+          (statement
+            (identifier))
+          (pp)
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (kElse)
+          (statement
+            (identifier))
+          (pp)
+          (kEnd))
+        (kEnd)))))
+
+===
+case with IFDEF wrapping individual caseCase
+===
+
+procedure Main;
+begin
+  case Kind of
+    1: a;
+    2: b;
+{$IF Defined(FEATURE1)}
+    3: c;
+{$ENDIF}
+    4: d;
+{$IF Defined(FEATURE2)}
+    5: e;
+{$ENDIF}
+  end;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (case
+          (kCase)
+          (identifier)
+          (kOf)
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (pp)
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (pp)
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (pp)
+          (caseCase
+            (caseLabel
+              (literalNumber))
+            (statement
+              (identifier)))
+          (pp)
+          (kEnd))
+        (kEnd)))))
