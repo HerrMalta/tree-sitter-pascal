@@ -1148,12 +1148,12 @@ module.exports = grammar({
 
 		// Hint directives for deprecated/platform/experimental that appear inline (before semicolon)
 		// Used for constants, variables, fields, properties
-		hintDirective:   $ => choice(
-			$.kDeprecated,
+		// Supports chained directives like: platform deprecated, deprecated 'message' platform
+		hintDirective:   $ => repeat1(choice(
 			$.kPlatform,
 			$.kExperimental,
-			seq($.kDeprecated, $._expr),  // deprecated 'message'
-		),
+			seq($.kDeprecated, optional($._expr)),  // deprecated or deprecated 'message'
+		)),
 
 		// Attributes & declaration hints
 

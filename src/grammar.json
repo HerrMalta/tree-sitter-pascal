@@ -9074,34 +9074,41 @@
       ]
     },
     "hintDirective": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "kDeprecated"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "kPlatform"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "kExperimental"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "kDeprecated"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_expr"
-            }
-          ]
-        }
-      ]
+      "type": "REPEAT1",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "kPlatform"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "kExperimental"
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "kDeprecated"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_expr"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     },
     "_procAttribute": {
       "type": "CHOICE",
