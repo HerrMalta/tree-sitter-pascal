@@ -505,7 +505,9 @@ module.exports = grammar({
 				field('type', $.typeref)
 			))),
 		varDef:          $ => seq($.kVar, delimited1($._ident), ':', field('type', $.typeref)),
-		constDef:        $ => seq($.kConst, $.identifier, '=', $._expr),
+		constDef:        $ => seq($.kConst, $.identifier,
+			optional(seq(':', field('type', $.type))),
+			'=', $._expr),
 		label:           $ => seq($.identifier, ':'),
 		caseLabel:       $ => seq(delimited1(choice($._expr, $.range)), ':'),
 

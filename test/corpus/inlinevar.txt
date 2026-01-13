@@ -194,3 +194,44 @@ end;
               (kBegin)
               (kEnd))))
         (kEnd)))))
+
+===
+Inline Constants with Type Annotation
+===
+procedure Test;
+begin
+  const inArr : array of string = ['1', '2', '3'];
+  const num : Integer = 123;
+end;
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (constDef
+          (kConst)
+          (identifier)
+          (type
+            (declArray
+              (kArray)
+              (kOf)
+              (type
+                (typeref
+                  (kString)))))
+          (exprBrackets
+            (literalString)
+            (literalString)
+            (literalString)))
+        (constDef
+          (kConst)
+          (identifier)
+          (type
+            (typeref
+              (identifier)))
+          (literalNumber))
+        (kEnd)))))
