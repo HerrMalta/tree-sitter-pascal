@@ -309,6 +309,10 @@
           "named": true
         },
         {
+          "type": "constDef",
+          "named": true
+        },
+        {
           "type": "for",
           "named": true
         },
@@ -397,6 +401,10 @@
         },
         {
           "type": "case",
+          "named": true
+        },
+        {
+          "type": "constDef",
           "named": true
         },
         {
@@ -523,6 +531,10 @@
         },
         {
           "type": "caseCase",
+          "named": true
+        },
+        {
+          "type": "constDef",
           "named": true
         },
         {
@@ -694,6 +706,10 @@
           },
           {
             "type": "case",
+            "named": true
+          },
+          {
+            "type": "constDef",
             "named": true
           },
           {
@@ -883,6 +899,85 @@
         },
         {
           "type": "pp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constDef",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprBinary",
+          "named": true
+        },
+        {
+          "type": "exprBrackets",
+          "named": true
+        },
+        {
+          "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprDot",
+          "named": true
+        },
+        {
+          "type": "exprParens",
+          "named": true
+        },
+        {
+          "type": "exprSubscript",
+          "named": true
+        },
+        {
+          "type": "exprTpl",
+          "named": true
+        },
+        {
+          "type": "exprUnary",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "inherited",
+          "named": true
+        },
+        {
+          "type": "kConst",
+          "named": true
+        },
+        {
+          "type": "kFalse",
+          "named": true
+        },
+        {
+          "type": "kNil",
+          "named": true
+        },
+        {
+          "type": "kTrue",
+          "named": true
+        },
+        {
+          "type": "lambda",
+          "named": true
+        },
+        {
+          "type": "literalNumber",
+          "named": true
+        },
+        {
+          "type": "literalString",
           "named": true
         }
       ]
@@ -1869,6 +1964,10 @@
         },
         {
           "type": "kProcedure",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         },
         {
@@ -3317,6 +3416,10 @@
           "named": true
         },
         {
+          "type": "constDef",
+          "named": true
+        },
+        {
           "type": "for",
           "named": true
         },
@@ -3401,6 +3504,10 @@
           },
           {
             "type": "case",
+            "named": true
+          },
+          {
+            "type": "constDef",
             "named": true
           },
           {
@@ -4581,6 +4688,10 @@
           "named": true
         },
         {
+          "type": "constDef",
+          "named": true
+        },
+        {
           "type": "for",
           "named": true
         },
@@ -4669,6 +4780,10 @@
           },
           {
             "type": "case",
+            "named": true
+          },
+          {
+            "type": "constDef",
             "named": true
           },
           {
@@ -4855,6 +4970,10 @@
           },
           {
             "type": "case",
+            "named": true
+          },
+          {
+            "type": "constDef",
             "named": true
           },
           {
@@ -5514,6 +5633,10 @@
             "named": true
           },
           {
+            "type": "constDef",
+            "named": true
+          },
+          {
             "type": "for",
             "named": true
           },
@@ -5682,6 +5805,10 @@
             "named": true
           },
           {
+            "type": "constDef",
+            "named": true
+          },
+          {
             "type": "for",
             "named": true
           },
@@ -5749,6 +5876,10 @@
           },
           {
             "type": "case",
+            "named": true
+          },
+          {
+            "type": "constDef",
             "named": true
           },
           {
@@ -5924,6 +6055,10 @@
           "named": true
         },
         {
+          "type": "constDef",
+          "named": true
+        },
+        {
           "type": "for",
           "named": true
         },
@@ -6040,6 +6175,11 @@
   },
   {
     "type": "kEndDot",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "kEq",
     "named": true,
     "fields": {}
   },
@@ -7458,6 +7598,10 @@
           "named": true
         },
         {
+          "type": "constDef",
+          "named": true
+        },
+        {
           "type": "for",
           "named": true
         },
@@ -7988,6 +8132,10 @@
           "named": true
         },
         {
+          "type": "kDefault",
+          "named": true
+        },
+        {
           "type": "kVar",
           "named": true
         }
@@ -8024,6 +8172,10 @@
           },
           {
             "type": "case",
+            "named": true
+          },
+          {
+            "type": "constDef",
             "named": true
           },
           {
@@ -8195,6 +8347,10 @@
             "named": true
           },
           {
+            "type": "constDef",
+            "named": true
+          },
+          {
             "type": "for",
             "named": true
           },
@@ -8363,6 +8519,10 @@
     "named": false
   },
   {
+    "type": "=",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -8504,10 +8664,6 @@
   },
   {
     "type": "kEnd",
-    "named": true
-  },
-  {
-    "type": "kEq",
     "named": true
   },
   {

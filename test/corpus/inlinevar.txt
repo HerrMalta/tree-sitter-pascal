@@ -32,6 +32,60 @@ end;
         (kEnd)))))
 
 ===
+Inline Variables with Multiple Names
+===
+procedure Test;
+begin
+  var a, b, c : string;
+end;
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (varDef
+          (kVar)
+          (identifier)
+          (identifier)
+          (identifier)
+          (typeref
+            (kString)))
+        (kEnd)))))
+
+===
+Inline Constants
+===
+procedure Test;
+begin
+  const sc = 'dfg';
+  const num = 123;
+end;
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (constDef
+          (kConst)
+          (identifier)
+          (literalString))
+        (constDef
+          (kConst)
+          (identifier)
+          (literalNumber))
+        (kEnd)))))
+
+===
 Inline Auto Variables
 ===
 procedure Test;

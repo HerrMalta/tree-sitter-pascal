@@ -305,6 +305,7 @@ function statements(trailing) {
 			...semicolon,
 			trailing ? seq($.assignment, ...semicolon) : seq($.assignment, $._semicolon),
 			trailing ? seq($.varDef, ...semicolon) : seq($.varDef, $._semicolon),
+			trailing ? seq($.constDef, ...semicolon) : seq($.constDef, $._semicolon),
 			alias($[rn('statement')], $.statement),
 			alias($[rn('if')],        $.if),
 			alias($[rn('ifElse')],    $.ifElse),
@@ -390,6 +391,10 @@ module.exports = grammar({
 		// Conflict for literalString: string concatenation like 'A''B' can be parsed
 		// as one multi-part string or two separate strings.
 		[ $.literalString ],
+
+		// Conflict for inline var declarations: `var a : type` could be varAssignDef
+		// (for `var a : type := value`) or varDef (for `var a, b : type`).
+		[ $.varAssignDef, $._ident ],
 	],
 
 	rules: {
@@ -499,11 +504,12 @@ module.exports = grammar({
 				':',
 				field('type', $.typeref)
 			))),
-		varDef:          $ => seq($.kVar, $.identifier, ':', field('type', $.typeref)),
+		varDef:          $ => seq($.kVar, delimited1($._ident), ':', field('type', $.typeref)),
+		constDef:        $ => seq($.kConst, $.identifier, '=', $._expr),
 		label:           $ => seq($.identifier, ':'),
 		caseLabel:       $ => seq(delimited1(choice($._expr, $.range)), ':'),
 
-		_statements:     $ => repeat1(choice($.varDef, $._statement,  $.label)),
+		_statements:     $ => repeat1(choice($.varDef, $.constDef, $._statement,  $.label)),
 		_statementsTr:   $ => seq(
 			repeat(choice($._statement, $.label)),
 			choice(tr($,'_statement'), $._statement)
@@ -1166,11 +1172,13 @@ module.exports = grammar({
 				']', ';'
 			))
 		)/*)*/,
-		_procAttributeNoExt: $ => /*pp($,*/ choice(
+		// Procedure attributes with IFDEF support for cases like:
+		// constructor CreateRes(...); {$IFNDEF NEXTGEN} overload; {$ENDIF}
+		_procAttributeNoExt: $ => ppRecursive($, '_procAttributeNoExt',
 			seq(field('attribute', $.procAttribute), ';'),
 			// FPC-specific syntax, e.g. procedure myproc; [public; alias:'bla'; cdecl];
 			...enable_if(fpc, seq('[', delimited(field('attribute', choice($.procAttribute)), ';'), ']', ';'))
-		)/*)*/,
+		),
 
 		procAttribute:   $ => choice(
 			$.kStatic, $.kVirtual, $.kDynamic, $.kAbstract, $.kOverride, $.kFinal,
