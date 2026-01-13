@@ -156,6 +156,74 @@ static void skip_whitespace_and_newlines(TSLexer* lexer, bool* saw_newline) {
 }
 
 /**
+ * Skip a curly-brace comment or preprocessor directive {$...}
+ * Returns true if one was found and skipped.
+ */
+static bool skip_curly_brace_content(TSLexer* lexer) {
+    if (lexer->lookahead != '{') return false;
+
+    // Skip everything until closing '}'
+    lexer->advance(lexer, true);  // skip '{'
+    while (lexer->lookahead != '}' && lexer->lookahead != 0) {
+        lexer->advance(lexer, true);
+    }
+    if (lexer->lookahead == '}') {
+        lexer->advance(lexer, true);  // skip '}'
+    }
+    return true;
+}
+
+/**
+ * Skip a line comment // ... until end of line
+ * Returns true if one was found and skipped.
+ */
+static bool skip_line_comment(TSLexer* lexer) {
+    if (lexer->lookahead != '/') return false;
+
+    lexer->advance(lexer, true);  // skip first '/'
+    if (lexer->lookahead != '/') {
+        // Not a line comment - we consumed one '/' but that's OK
+        // since we're in skip mode anyway
+        return false;
+    }
+
+    lexer->advance(lexer, true);  // skip second '/'
+    // Skip until end of line
+    while (lexer->lookahead != '\n' && lexer->lookahead != 0) {
+        lexer->advance(lexer, true);
+    }
+    return true;
+}
+
+/**
+ * Skip a (* ... *) comment block
+ * Returns true if one was found and skipped.
+ */
+static bool skip_paren_star_comment(TSLexer* lexer) {
+    if (lexer->lookahead != '(') return false;
+
+    lexer->advance(lexer, true);  // skip '('
+    if (lexer->lookahead != '*') {
+        return false;  // Not a comment
+    }
+
+    lexer->advance(lexer, true);  // skip '*'
+    // Skip until we find '*)'
+    while (lexer->lookahead != 0) {
+        if (lexer->lookahead == '*') {
+            lexer->advance(lexer, true);
+            if (lexer->lookahead == ')') {
+                lexer->advance(lexer, true);  // skip ')'
+                return true;
+            }
+        } else {
+            lexer->advance(lexer, true);
+        }
+    }
+    return true;  // EOF reached
+}
+
+/**
  * Check if the lookahead indicates a class member start.
  * This is used to emit CLASS_BODY_START token.
  *
@@ -346,11 +414,67 @@ bool tree_sitter_pascal_external_scanner_scan(
                 }
             } else if (lexer->lookahead != 0) {
                 // Not an identifier - check for symbols that start new statements
-                // We should insert semicolon before these
-                if (lexer->lookahead == '[' ||   // RTTI attributes
-                    lexer->lookahead == '{') {   // Comment/preprocessor start
+                // But first, skip any comments/preprocessor directives
+
+                bool skipped_something = true;
+                while (skipped_something) {
+                    skipped_something = false;
+
+                    // Skip curly-brace content: { comment } or {$ directive }
+                    if (lexer->lookahead == '{') {
+                        skip_curly_brace_content(lexer);
+                        skipped_something = true;
+                    }
+                    // Skip line comments: // ...
+                    else if (lexer->lookahead == '/') {
+                        if (skip_line_comment(lexer)) {
+                            skipped_something = true;
+                        }
+                    }
+                    // Skip paren-star comments: (* ... *)
+                    else if (lexer->lookahead == '(') {
+                        if (skip_paren_star_comment(lexer)) {
+                            skipped_something = true;
+                        }
+                    }
+
+                    // Skip whitespace/newlines after any skipped content
+                    if (skipped_something) {
+                        while (is_whitespace(lexer->lookahead) || is_newline(lexer->lookahead)) {
+                            lexer->advance(lexer, true);
+                        }
+                    }
+                }
+
+                // After skipping all comments/preprocessor, check what's next
+                if (lexer->lookahead == ';') {
+                    // There's a real semicolon - don't insert automatic one
+                    return false;
+                }
+
+                // '[' starts RTTI attributes - insert semicolon before these
+                if (lexer->lookahead == '[') {
                     lexer->result_symbol = AUTOMATIC_SEMICOLON;
                     return true;
+                }
+
+                // If we reach an identifier after skipping comments, check if it's a continuation keyword
+                if (is_identifier_start(lexer->lookahead)) {
+                    char word[256];
+                    size_t len = 0;
+                    int32_t c = lexer->lookahead;
+
+                    while (is_identifier_char(c) && len < sizeof(word) - 1) {
+                        word[len++] = (char)c;
+                        lexer->advance(lexer, true);
+                        c = lexer->lookahead;
+                    }
+                    word[len] = '\0';
+
+                    if (!is_in_keyword_list(word, len, no_insert_keywords)) {
+                        lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                        return true;
+                    }
                 }
             } else {
                 // EOF - insert semicolon at end of file
