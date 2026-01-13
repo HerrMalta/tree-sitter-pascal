@@ -1023,7 +1023,7 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
@@ -1040,6 +1040,10 @@
         },
         {
           "type": "kVar",
+          "named": true
+        },
+        {
+          "type": "rttiAttributes",
           "named": true
         }
       ]
@@ -1911,6 +1915,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "operatorName",
             "named": true
           }
         ]
@@ -5296,6 +5304,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "operatorName",
+            "named": true
           }
         ]
       }
@@ -6483,6 +6495,229 @@
         },
         {
           "type": "kDot",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "operatorName",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "kAdd",
+          "named": true
+        },
+        {
+          "type": "kAnd",
+          "named": true
+        },
+        {
+          "type": "kAssign",
+          "named": true
+        },
+        {
+          "type": "kDiv",
+          "named": true
+        },
+        {
+          "type": "kDot",
+          "named": true
+        },
+        {
+          "type": "kEq",
+          "named": true
+        },
+        {
+          "type": "kFdiv",
+          "named": true
+        },
+        {
+          "type": "kGt",
+          "named": true
+        },
+        {
+          "type": "kGte",
+          "named": true
+        },
+        {
+          "type": "kIn",
+          "named": true
+        },
+        {
+          "type": "kLt",
+          "named": true
+        },
+        {
+          "type": "kLte",
+          "named": true
+        },
+        {
+          "type": "kMod",
+          "named": true
+        },
+        {
+          "type": "kMul",
+          "named": true
+        },
+        {
+          "type": "kNeq",
+          "named": true
+        },
+        {
+          "type": "kNot",
+          "named": true
+        },
+        {
+          "type": "kOpAdd",
+          "named": true
+        },
+        {
+          "type": "kOpAssign",
+          "named": true
+        },
+        {
+          "type": "kOpBitwiseAnd",
+          "named": true
+        },
+        {
+          "type": "kOpBitwiseOr",
+          "named": true
+        },
+        {
+          "type": "kOpBitwiseXor",
+          "named": true
+        },
+        {
+          "type": "kOpDec",
+          "named": true
+        },
+        {
+          "type": "kOpDivide",
+          "named": true
+        },
+        {
+          "type": "kOpEqual",
+          "named": true
+        },
+        {
+          "type": "kOpExplicit",
+          "named": true
+        },
+        {
+          "type": "kOpFinalize",
+          "named": true
+        },
+        {
+          "type": "kOpGreaterThan",
+          "named": true
+        },
+        {
+          "type": "kOpGreaterThanOrEqual",
+          "named": true
+        },
+        {
+          "type": "kOpImplicit",
+          "named": true
+        },
+        {
+          "type": "kOpInc",
+          "named": true
+        },
+        {
+          "type": "kOpInitialize",
+          "named": true
+        },
+        {
+          "type": "kOpIntDivide",
+          "named": true
+        },
+        {
+          "type": "kOpLeftShift",
+          "named": true
+        },
+        {
+          "type": "kOpLessThan",
+          "named": true
+        },
+        {
+          "type": "kOpLessThanOrEqual",
+          "named": true
+        },
+        {
+          "type": "kOpLogicalAnd",
+          "named": true
+        },
+        {
+          "type": "kOpLogicalNot",
+          "named": true
+        },
+        {
+          "type": "kOpLogicalOr",
+          "named": true
+        },
+        {
+          "type": "kOpLogicalXor",
+          "named": true
+        },
+        {
+          "type": "kOpModulus",
+          "named": true
+        },
+        {
+          "type": "kOpMultiply",
+          "named": true
+        },
+        {
+          "type": "kOpNegative",
+          "named": true
+        },
+        {
+          "type": "kOpNotEqual",
+          "named": true
+        },
+        {
+          "type": "kOpPositive",
+          "named": true
+        },
+        {
+          "type": "kOpRightShift",
+          "named": true
+        },
+        {
+          "type": "kOpRound",
+          "named": true
+        },
+        {
+          "type": "kOpSubtract",
+          "named": true
+        },
+        {
+          "type": "kOpTrunc",
+          "named": true
+        },
+        {
+          "type": "kOr",
+          "named": true
+        },
+        {
+          "type": "kShl",
+          "named": true
+        },
+        {
+          "type": "kShr",
+          "named": true
+        },
+        {
+          "type": "kSub",
+          "named": true
+        },
+        {
+          "type": "kXor",
           "named": true
         }
       ]
@@ -8852,6 +9087,134 @@
   },
   {
     "type": "kOn",
+    "named": true
+  },
+  {
+    "type": "kOpAdd",
+    "named": true
+  },
+  {
+    "type": "kOpAssign",
+    "named": true
+  },
+  {
+    "type": "kOpBitwiseAnd",
+    "named": true
+  },
+  {
+    "type": "kOpBitwiseOr",
+    "named": true
+  },
+  {
+    "type": "kOpBitwiseXor",
+    "named": true
+  },
+  {
+    "type": "kOpDec",
+    "named": true
+  },
+  {
+    "type": "kOpDivide",
+    "named": true
+  },
+  {
+    "type": "kOpEqual",
+    "named": true
+  },
+  {
+    "type": "kOpExplicit",
+    "named": true
+  },
+  {
+    "type": "kOpFinalize",
+    "named": true
+  },
+  {
+    "type": "kOpGreaterThan",
+    "named": true
+  },
+  {
+    "type": "kOpGreaterThanOrEqual",
+    "named": true
+  },
+  {
+    "type": "kOpImplicit",
+    "named": true
+  },
+  {
+    "type": "kOpInc",
+    "named": true
+  },
+  {
+    "type": "kOpInitialize",
+    "named": true
+  },
+  {
+    "type": "kOpIntDivide",
+    "named": true
+  },
+  {
+    "type": "kOpLeftShift",
+    "named": true
+  },
+  {
+    "type": "kOpLessThan",
+    "named": true
+  },
+  {
+    "type": "kOpLessThanOrEqual",
+    "named": true
+  },
+  {
+    "type": "kOpLogicalAnd",
+    "named": true
+  },
+  {
+    "type": "kOpLogicalNot",
+    "named": true
+  },
+  {
+    "type": "kOpLogicalOr",
+    "named": true
+  },
+  {
+    "type": "kOpLogicalXor",
+    "named": true
+  },
+  {
+    "type": "kOpModulus",
+    "named": true
+  },
+  {
+    "type": "kOpMultiply",
+    "named": true
+  },
+  {
+    "type": "kOpNegative",
+    "named": true
+  },
+  {
+    "type": "kOpNotEqual",
+    "named": true
+  },
+  {
+    "type": "kOpPositive",
+    "named": true
+  },
+  {
+    "type": "kOpRightShift",
+    "named": true
+  },
+  {
+    "type": "kOpRound",
+    "named": true
+  },
+  {
+    "type": "kOpSubtract",
+    "named": true
+  },
+  {
+    "type": "kOpTrunc",
     "named": true
   },
   {

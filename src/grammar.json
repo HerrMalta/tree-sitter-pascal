@@ -8732,16 +8732,29 @@
           }
         },
         {
-          "type": "STRING",
-          "value": ":"
-        },
-        {
-          "type": "FIELD",
-          "name": "type",
-          "content": {
-            "type": "SYMBOL",
-            "name": "type"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "type",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "type"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "FIELD",
@@ -8814,6 +8827,19 @@
             {
               "type": "SYMBOL",
               "name": "_genericName"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "operatorName"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "operatorDot"
+              },
+              "named": true,
+              "value": "genericDot"
             }
           ]
         }
@@ -8905,6 +8931,134 @@
         {
           "type": "SYMBOL",
           "name": "kIn"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpImplicit"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpExplicit"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpNegative"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpPositive"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpInc"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpDec"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpLogicalNot"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpTrunc"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpRound"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpEqual"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpNotEqual"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpGreaterThan"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpGreaterThanOrEqual"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpLessThan"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpLessThanOrEqual"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpAdd"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpSubtract"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpMultiply"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpDivide"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpIntDivide"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpModulus"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpLeftShift"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpRightShift"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpLogicalAnd"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpLogicalOr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpLogicalXor"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpBitwiseAnd"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpBitwiseOr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpBitwiseXor"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpInitialize"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpFinalize"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kOpAssign"
         }
       ]
     },
@@ -8990,6 +9144,18 @@
                 {
                   "type": "SYMBOL",
                   "name": "kConstref"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "rttiAttributes"
+                },
+                {
+                  "type": "BLANK"
                 }
               ]
             },
@@ -10539,6 +10705,166 @@
     "kDelayed": {
       "type": "PATTERN",
       "value": "delayed",
+      "flags": "i"
+    },
+    "kOpImplicit": {
+      "type": "PATTERN",
+      "value": "implicit",
+      "flags": "i"
+    },
+    "kOpExplicit": {
+      "type": "PATTERN",
+      "value": "explicit",
+      "flags": "i"
+    },
+    "kOpNegative": {
+      "type": "PATTERN",
+      "value": "negative",
+      "flags": "i"
+    },
+    "kOpPositive": {
+      "type": "PATTERN",
+      "value": "positive",
+      "flags": "i"
+    },
+    "kOpInc": {
+      "type": "PATTERN",
+      "value": "inc",
+      "flags": "i"
+    },
+    "kOpDec": {
+      "type": "PATTERN",
+      "value": "dec",
+      "flags": "i"
+    },
+    "kOpLogicalNot": {
+      "type": "PATTERN",
+      "value": "logicalnot",
+      "flags": "i"
+    },
+    "kOpTrunc": {
+      "type": "PATTERN",
+      "value": "trunc",
+      "flags": "i"
+    },
+    "kOpRound": {
+      "type": "PATTERN",
+      "value": "round",
+      "flags": "i"
+    },
+    "kOpEqual": {
+      "type": "PATTERN",
+      "value": "equal",
+      "flags": "i"
+    },
+    "kOpNotEqual": {
+      "type": "PATTERN",
+      "value": "notequal",
+      "flags": "i"
+    },
+    "kOpGreaterThan": {
+      "type": "PATTERN",
+      "value": "greaterthan",
+      "flags": "i"
+    },
+    "kOpGreaterThanOrEqual": {
+      "type": "PATTERN",
+      "value": "greaterthanorequal",
+      "flags": "i"
+    },
+    "kOpLessThan": {
+      "type": "PATTERN",
+      "value": "lessthan",
+      "flags": "i"
+    },
+    "kOpLessThanOrEqual": {
+      "type": "PATTERN",
+      "value": "lessthanorequal",
+      "flags": "i"
+    },
+    "kOpAdd": {
+      "type": "PATTERN",
+      "value": "add",
+      "flags": "i"
+    },
+    "kOpSubtract": {
+      "type": "PATTERN",
+      "value": "subtract",
+      "flags": "i"
+    },
+    "kOpMultiply": {
+      "type": "PATTERN",
+      "value": "multiply",
+      "flags": "i"
+    },
+    "kOpDivide": {
+      "type": "PATTERN",
+      "value": "divide",
+      "flags": "i"
+    },
+    "kOpIntDivide": {
+      "type": "PATTERN",
+      "value": "intdivide",
+      "flags": "i"
+    },
+    "kOpModulus": {
+      "type": "PATTERN",
+      "value": "modulus",
+      "flags": "i"
+    },
+    "kOpLeftShift": {
+      "type": "PATTERN",
+      "value": "leftshift",
+      "flags": "i"
+    },
+    "kOpRightShift": {
+      "type": "PATTERN",
+      "value": "rightshift",
+      "flags": "i"
+    },
+    "kOpLogicalAnd": {
+      "type": "PATTERN",
+      "value": "logicaland",
+      "flags": "i"
+    },
+    "kOpLogicalOr": {
+      "type": "PATTERN",
+      "value": "logicalor",
+      "flags": "i"
+    },
+    "kOpLogicalXor": {
+      "type": "PATTERN",
+      "value": "logicalxor",
+      "flags": "i"
+    },
+    "kOpBitwiseAnd": {
+      "type": "PATTERN",
+      "value": "bitwiseand",
+      "flags": "i"
+    },
+    "kOpBitwiseOr": {
+      "type": "PATTERN",
+      "value": "bitwiseor",
+      "flags": "i"
+    },
+    "kOpBitwiseXor": {
+      "type": "PATTERN",
+      "value": "bitwisexor",
+      "flags": "i"
+    },
+    "kOpInitialize": {
+      "type": "PATTERN",
+      "value": "initialize",
+      "flags": "i"
+    },
+    "kOpFinalize": {
+      "type": "PATTERN",
+      "value": "finalize",
+      "flags": "i"
+    },
+    "kOpAssign": {
+      "type": "PATTERN",
+      "value": "assign",
       "flags": "i"
     },
     "kNil": {

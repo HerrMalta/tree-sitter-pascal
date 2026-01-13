@@ -1109,8 +1109,11 @@ module.exports = grammar({
 			field('name', $._operatorName),
 			field('args', optional($.declArgs)),
 			...enable_if(fpc, field('resultName', optional($.identifier))),
-			':',
-			field('type', $.type),
+			// Return type is optional for managed record operators (Initialize, Finalize, Assign)
+			optional(seq(
+				':',
+				field('type', $.type),
+			)),
 			field('assign', optional($.defaultValue)),
 			$._semicolon,
 			repeat($._procAttributeNoExt)
@@ -1120,18 +1123,39 @@ module.exports = grammar({
 		_operatorName:   $ => seq(
 			choice(
 				$._genericName,
-				...enable_if(fpc,
+				// FPC and Delphi both support operator names and TypeName.OperatorName syntax
+				...enable_if(fpc || delphi,
 					$.operatorName,
 					alias($.operatorDot, $.genericDot)
 				)
 			)
 		),
 		operatorName:    $ => choice(
+			// FPC symbol operators
 			$.kDot, $.kLt, $.kEq, $.kNeq, $.kGt, $.kLte, $.kGte,
 			$.kAdd, $.kSub, $.kMul, $.kFdiv, $.kDiv, $.kMod,
 			$.kAssign,
 			$.kOr, $.kXor, $.kAnd, $.kShl, $.kShr, $.kNot,
 			$.kIn,
+			// Delphi named operators (for operator overloading)
+			...enable_if(delphi,
+				// Conversion operators
+				$.kOpImplicit, $.kOpExplicit,
+				// Unary operators
+				$.kOpNegative, $.kOpPositive, $.kOpInc, $.kOpDec,
+				$.kOpLogicalNot, $.kOpTrunc, $.kOpRound,
+				// Comparison operators
+				$.kOpEqual, $.kOpNotEqual, $.kOpGreaterThan, $.kOpGreaterThanOrEqual,
+				$.kOpLessThan, $.kOpLessThanOrEqual,
+				// Binary operators
+				$.kOpAdd, $.kOpSubtract, $.kOpMultiply, $.kOpDivide, $.kOpIntDivide,
+				$.kOpModulus, $.kOpLeftShift, $.kOpRightShift,
+				$.kOpLogicalAnd, $.kOpLogicalOr, $.kOpLogicalXor,
+				$.kOpBitwiseAnd, $.kOpBitwiseOr, $.kOpBitwiseXor,
+				// Managed record lifecycle operators (Delphi 10.4+)
+				$.kOpInitialize, $.kOpFinalize, $.kOpAssign
+				// Note: kIn already included in FPC symbol operators above, works for Delphi too
+			),
 		),
 
 		declArgs:        $ => seq('(', delimited($.declArg, ';'), ')'),
@@ -1139,6 +1163,8 @@ module.exports = grammar({
 		declArg:         $ => choice(
 			seq(
 				choice($.kVar, $.kConst, $.kOut, $.kConstref),
+				// RTTI attributes like [ref] can appear between modifier and name
+				...enable_if(rtti, optional($.rttiAttributes)),
 				field('name', delimited1($.identifier)),
 				optional(seq(
 					':', field('type', $.type),
@@ -1426,6 +1452,46 @@ module.exports = grammar({
 		kAlias:            $ => /alias/i,
 		// Delphi
 		kDelayed:          $ => /delayed/i,
+
+		// Delphi named operators (for operator overloading in records)
+		// Conversion operators
+		kOpImplicit:       $ => /implicit/i,
+		kOpExplicit:       $ => /explicit/i,
+		// Unary operators
+		kOpNegative:       $ => /negative/i,
+		kOpPositive:       $ => /positive/i,
+		kOpInc:            $ => /inc/i,
+		kOpDec:            $ => /dec/i,
+		kOpLogicalNot:     $ => /logicalnot/i,
+		kOpTrunc:          $ => /trunc/i,
+		kOpRound:          $ => /round/i,
+		// Comparison operators
+		kOpEqual:          $ => /equal/i,
+		kOpNotEqual:       $ => /notequal/i,
+		kOpGreaterThan:    $ => /greaterthan/i,
+		kOpGreaterThanOrEqual: $ => /greaterthanorequal/i,
+		kOpLessThan:       $ => /lessthan/i,
+		kOpLessThanOrEqual: $ => /lessthanorequal/i,
+		// Binary operators
+		kOpAdd:            $ => /add/i,
+		kOpSubtract:       $ => /subtract/i,
+		kOpMultiply:       $ => /multiply/i,
+		kOpDivide:         $ => /divide/i,
+		kOpIntDivide:      $ => /intdivide/i,
+		kOpModulus:        $ => /modulus/i,
+		kOpLeftShift:      $ => /leftshift/i,
+		kOpRightShift:     $ => /rightshift/i,
+		kOpLogicalAnd:     $ => /logicaland/i,
+		kOpLogicalOr:      $ => /logicalor/i,
+		kOpLogicalXor:     $ => /logicalxor/i,
+		kOpBitwiseAnd:     $ => /bitwiseand/i,
+		kOpBitwiseOr:      $ => /bitwiseor/i,
+		kOpBitwiseXor:     $ => /bitwisexor/i,
+		// Managed record lifecycle operators (Delphi 10.4+)
+		kOpInitialize:     $ => /initialize/i,
+		kOpFinalize:       $ => /finalize/i,
+		kOpAssign:         $ => /assign/i,
+		// Note: Delphi's In operator uses the existing kIn keyword, no separate kOpIn needed
 
 		kNil:              $ => /nil/i,
 		kTrue:             $ => /true/i,
