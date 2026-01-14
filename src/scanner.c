@@ -414,8 +414,15 @@ bool tree_sitter_pascal_external_scanner_scan(
                 }
             } else if (lexer->lookahead != 0) {
                 // Not an identifier - check for symbols that start new statements
-                // But first, skip any comments/preprocessor directives
 
+                // '(' continues expressions (method calls, type casts) - don't insert semicolon
+                // Check this BEFORE the comment-skipping loop since skip_paren_star_comment
+                // would consume the '(' even when it's not a (* comment
+                if (lexer->lookahead == '(') {
+                    return false;
+                }
+
+                // Skip any comments/preprocessor directives
                 bool skipped_something = true;
                 while (skipped_something) {
                     skipped_something = false;
