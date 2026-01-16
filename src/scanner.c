@@ -71,7 +71,8 @@ static inline bool is_identifier_char(int32_t c) {
     return (c >= 'a' && c <= 'z') ||
            (c >= 'A' && c <= 'Z') ||
            (c >= '0' && c <= '9') ||
-           c == '_';
+           c == '_' ||
+           (c >= 0x00C0 && c <= 0x024F);  // Latin Extended (German umlauts, etc.)
 }
 
 /**
@@ -80,7 +81,8 @@ static inline bool is_identifier_char(int32_t c) {
 static inline bool is_identifier_start(int32_t c) {
     return (c >= 'a' && c <= 'z') ||
            (c >= 'A' && c <= 'Z') ||
-           c == '_';
+           c == '_' ||
+           (c >= 0x00C0 && c <= 0x024F);  // Latin Extended (German umlauts, etc.)
 }
 
 /**

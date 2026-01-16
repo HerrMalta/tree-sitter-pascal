@@ -47,6 +47,9 @@ const
   e = 1.2e3;
   f = 1.2e-3;
   g = .123;
+  h = 1E3;
+  i = 1E-10;
+  j = 1.5E+3;
 
 ---
 
@@ -54,6 +57,21 @@ const
   (codeFragment
     (declConsts
       (kConst)
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
       (declConst
         (identifier)
         (defaultValue

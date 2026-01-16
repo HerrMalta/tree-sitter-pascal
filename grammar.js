@@ -743,7 +743,7 @@ module.exports = grammar({
 			token.immediate(/[-+]?[0-9]+/),
 			token.immediate(/\$[a-fA-F0-9]+/)
 		),
-		_literalFloat:   $ => prec(10, /[-+]?[0-9]*\.?[0-9]+(e[+-]?[0-9]+)?/),
+		_literalFloat:   $ => prec(10, /[-+]?[0-9]*\.?[0-9]+([eE][+-]?[0-9]+)?/),
 
 		range:           $ => seq(
 			$._expr, '..', $._expr
@@ -1434,7 +1434,7 @@ module.exports = grammar({
 		kExport:           $ => /export/i,
 		kFar:              $ => /far/i,
 		kNear:             $ => /near/i,
-		kSafecall:         $ => /safecal/i,
+		kSafecall:         $ => /safecall/i,
 		kAssembler:        $ => /assembler/i,
 		kNostackframe:     $ => /nostackframe/i,
 		kInterrupt:        $ => /interrupt/i,
@@ -1505,7 +1505,7 @@ module.exports = grammar({
 
 		// Identifier rule - supports optional & prefix for escaping keywords
 		// e.g., &end, &begin, &type are valid identifiers
-		identifier:        $ => /[&]?[a-zA-Z_][0-9_a-zA-Z]*/,
+		identifier:        $ => /[&]?[a-zA-Z_\u00C0-\u024F][0-9_a-zA-Z\u00C0-\u024F]*/,
 
 		// Extended identifier that also allows directive keywords to be used as identifiers
 		// In Delphi/Pascal, directives like 'default' are context-sensitive keywords,

@@ -5270,7 +5270,7 @@
       "value": 10,
       "content": {
         "type": "PATTERN",
-        "value": "[-+]?[0-9]*\\.?[0-9]+(e[+-]?[0-9]+)?"
+        "value": "[-+]?[0-9]*\\.?[0-9]+([eE][+-]?[0-9]+)?"
       }
     },
     "range": {
@@ -10639,7 +10639,7 @@
     },
     "kSafecall": {
       "type": "PATTERN",
-      "value": "safecal",
+      "value": "safecall",
       "flags": "i"
     },
     "kAssembler": {
@@ -10924,7 +10924,7 @@
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[&]?[a-zA-Z_][0-9_a-zA-Z]*"
+      "value": "[&]?[a-zA-Z_\\u00C0-\\u024F][0-9_a-zA-Z\\u00C0-\\u024F]*"
     },
     "_ident": {
       "type": "CHOICE",
