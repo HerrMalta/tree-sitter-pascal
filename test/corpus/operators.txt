@@ -1,0 +1,513 @@
+===
+Delphi operator declaration in record
+===
+
+type
+  TVector = record
+    class operator Implicit(const Value: Double): TVector;
+    class operator Negative(const V: TVector): TVector;
+    class operator Equal(const A, B: TVector): Boolean;
+    class operator Add(const A, B: TVector): TVector;
+    class operator Multiply(const A: TVector; const B: Double): TVector;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpImplicit))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpNegative))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpEqual))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpAdd))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpMultiply))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (kEnd))))))
+
+===
+Delphi operator implementation with TypeName.OperatorName
+===
+
+class operator TVector.Implicit(const Value: Double): TVector;
+begin
+  Result.X := Value;
+end;
+
+class operator TVector.Add(const A, B: TVector): TVector;
+begin
+  Result.X := A.X + B.X;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kClass)
+        (kOperator)
+        (genericDot
+          (identifier)
+          (kDot)
+          (operatorName
+            (kOpImplicit)))
+        (declArgs
+          (declArg
+            (kConst)
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (type
+          (typeref
+            (identifier))))
+      (block
+        (kBegin)
+        (assignment
+          (exprDot
+            (identifier)
+            (kDot)
+            (identifier))
+          (kAssign)
+          (identifier))
+        (kEnd)))
+    (defProc
+      (declProc
+        (kClass)
+        (kOperator)
+        (genericDot
+          (identifier)
+          (kDot)
+          (operatorName
+            (kOpAdd)))
+        (declArgs
+          (declArg
+            (kConst)
+            (identifier)
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (type
+          (typeref
+            (identifier))))
+      (block
+        (kBegin)
+        (assignment
+          (exprDot
+            (identifier)
+            (kDot)
+            (identifier))
+          (kAssign)
+          (exprBinary
+            (exprDot
+              (identifier)
+              (kDot)
+              (identifier))
+            (kAdd)
+            (exprDot
+              (identifier)
+              (kDot)
+              (identifier))))
+        (kEnd)))))
+
+===
+Delphi record with multiple operator categories
+===
+
+type
+  TMyRecord = record
+    // Conversion
+    class operator Implicit(const V: Integer): TMyRecord;
+    class operator Explicit(const V: TMyRecord): Integer;
+    // Unary
+    class operator Positive(const V: TMyRecord): TMyRecord;
+    class operator Inc(const V: TMyRecord): TMyRecord;
+    class operator Dec(const V: TMyRecord): TMyRecord;
+    class operator LogicalNot(const V: TMyRecord): TMyRecord;
+    // Comparison
+    class operator NotEqual(const A, B: TMyRecord): Boolean;
+    class operator GreaterThan(const A, B: TMyRecord): Boolean;
+    class operator LessThan(const A, B: TMyRecord): Boolean;
+    // Binary
+    class operator Subtract(const A, B: TMyRecord): TMyRecord;
+    class operator Divide(const A, B: TMyRecord): TMyRecord;
+    class operator IntDivide(const A, B: TMyRecord): TMyRecord;
+    class operator Modulus(const A, B: TMyRecord): TMyRecord;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (comment)
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpImplicit))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpExplicit))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (comment)
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpPositive))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpInc))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpDec))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpLogicalNot))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (comment)
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpNotEqual))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpGreaterThan))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpLessThan))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (comment)
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpSubtract))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpDivide))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpIntDivide))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpModulus))
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (type
+              (typeref
+                (identifier))))
+          (kEnd))))))
+
+===
+Delphi managed record operators (Initialize, Finalize, Assign)
+===
+
+type
+  TManagedRec = record
+    Value: Integer;
+    class operator Initialize(out Dest: TManagedRec);
+    class operator Finalize(var Dest: TManagedRec);
+    class operator Assign(var Dest: TManagedRec; const [ref] Src: TManagedRec);
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpInitialize))
+            (declArgs
+              (declArg
+                (kOut)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpFinalize))
+            (declArgs
+              (declArg
+                (kVar)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))))
+          (declProc
+            (kClass)
+            (kOperator)
+            (operatorName
+              (kOpAssign))
+            (declArgs
+              (declArg
+                (kVar)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))
+              (declArg
+                (kConst)
+                (rttiAttributes
+                  (identifier))
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))))
+          (kEnd))))))

@@ -1063,23 +1063,28 @@ module.exports = grammar({
 			))
 		),
 
+		// Property declaration - supports both full declarations and redeclarations.
+		// Full: property Foo: Integer read FFoo write FFoo;
+		// Redeclaration (visibility promotion): property Foo;
 		declProp:        $ => seq(
 			...enable_if(rtti, optional($.rttiAttributes)),
 			optional($.kClass),
 			$.kProperty,
 			field('name', $.identifier),
 			field('args', optional($.declPropArgs)),
-			':',
-			field('type', $.type),
-			repeat(choice(
-				seq($.kIndex, field('index', $._expr)),
-				...enable_if(delphi, seq($.kDispId, field('dispid', $._expr))),
-				seq($.kRead, field('getter', $._ref)),
-				seq($.kWrite, field('setter', $._ref)),
-				seq($.kImplements, field('implements', delimited($._expr))),
-				seq($.kDefault, field('defaultValue', $._expr)),
-				seq($.kStored, field('stored', $._expr)),
-				$.kNodefault,
+			optional(seq(
+				':',
+				field('type', $.type),
+				repeat(choice(
+					seq($.kIndex, field('index', $._expr)),
+					...enable_if(delphi, seq($.kDispId, field('dispid', $._expr))),
+					seq($.kRead, field('getter', $._ref)),
+					seq($.kWrite, field('setter', $._ref)),
+					seq($.kImplements, field('implements', delimited($._expr))),
+					seq($.kDefault, field('defaultValue', $._expr)),
+					seq($.kStored, field('stored', $._expr)),
+					$.kNodefault,
+				)),
 			)),
 			optional($.hintDirective),
 			$._semicolon,
@@ -1129,6 +1134,7 @@ module.exports = grammar({
 				field('type', $.typeref),
 			)),
 			field('assign', optional($.defaultValue)),
+			optional(field('convention', $.callingConvention)),
 			$._semicolon,
 			repeat($._procAttributeNoExt)
 		),
@@ -1145,6 +1151,7 @@ module.exports = grammar({
 				field('type', $.type),
 			)),
 			field('assign', optional($.defaultValue)),
+			optional(field('convention', $.callingConvention)),
 			$._semicolon,
 			repeat($._procAttributeNoExt)
 		),

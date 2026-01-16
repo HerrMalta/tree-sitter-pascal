@@ -1912,6 +1912,16 @@
           }
         ]
       },
+      "convention": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "callingConvention",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -2596,7 +2606,7 @@
       },
       "type": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "type",
