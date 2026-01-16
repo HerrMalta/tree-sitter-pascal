@@ -4425,67 +4425,7 @@
             "named": false
           },
           {
-            "type": "exprBinary",
-            "named": true
-          },
-          {
-            "type": "exprBrackets",
-            "named": true
-          },
-          {
-            "type": "exprCall",
-            "named": true
-          },
-          {
-            "type": "exprDot",
-            "named": true
-          },
-          {
-            "type": "exprParens",
-            "named": true
-          },
-          {
-            "type": "exprSubscript",
-            "named": true
-          },
-          {
-            "type": "exprTpl",
-            "named": true
-          },
-          {
-            "type": "exprUnary",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "inherited",
-            "named": true
-          },
-          {
-            "type": "kFalse",
-            "named": true
-          },
-          {
-            "type": "kNil",
-            "named": true
-          },
-          {
-            "type": "kTrue",
-            "named": true
-          },
-          {
-            "type": "lambda",
-            "named": true
-          },
-          {
-            "type": "literalNumber",
-            "named": true
-          },
-          {
-            "type": "literalString",
+            "type": "exprTplArg",
             "named": true
           }
         ]
@@ -4571,6 +4511,37 @@
         },
         {
           "type": "kLt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exprTplArg",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "kString",
+          "named": true
+        },
+        {
+          "type": "typerefDot",
+          "named": true
+        },
+        {
+          "type": "typerefPtr",
+          "named": true
+        },
+        {
+          "type": "typerefTpl",
           "named": true
         }
       ]

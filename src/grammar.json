@@ -3610,6 +3610,19 @@
         ]
       }
     },
+    "exprTplArg": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_typeref"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "typerefTpl"
+        }
+      ]
+    },
     "exprTpl": {
       "type": "PREC_LEFT",
       "value": 5,
@@ -3647,7 +3660,7 @@
                           "members": [
                             {
                               "type": "SYMBOL",
-                              "name": "_expr"
+                              "name": "exprTplArg"
                             },
                             {
                               "type": "STRING",
@@ -3664,7 +3677,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "_expr"
+                  "name": "exprTplArg"
                 }
               ]
             }
@@ -11065,6 +11078,10 @@
     ],
     [
       "literalString"
+    ],
+    [
+      "exprTplArg",
+      "_typeref"
     ],
     [
       "varAssignDef",

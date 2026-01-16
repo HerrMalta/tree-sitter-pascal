@@ -326,16 +326,11 @@
  (#match? @constant "^[A-Z][A-Z0-9_]+$|^[a-z]{2}[A-Z].+$")))
 (exprParens ((identifier) @constant
  (#match? @constant "^[A-Z][A-Z0-9_]+$|^[a-z]{2}[A-Z].+$")))
-;(exprDot rhs: ((identifier) @constant
-; (#match? @constant "^[A-Z][A-Z0-9_]+$|^[a-z]{1,2}[A-Z].+$")))
-(exprTpl args: ((identifier) @constant
+; Template arguments contain exprTplArg nodes, not direct identifiers
+(exprTpl (exprTplArg (identifier) @constant
  (#match? @constant "^[A-Z][A-Z0-9_]+$|^[a-z]{2}[A-Z].+$")))
 (exprArgs ((identifier) @constant
  (#match? @constant "^[A-Z][A-Z0-9_]+$|^[a-z]{2}[A-Z].+$")))
-;(declEnumValue ((identifier) @constant
-; (#match? @constant "^[A-Z][A-Z0-9_]+$|^[a-z]{1,2}[A-Z].+$")))
-;(defaultValue ((identifier) @constant
-; (#match? @constant "^[A-Z][A-Z0-9_]+$|^[a-z]{1,2}[A-Z].+$")))
 
 ; -- Use scoping information for additional highlighting. THIS NEED TO BE LAST.
 ; FIXME: Right now this is buggy, because in case of something like this:

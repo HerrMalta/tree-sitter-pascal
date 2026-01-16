@@ -392,6 +392,10 @@ module.exports = grammar({
 		// as one multi-part string or two separate strings.
 		[ $.literalString ],
 
+		// Conflict between _typeref and exprTplArg when parsing nested generics inside
+		// RTTI attributes, e.g. [Foo<Bar,Baz>]. Both rules can consume typerefTpl.
+		[ $.exprTplArg, $._typeref ],
+
 		// Conflict for inline var declarations: `var a : type` could be varAssignDef
 		// (for `var a : type := value`) or varDef (for `var a, b : type`).
 		[ $.varAssignDef, $._ident ],
@@ -579,6 +583,21 @@ module.exports = grammar({
 
 		exprAs:          $ => op.infix(3, $._expr, $.kAs,  $._expr),
 
+		// Template arguments in *expression* context (Delphi generics).
+		//
+		// We intentionally do NOT allow arbitrary expressions as template arguments,
+		// because that makes comparisons like `A < 0` ambiguous and leads to spurious
+		// "missing >" errors.
+		//
+		// However, Delphi generic specializations can include nested specializations
+		// in expression context (e.g. `e<f,g>`), so we need a recursive, type-ish
+		// argument rule.
+		exprTplArg:      $ => choice(
+			$._typeref,
+			// Allow nested generic specialization inside template args: Foo<Bar<Baz>>
+			...enable_if(templates, $.typerefTpl),
+		),
+
 		// Unfortunately, we can't use $.exprArgs for $.exprTpl because the
 		// parser cannot handle it.
 		//
@@ -621,7 +640,16 @@ module.exports = grammar({
 		// template. Then the existing node is simply "renamed". Because of
 		// this, we can't have an extra node in only one of the branches.
 		//
-		exprTpl:         $ => op.args(5, $._ref, $.kLt, delimited1($._expr, ',', 5),  $.kGt),
+		// Generic specialization in expression context.
+		//
+		// IMPORTANT: We must avoid mis-parsing comparisons like:
+		//   IfThen(AData < 0, 0, AData)
+		// as a template instantiation `AData<0,0,AData>` (which then causes
+		// a spurious "missing >" error).
+		//
+		// Therefore we restrict template arguments to *type-ish* references rather
+		// than arbitrary expressions.
+		exprTpl:         $ => op.args(5, $._ref, $.kLt, delimited1($.exprTplArg, ',', 5),  $.kGt),
 		exprSubscript:   $ => op.args(5, $._ref, '[',   $.exprArgs,  ']'  ),
 		exprCall:        $ => op.args(5, $._ref, '(',   optional($.exprArgs), ')'  ),
 

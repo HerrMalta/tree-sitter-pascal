@@ -465,6 +465,39 @@ end;
         (kEnd)))))
 
 ===
+IfThen with < comparison (must not become generic)
+===
+
+procedure Main;
+begin
+  cMin := IfThen(AData < 0, 0, AData);
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (exprCall
+            (identifier)
+            (exprArgs
+              (exprBinary
+                (identifier)
+                (kLt)
+                (literalNumber))
+              (literalNumber)
+              (identifier))))
+        (kEnd)))))
+
+===
 Subscripts
 ===
 

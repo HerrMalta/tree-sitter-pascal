@@ -295,20 +295,22 @@ end;
         (if
           (kIf)
           (exprBinary
-            (exprCall
+            (exprBinary
+              (identifier)
+              (kLt)
+              (identifier))
+            (kGt)
+            (exprBinary
+              (exprParens
+                (identifier))
+              (kLt)
               (exprTpl
                 (identifier)
                 (kLt)
-                (identifier)
-                (kGt))
-              (exprArgs
-                (identifier)))
-            (kLt)
-            (exprTpl
-              (identifier)
-              (kLt)
-              (identifier)
-              (identifier)
-              (kGt)))
+                (exprTplArg
+                  (identifier))
+                (exprTplArg
+                  (identifier))
+                (kGt))))
           (kThen))
         (kEnd)))))
