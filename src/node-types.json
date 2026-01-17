@@ -1303,6 +1303,10 @@
           {
             "type": "kDefault",
             "named": true
+          },
+          {
+            "type": "kMessage",
+            "named": true
           }
         ]
       },
@@ -1565,6 +1569,10 @@
           },
           {
             "type": "kDefault",
+            "named": true
+          },
+          {
+            "type": "kMessage",
             "named": true
           }
         ]
@@ -3031,6 +3039,10 @@
           },
           {
             "type": "kDefault",
+            "named": true
+          },
+          {
+            "type": "kMessage",
             "named": true
           }
         ]
@@ -8360,6 +8372,10 @@
         },
         {
           "type": "kDefault",
+          "named": true
+        },
+        {
+          "type": "kMessage",
           "named": true
         },
         {

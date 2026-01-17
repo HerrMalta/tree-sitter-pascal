@@ -910,6 +910,38 @@ type
           (kEnd))))))
 
 ===
+Property redeclaration with default
+===
+
+type
+  a = class
+    property b default 0;
+    property c nodefault;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declProp
+            (kProperty)
+            (identifier)
+            (kDefault)
+            (literalNumber))
+          (declProp
+            (kProperty)
+            (identifier)
+            (kNodefault))
+          (kEnd))))))
+
+===
 Variant Records
 ===
 

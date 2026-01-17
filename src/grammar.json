@@ -8249,6 +8249,40 @@
           "type": "CHOICE",
           "members": [
             {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "kDefault"
+                    },
+                    {
+                      "type": "FIELD",
+                      "name": "defaultValue",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_expr"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "kNodefault"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
               "type": "SYMBOL",
               "name": "hintDirective"
             },
@@ -10994,6 +11028,10 @@
         {
           "type": "SYMBOL",
           "name": "kDefault"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kMessage"
         }
       ]
     },

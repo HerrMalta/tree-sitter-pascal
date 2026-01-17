@@ -1086,6 +1086,11 @@ module.exports = grammar({
 					$.kNodefault,
 				)),
 			)),
+			// Allow default/nodefault for property redeclarations (no type required)
+			optional(choice(
+				seq($.kDefault, field('defaultValue', $._expr)),
+				$.kNodefault,
+			)),
 			optional($.hintDirective),
 			$._semicolon,
 			repeat($._procAttribute)
@@ -1545,7 +1550,7 @@ module.exports = grammar({
 		// Extended identifier that also allows directive keywords to be used as identifiers
 		// In Delphi/Pascal, directives like 'default' are context-sensitive keywords,
 		// not reserved words. They can be used as variable/field/const names.
-		_ident:            $ => choice($.identifier, $.kDefault),
+		_ident:            $ => choice($.identifier, $.kDefault, $.kMessage),
 
 	  	_space:            $ => /[\s\r\n\t]+/,
 		pp:                $ => /\{\$[^}]*\}/,
