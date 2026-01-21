@@ -95,13 +95,13 @@ function pp($, ...rule) {
 		choice(
 			seq(...rule),
 			seq(
-				alias(/\{\$if[^}]*\}/i, $.pp),
+				alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
 				...rule,
 				repeat(seq(
 					alias(/\{\$else[^}]*\}/i, $.pp),
 					...rule
 				)),
-				alias(/\{\$end[^}]*\}/i, $.pp)
+				alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp)
 			),
 		)
 	);
@@ -121,13 +121,13 @@ function ppRecursive($, ruleName, ...baseChoices) {
 	return choice(
 		...baseChoices,
 		seq(
-			alias(/\{\$if[^}]*\}/i, $.pp),
+			alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
 			repeat($[ruleName]),  // Allow multiple items in IF branch (including nested IFDEFs)
 			repeat(seq(
 				alias(/\{\$else[^}]*\}/i, $.pp),
 				repeat($[ruleName])  // Allow multiple items in ELSE/ELIF branches
 			)),
-			alias(/\{\$end[^}]*\}/i, $.pp)
+			alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp)
 		)
 	);
 }
@@ -253,7 +253,7 @@ function statements(trailing) {
 				),
 				// Preprocessor split: {$IF} else {$ELSE} cases+else {$ENDIF}
 				seq(
-					alias(/\{\$if[^}]*\}/i, $.pp),
+					alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
 					$.kElse,
 					optional(':'),
 					optional(tr($,'_statements')),
@@ -265,7 +265,7 @@ function statements(trailing) {
 						optional(':'),
 						optional(tr($,'_statements'))
 					)),
-					alias(/\{\$end[^}]*\}/i, $.pp)
+					alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp)
 				)
 			)),
 			$.kEnd, ...semicolon
@@ -578,7 +578,14 @@ module.exports = grammar({
 
 		inherited:       $ => prec.right(seq($.kInherited, optional($.identifier))),
 
-		exprDot:         $ => op.infix(5, $._ref, $.kDot, $._ref),
+		// Member access expression with optional RHS for error recovery.
+		// When typing "obj." for IntelliSense, the RHS is missing - we allow this
+		// to prevent cascading errors. The LSP detects missing RHS and reports it.
+		exprDot:         $ => prec.left(5, seq(
+			field('lhs', $._ref),
+			field('operator', $.kDot),
+			field('rhs', optional($._ref))
+		)),
 		exprDeref:       $ => op.postfix(4, $._expr, $.kHat),
 
 		exprAs:          $ => op.infix(3, $._expr, $.kAs,  $._expr),
@@ -1051,9 +1058,9 @@ module.exports = grammar({
 			// Field with RTTI attribute wrapped in preprocessor block
 			// Handles: {$IFDEF X} [Attr] {$ENDIF} fieldName: Type;
 			...enable_if(rtti, seq(
-				alias(/\{\$if[^}]*\}/i, $.pp),
+				alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
 				$.rttiAttributes,
-				alias(/\{\$end[^}]*\}/i, $.pp),
+				alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp),
 				field('name', delimited1($._ident)),
 				':',
 				field('type', $.type),
@@ -1542,7 +1549,7 @@ module.exports = grammar({
 
 		kIfdef:            $ => /ifdef/i,
 		kIfndef:           $ => /ifndef/i,
-		kEndif:            $ => /endif/i,
+		kEndif:            $ => /(?:endif|ifend)/i,
 
 		// Identifier rule - supports optional & prefix for escaping keywords
 		// e.g., &end, &begin, &type are valid identifiers

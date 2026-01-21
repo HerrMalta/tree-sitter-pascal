@@ -1055,7 +1055,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -1097,7 +1097,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -1195,7 +1195,7 @@
                         "type": "ALIAS",
                         "content": {
                           "type": "PATTERN",
-                          "value": "\\{\\$if[^}]*\\}",
+                          "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                           "flags": "i"
                         },
                         "named": true,
@@ -1308,7 +1308,7 @@
                         "type": "ALIAS",
                         "content": {
                           "type": "PATTERN",
-                          "value": "\\{\\$end[^}]*\\}",
+                          "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                           "flags": "i"
                         },
                         "named": true,
@@ -2322,7 +2322,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -2364,7 +2364,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -2462,7 +2462,7 @@
                         "type": "ALIAS",
                         "content": {
                           "type": "PATTERN",
-                          "value": "\\{\\$if[^}]*\\}",
+                          "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                           "flags": "i"
                         },
                         "named": true,
@@ -2575,7 +2575,7 @@
                         "type": "ALIAS",
                         "content": {
                           "type": "PATTERN",
-                          "value": "\\{\\$end[^}]*\\}",
+                          "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                           "flags": "i"
                         },
                         "named": true,
@@ -3545,8 +3545,16 @@
             "type": "FIELD",
             "name": "rhs",
             "content": {
-              "type": "SYMBOL",
-              "name": "_ref"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_ref"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           }
         ]
@@ -4763,7 +4771,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -4805,7 +4813,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5365,7 +5373,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5407,7 +5415,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5487,7 +5495,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5529,7 +5537,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5666,7 +5674,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5708,7 +5716,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5755,7 +5763,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5797,7 +5805,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5957,7 +5965,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -5999,7 +6007,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -6039,7 +6047,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -6081,7 +6089,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -6142,7 +6150,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -6184,7 +6192,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -7640,7 +7648,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -7682,7 +7690,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -7713,7 +7721,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -7755,7 +7763,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -7884,7 +7892,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -7898,7 +7906,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -9539,7 +9547,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$if[^}]*\\}",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -9581,7 +9589,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "\\{\\$end[^}]*\\}",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
                 "flags": "i"
               },
               "named": true,
@@ -11028,7 +11036,7 @@
     },
     "kEndif": {
       "type": "PATTERN",
-      "value": "endif",
+      "value": "(?:endif|ifend)",
       "flags": "i"
     },
     "identifier": {

@@ -281,3 +281,44 @@ end;
       (block
         (kBegin)
         (kEnd)))))
+
+================================================================================
+Incomplete member access (trailing dot for IntelliSense)
+================================================================================
+
+procedure Test;
+var
+  obj: TObject;
+begin
+  obj.
+  WriteLn('Hello');
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (block
+        (kBegin)
+        (statement
+          (exprDot
+            (identifier)
+            (kDot))
+          (automatic_semicolon))
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (literalString))))
+        (kEnd)))))
