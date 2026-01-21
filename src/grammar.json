@@ -8269,6 +8269,23 @@
                   ]
                 },
                 {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "kStored"
+                    },
+                    {
+                      "type": "FIELD",
+                      "name": "stored",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_expr"
+                      }
+                    }
+                  ]
+                },
+                {
                   "type": "SYMBOL",
                   "name": "kNodefault"
                 }

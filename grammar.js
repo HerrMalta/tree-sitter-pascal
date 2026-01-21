@@ -1086,9 +1086,10 @@ module.exports = grammar({
 					$.kNodefault,
 				)),
 			)),
-			// Allow default/nodefault for property redeclarations (no type required)
+			// Allow default/nodefault/stored for property redeclarations (no type required)
 			optional(choice(
 				seq($.kDefault, field('defaultValue', $._expr)),
+				seq($.kStored, field('stored', $._expr)),
 				$.kNodefault,
 			)),
 			optional($.hintDirective),
