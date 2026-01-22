@@ -444,3 +444,72 @@ var
         (hintDirective
           (kDeprecated)
           (literalString))))))
+
+===
+Procedure hints with calling convention
+===
+
+unit Test;
+interface
+function WTSRegister(hWnd: HWND; dwFlags: DWORD): Boolean; stdcall deprecated 'please use Winapi.WTSApi32';
+function WTSUnRegister(hWnd: HWND): Boolean; stdcall deprecated;
+procedure DoSomething; cdecl platform;
+implementation
+end.
+
+---
+
+(root
+  (unit
+    (kUnit)
+    (moduleName
+      (identifier))
+    (interface
+      (kInterface)
+      (declProc
+        (kFunction)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (typeref
+          (identifier))
+        (procAttribute
+          (kStdcall))
+        (procAttribute
+          (kDeprecated)
+          (literalString)))
+      (declProc
+        (kFunction)
+        (identifier)
+        (declArgs
+          (declArg
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (typeref
+          (identifier))
+        (procAttribute
+          (kStdcall))
+        (procAttribute
+          (kDeprecated)))
+      (declProc
+        (kProcedure)
+        (identifier)
+        (procAttribute
+          (kCdecl))
+        (procAttribute
+          (kPlatform))))
+    (implementation
+      (kImplementation))
+    (kEnd)
+    (kEndDot)))

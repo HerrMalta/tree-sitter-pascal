@@ -1191,6 +1191,7 @@ module.exports = grammar({
 			)),
 			field('assign', optional($.defaultValue)),
 			optional(field('convention', $.callingConvention)),
+			optional($.hintDirective),
 			$._semicolon,
 			repeat($._procAttributeNoExt)
 		),
@@ -1208,6 +1209,7 @@ module.exports = grammar({
 			)),
 			field('assign', optional($.defaultValue)),
 			optional(field('convention', $.callingConvention)),
+			optional($.hintDirective),
 			$._semicolon,
 			repeat($._procAttributeNoExt)
 		),
@@ -1293,8 +1295,9 @@ module.exports = grammar({
 		)/*)*/,
 		// Procedure attributes with IFDEF support for cases like:
 		// constructor CreateRes(...); {$IFNDEF NEXTGEN} overload; {$ENDIF}
+		// Delphi allows chaining attributes without semicolons: stdcall deprecated 'msg';
 		_procAttributeNoExt: $ => ppRecursive($, '_procAttributeNoExt',
-			seq(field('attribute', $.procAttribute), ';'),
+			seq(repeat1(field('attribute', $.procAttribute)), ';'),
 			// FPC-specific syntax, e.g. procedure myproc; [public; alias:'bla'; cdecl];
 			...enable_if(fpc, seq('[', delimited(field('attribute', choice($.procAttribute)), ';'), ']', ';'))
 		),

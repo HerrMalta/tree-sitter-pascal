@@ -1980,6 +1980,10 @@
           "named": true
         },
         {
+          "type": "hintDirective",
+          "named": true
+        },
+        {
           "type": "kClass",
           "named": true
         },
