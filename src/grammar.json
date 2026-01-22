@@ -5359,6 +5359,10 @@
           "name": "declExports"
         },
         {
+          "type": "SYMBOL",
+          "name": "declTypesSplit"
+        },
+        {
           "type": "PREC",
           "value": -1,
           "content": {
@@ -5547,6 +5551,97 @@
         }
       ]
     },
+    "_defProc_bodySplit": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
+            "flags": "i"
+          },
+          "named": true,
+          "value": "pp"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_defProc_local"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "kBegin"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\{\\$else[^}]*\\}",
+            "flags": "i"
+          },
+          "named": true,
+          "value": "pp"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "kBegin"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\{\\$(?:end|ifend)[^}]*\\}",
+            "flags": "i"
+          },
+          "named": true,
+          "value": "pp"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_statementsTr"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kEnd"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_semicolon"
+        }
+      ]
+    },
     "defProc": {
       "type": "SEQ",
       "members": [
@@ -5559,8 +5654,17 @@
           }
         },
         {
-          "type": "SYMBOL",
-          "name": "_defProc_body"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_defProc_body"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_defProc_bodySplit"
+            }
+          ]
         }
       ]
     },
@@ -5666,6 +5770,10 @@
         {
           "type": "SYMBOL",
           "name": "declExports"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "declTypesSplit"
         },
         {
           "type": "SEQ",
@@ -6029,6 +6137,59 @@
           "content": {
             "type": "SYMBOL",
             "name": "_declTypeItem"
+          }
+        }
+      ]
+    },
+    "declTypesSplit": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
+            "flags": "i"
+          },
+          "named": true,
+          "value": "pp"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\{\\$else[^}]*\\}",
+            "flags": "i"
+          },
+          "named": true,
+          "value": "pp"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kType"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "declType"
+          }
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\{\\$(?:end|ifend)[^}]*\\}",
+            "flags": "i"
+          },
+          "named": true,
+          "value": "pp"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "declType"
           }
         }
       ]
@@ -11159,6 +11320,22 @@
     [
       "_definition",
       "_defProc_body"
+    ],
+    [
+      "_definition",
+      "_defProc_body",
+      "_defProc_bodySplit"
+    ],
+    [
+      "declTypes",
+      "declTypesSplit"
+    ],
+    [
+      "_declTypeItem",
+      "declTypesSplit"
+    ],
+    [
+      "declTypesSplit"
     ],
     [
       "_definition",

@@ -91,15 +91,16 @@ function delimited(rule, delimiter = ',') {
 function pp($, ...rule) {
 	if (!use_pp)
 		return seq(...rule);
+	const ruleSeq = rule.length === 1 ? rule[0] : seq(...rule);
 	return (
 		choice(
 			seq(...rule),
 			seq(
 				alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
-				...rule,
+				optional(ruleSeq),
 				repeat(seq(
 					alias(/\{\$else[^}]*\}/i, $.pp),
-					...rule
+					optional(ruleSeq)
 				)),
 				alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp)
 			),
@@ -364,6 +365,13 @@ module.exports = grammar({
 		// Conflict for _definition and _defProc_body: both use ppRecursive,
 		// creating ambiguity when IFDEF blocks appear in procedure bodies.
 		[ $._definition, $._defProc_body ],
+		[ $._definition, $._defProc_body, $._defProc_bodySplit ],
+
+		// Conflict for declTypes and declTypesSplit: when type keyword follows
+		// a preprocessor directive, both rules can match.
+		[ $.declTypes, $.declTypesSplit ],
+		[ $._declTypeItem, $.declTypesSplit ],
+		[ $.declTypesSplit ],
 
 		// Conflict between _definition and _defProc_local: when parsing local
 		// definitions in a procedure, both rules can consume _definitions.
@@ -793,6 +801,7 @@ module.exports = grammar({
 			$.declTypes, $.declVars, $.declConsts, $.defProc,
 			alias($.declProcFwd, $.declProc),
 			$.declLabels, $.declUses, $.declExports,
+			$.declTypesSplit,  // Handle type keyword inside conditional branch
 
 			// Not actually valid syntax, but helps the parser recover:
 			prec(-1,$.blockTr)
@@ -812,9 +821,27 @@ module.exports = grammar({
 			)
 		),
 
+		// Procedure body where `begin` keyword is inside a conditional IFNDEF/ELSE branch
+		// Handles: {$IFNDEF} var...; begin {$ELSE} begin {$ENDIF} ... end;
+		// This is needed for "transformed" files where one branch is blanked out
+		_defProc_bodySplit: $ => seq(
+			alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
+			// IFNDEF branch: may have local vars and 'begin'
+			optional($._defProc_local),
+			optional($.kBegin),
+			alias(/\{\$else[^}]*\}/i, $.pp),
+			// ELSE branch: may be blanked (originally had 'begin')
+			optional($.kBegin),
+			alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp),
+			// Statements continue after ENDIF
+			optional(tr($,'_statements')),
+			$.kEnd,
+			$._semicolon
+		),
+
 		defProc:         $ => seq(
 			field('header', $.declProc),
-			$._defProc_body
+			choice($._defProc_body, $._defProc_bodySplit)
 		),
 
 		declProcFwd:     $ => seq(
@@ -834,7 +861,8 @@ module.exports = grammar({
 		_declaration:    $ => ppRecursive($, '_declaration',
 			$.declTypes, $.declVars, $.declConsts, $.declProc, $.declProp,
 			alias($.declProcFwd, $.declProc),
-			$.declUses, $.declLabels, $.declExports
+			$.declUses, $.declLabels, $.declExports,
+			$.declTypesSplit  // Handle type keyword inside conditional branch
 		),
 		_declarations:   $ => repeat1($._declaration),
 
@@ -863,6 +891,21 @@ module.exports = grammar({
 		declTypes:       $ => seq(
 			$.kType,
 			repeat($._declTypeItem)
+		),
+
+		// Type section where `type` keyword is inside a conditional ELSE branch
+		// Handles: {$IF} [empty] {$ELSE} type T1; {$ENDIF} T2;
+		// This is needed for "transformed" files where the IF branch is blanked out
+		declTypesSplit: $ => seq(
+			alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
+			// IF branch is empty (whitespace only) - no content
+			alias(/\{\$else[^}]*\}/i, $.pp),
+			// ELSE branch contains type keyword and declarations
+			$.kType,
+			repeat($.declType),
+			alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp),
+			// Continuation after endif - type items WITHOUT type keyword
+			repeat1($.declType)
 		),
 
 		// Recursive rule for variable declarations with nested IFDEF support

@@ -886,6 +886,10 @@
           "named": true
         },
         {
+          "type": "declTypesSplit",
+          "named": true
+        },
+        {
           "type": "declUses",
           "named": true
         },
@@ -2983,6 +2987,29 @@
     }
   },
   {
+    "type": "declTypesSplit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "declType",
+          "named": true
+        },
+        {
+          "type": "kType",
+          "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "declUses",
     "named": true,
     "fields": {},
@@ -3308,6 +3335,10 @@
             "named": true
           },
           {
+            "type": "declTypesSplit",
+            "named": true
+          },
+          {
             "type": "declUses",
             "named": true
           },
@@ -3331,11 +3362,131 @@
       "required": false,
       "types": [
         {
+          "type": "asm",
+          "named": true
+        },
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
           "type": "automatic_semicolon",
           "named": true
         },
         {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "blockTr",
+          "named": true
+        },
+        {
+          "type": "case",
+          "named": true
+        },
+        {
+          "type": "constDef",
+          "named": true
+        },
+        {
+          "type": "declConsts",
+          "named": true
+        },
+        {
+          "type": "declExports",
+          "named": true
+        },
+        {
+          "type": "declLabels",
+          "named": true
+        },
+        {
+          "type": "declProc",
+          "named": true
+        },
+        {
+          "type": "declTypes",
+          "named": true
+        },
+        {
+          "type": "declTypesSplit",
+          "named": true
+        },
+        {
+          "type": "declUses",
+          "named": true
+        },
+        {
+          "type": "declVars",
+          "named": true
+        },
+        {
+          "type": "defProc",
+          "named": true
+        },
+        {
+          "type": "for",
+          "named": true
+        },
+        {
+          "type": "foreach",
+          "named": true
+        },
+        {
+          "type": "goto",
+          "named": true
+        },
+        {
+          "type": "if",
+          "named": true
+        },
+        {
+          "type": "ifElse",
+          "named": true
+        },
+        {
+          "type": "kBegin",
+          "named": true
+        },
+        {
+          "type": "kEnd",
+          "named": true
+        },
+        {
+          "type": "label",
+          "named": true
+        },
+        {
           "type": "pp",
+          "named": true
+        },
+        {
+          "type": "raise",
+          "named": true
+        },
+        {
+          "type": "repeat",
+          "named": true
+        },
+        {
+          "type": "statement",
+          "named": true
+        },
+        {
+          "type": "try",
+          "named": true
+        },
+        {
+          "type": "varDef",
+          "named": true
+        },
+        {
+          "type": "while",
+          "named": true
+        },
+        {
+          "type": "with",
           "named": true
         }
       ]
@@ -6001,6 +6152,10 @@
           "named": true
         },
         {
+          "type": "declTypesSplit",
+          "named": true
+        },
+        {
           "type": "declUses",
           "named": true
         },
@@ -6166,6 +6321,10 @@
           "named": true
         },
         {
+          "type": "declTypesSplit",
+          "named": true
+        },
+        {
           "type": "declUses",
           "named": true
         },
@@ -6268,6 +6427,10 @@
           },
           {
             "type": "declTypes",
+            "named": true
+          },
+          {
+            "type": "declTypesSplit",
             "named": true
           },
           {
@@ -6423,6 +6586,10 @@
         },
         {
           "type": "declTypes",
+          "named": true
+        },
+        {
+          "type": "declTypesSplit",
           "named": true
         },
         {
@@ -7145,6 +7312,10 @@
         },
         {
           "type": "declTypes",
+          "named": true
+        },
+        {
+          "type": "declTypesSplit",
           "named": true
         },
         {

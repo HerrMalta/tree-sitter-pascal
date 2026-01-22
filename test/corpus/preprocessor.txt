@@ -959,3 +959,105 @@ end.
       (pp))
     (kEnd)
     (kEndDot)))
+
+================================================================================
+Type section with type keyword in conditional ELSE branch (transformed file)
+================================================================================
+
+unit Test;
+
+interface
+
+{$IF DECLARED(Something)}
+{$ELSE}
+type
+  T1 = Integer;
+{$ENDIF}
+  T2 = String;
+
+implementation
+
+end.
+
+--------------------------------------------------------------------------------
+
+(root
+  (unit
+    (kUnit)
+    (moduleName
+      (identifier))
+    (interface
+      (kInterface)
+      (declTypesSplit
+        (pp)
+        (pp)
+        (kType)
+        (declType
+          (identifier)
+          (kEq)
+          (type
+            (typeref
+              (identifier))))
+        (pp)
+        (declType
+          (identifier)
+          (kEq)
+          (type
+            (typeref
+              (kString))))))
+    (implementation
+      (kImplementation))
+    (kEnd)
+    (kEndDot)))
+
+================================================================================
+Procedure body with begin keyword in conditional branch (transformed file)
+================================================================================
+
+unit Test;
+
+implementation
+
+procedure Foo;
+{$IFNDEF X}
+var
+  A: Integer;
+begin
+{$ELSE}
+{$ENDIF}
+  A := 1;
+end;
+
+end.
+
+--------------------------------------------------------------------------------
+
+(root
+  (unit
+    (kUnit)
+    (moduleName
+      (identifier))
+    (implementation
+      (kImplementation)
+      (defProc
+        (declProc
+          (kProcedure)
+          (identifier))
+        (pp)
+        (declVars
+          (kVar)
+          (declVar
+            (identifier)
+            (type
+              (typeref
+                (identifier)))))
+        (kBegin)
+        (pp)
+        (pp)
+        (assignment
+          (identifier)
+          (kAssign)
+          (literalNumber))
+        (kEnd)))
+    (kEnd)
+    (kEndDot)))
