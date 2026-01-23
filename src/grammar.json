@@ -3589,6 +3589,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "kPlatform"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kExperimental"
+        },
+        {
+          "type": "SYMBOL",
           "name": "exprDot"
         },
         {

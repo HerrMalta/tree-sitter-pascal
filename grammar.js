@@ -608,6 +608,9 @@ module.exports = grammar({
 			$.identifier,
 			// Context-sensitive keywords allowed as member names
 			$.kRegister, $.kRead, $.kWrite, $.kDefault, $.kMessage,
+			// Hint directive keywords that can appear in unit/namespace names
+			$.kPlatform, $.kExperimental,
+			...enable_if(fpc, $.kWinapi),
 			// Allow chaining (a.b.c) and template specialization (a.b<T>)
 			$.exprDot,
 			...enable_if(templates, $.exprTpl),
