@@ -4361,27 +4361,7 @@
         "required": false,
         "types": [
           {
-            "type": "exprBinary",
-            "named": true
-          },
-          {
-            "type": "exprBrackets",
-            "named": true
-          },
-          {
-            "type": "exprCall",
-            "named": true
-          },
-          {
             "type": "exprDot",
-            "named": true
-          },
-          {
-            "type": "exprParens",
-            "named": true
-          },
-          {
-            "type": "exprSubscript",
             "named": true
           },
           {
@@ -4389,39 +4369,27 @@
             "named": true
           },
           {
-            "type": "exprUnary",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
           {
-            "type": "inherited",
+            "type": "kDefault",
             "named": true
           },
           {
-            "type": "kFalse",
+            "type": "kMessage",
             "named": true
           },
           {
-            "type": "kNil",
+            "type": "kRead",
             "named": true
           },
           {
-            "type": "kTrue",
+            "type": "kRegister",
             "named": true
           },
           {
-            "type": "lambda",
-            "named": true
-          },
-          {
-            "type": "literalNumber",
-            "named": true
-          },
-          {
-            "type": "literalString",
+            "type": "kWrite",
             "named": true
           }
         ]

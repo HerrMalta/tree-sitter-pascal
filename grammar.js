@@ -407,6 +407,10 @@ module.exports = grammar({
 		// Conflict for inline var declarations: `var a : type` could be varAssignDef
 		// (for `var a : type := value`) or varDef (for `var a, b : type`).
 		[ $.varAssignDef, $._ident ],
+
+		// Conflict for exprDot RHS: after `_ref kDot`, the next identifier could be
+		// parsed as _ref (through exprDot recursion) or _exprDotRhs (for keyword support).
+		[ $._ref, $._exprDotRhs ],
 	],
 
 	rules: {
@@ -589,11 +593,25 @@ module.exports = grammar({
 		// Member access expression with optional RHS for error recovery.
 		// When typing "obj." for IntelliSense, the RHS is missing - we allow this
 		// to prevent cascading errors. The LSP detects missing RHS and reports it.
+		// RHS uses _exprDotRhs to allow context-sensitive keywords as method/property names.
 		exprDot:         $ => prec.left(5, seq(
 			field('lhs', $._ref),
 			field('operator', $.kDot),
-			field('rhs', optional($._ref))
+			field('rhs', optional($._exprDotRhs))
 		)),
+
+		// RHS of dot expression - identifiers plus context-sensitive keywords.
+		// This enables obj.Register(), obj.Read(), obj.Write(), etc.
+		// Note: Only includes identifier-like tokens. Call/subscript operations are
+		// handled by _ref wrapping the complete exprDot.
+		_exprDotRhs:     $ => choice(
+			$.identifier,
+			// Context-sensitive keywords allowed as member names
+			$.kRegister, $.kRead, $.kWrite, $.kDefault, $.kMessage,
+			// Allow chaining (a.b.c) and template specialization (a.b<T>)
+			$.exprDot,
+			...enable_if(templates, $.exprTpl),
+		),
 		exprDeref:       $ => op.postfix(4, $._expr, $.kHat),
 
 		exprAs:          $ => op.infix(3, $._expr, $.kAs,  $._expr),

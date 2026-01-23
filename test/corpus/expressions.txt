@@ -625,3 +625,58 @@ end;
             (exprArgs
               (identifier))))
         (kEnd)))))
+
+===
+Method calls with context-sensitive keyword names
+===
+
+procedure Main;
+begin
+  obj.Register();
+  obj.Read();
+  obj.Write();
+  obj.Default();
+  obj.Message();
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (statement
+          (exprCall
+            (exprDot
+              (identifier)
+              (kDot)
+              (kRegister))))
+        (statement
+          (exprCall
+            (exprDot
+              (identifier)
+              (kDot)
+              (kRead))))
+        (statement
+          (exprCall
+            (exprDot
+              (identifier)
+              (kDot)
+              (kWrite))))
+        (statement
+          (exprCall
+            (exprDot
+              (identifier)
+              (kDot)
+              (kDefault))))
+        (statement
+          (exprCall
+            (exprDot
+              (identifier)
+              (kDot)
+              (kMessage))))
+        (kEnd)))))

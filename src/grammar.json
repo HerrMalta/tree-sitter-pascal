@@ -3549,7 +3549,7 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "_ref"
+                  "name": "_exprDotRhs"
                 },
                 {
                   "type": "BLANK"
@@ -3559,6 +3559,43 @@
           }
         ]
       }
+    },
+    "_exprDotRhs": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kRegister"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kRead"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kWrite"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kDefault"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kMessage"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "exprDot"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "exprTpl"
+        }
+      ]
     },
     "exprDeref": {
       "type": "PREC_LEFT",
@@ -11398,6 +11435,10 @@
     [
       "varAssignDef",
       "_ident"
+    ],
+    [
+      "_ref",
+      "_exprDotRhs"
     ]
   ],
   "precedences": [],
