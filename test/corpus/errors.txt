@@ -283,7 +283,7 @@ end;
         (kEnd)))))
 
 ================================================================================
-Incomplete member access (trailing dot for IntelliSense)
+Method chaining across lines (trailing dot continues to next line)
 ================================================================================
 
 procedure Test;
@@ -312,13 +312,45 @@ end;
       (block
         (kBegin)
         (statement
-          (exprDot
-            (identifier)
-            (kDot))
-          (automatic_semicolon))
-        (statement
           (exprCall
-            (identifier)
+            (exprDot
+              (identifier)
+              (kDot)
+              (identifier))
             (exprArgs
               (literalString))))
+        (kEnd)))))
+
+================================================================================
+Incomplete member access for IntelliSense (trailing dot before end)
+================================================================================
+
+procedure Test;
+var
+  obj: TObject;
+begin
+  obj.
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (declVars
+        (kVar)
+        (declVar
+          (identifier)
+          (type
+            (typeref
+              (identifier)))))
+      (block
+        (kBegin)
+        (statement
+          (exprDot
+            (identifier)
+            (kDot)))
         (kEnd)))))

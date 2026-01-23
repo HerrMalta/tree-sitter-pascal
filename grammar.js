@@ -337,6 +337,7 @@ module.exports = grammar({
 	externals: $ => [
 		$.automatic_semicolon,
 		$._class_body_start,
+		$._dot_marker,  // Prevents ASI after dot operators (for method chaining across lines)
 	],
 
 	word: $ => $.identifier,
@@ -594,9 +595,12 @@ module.exports = grammar({
 		// When typing "obj." for IntelliSense, the RHS is missing - we allow this
 		// to prevent cascading errors. The LSP detects missing RHS and reports it.
 		// RHS uses _exprDotRhs to allow context-sensitive keywords as method/property names.
+		// _dot_marker is an optional zero-width token that prevents ASI after dots,
+		// allowing method chaining to span multiple lines.
 		exprDot:         $ => prec.left(5, seq(
 			field('lhs', $._ref),
 			field('operator', $.kDot),
+			optional($._dot_marker),
 			field('rhs', optional($._exprDotRhs))
 		)),
 

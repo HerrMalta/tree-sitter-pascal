@@ -3542,6 +3542,18 @@
             }
           },
           {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_dot_marker"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
             "type": "FIELD",
             "name": "rhs",
             "content": {
@@ -11458,6 +11470,10 @@
     {
       "type": "SYMBOL",
       "name": "_class_body_start"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_dot_marker"
     }
   ],
   "inline": [],

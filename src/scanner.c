@@ -21,10 +21,11 @@
 #include <stdbool.h>
 
 // Token types must match the order in grammar.js externals array:
-// externals: $ => [ $._automatic_semicolon, $._class_body_start ]
+// externals: $ => [ $.automatic_semicolon, $._class_body_start, $._dot_marker ]
 enum TokenType {
-    AUTOMATIC_SEMICOLON = 0, // Index 0: matches $._automatic_semicolon
+    AUTOMATIC_SEMICOLON = 0, // Index 0: matches $.automatic_semicolon
     CLASS_BODY_START = 1,    // Index 1: matches $._class_body_start
+    DOT_MARKER = 2,          // Index 2: matches $._dot_marker (prevents ASI after dots)
 };
 
 /**
@@ -392,6 +393,15 @@ bool tree_sitter_pascal_external_scanner_scan(
         // Insert virtual semicolon if we saw a newline
         // and the next token is NOT a continuation keyword
         if (saw_newline) {
+            // Don't insert ASI if we're right after a dot - it's a method chain continuation
+            // Example: obj.Method.
+            //            NextMethod();  <- NOT a new statement
+            // DOT_MARKER being valid means the parser is expecting the optional marker
+            // that comes after a dot, so we're directly after a dot operator.
+            if (valid_symbols[DOT_MARKER]) {
+                return false;
+            }
+
             // Check what's next
             if (is_identifier_start(lexer->lookahead)) {
                 // Peek at the word to check if it's a continuation keyword
@@ -421,6 +431,11 @@ bool tree_sitter_pascal_external_scanner_scan(
                 // Check this BEFORE the comment-skipping loop since skip_paren_star_comment
                 // would consume the '(' even when it's not a (* comment
                 if (lexer->lookahead == '(') {
+                    return false;
+                }
+
+                // '[' continues expressions (array subscript, property args) - don't insert semicolon
+                if (lexer->lookahead == '[') {
                     return false;
                 }
 
