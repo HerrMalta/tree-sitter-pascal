@@ -1242,6 +1242,10 @@
           "named": true
         },
         {
+          "type": "kAlign",
+          "named": true
+        },
+        {
           "type": "kClass",
           "named": true
         },
@@ -1263,6 +1267,10 @@
         },
         {
           "type": "kSealed",
+          "named": true
+        },
+        {
+          "type": "literalNumber",
           "named": true
         },
         {
@@ -1734,6 +1742,10 @@
           "named": true
         },
         {
+          "type": "kAlign",
+          "named": true
+        },
+        {
           "type": "kClass",
           "named": true
         },
@@ -1755,6 +1767,10 @@
         },
         {
           "type": "kType",
+          "named": true
+        },
+        {
+          "type": "literalNumber",
           "named": true
         },
         {
@@ -1842,6 +1858,10 @@
           "named": true
         },
         {
+          "type": "kAlign",
+          "named": true
+        },
+        {
           "type": "kDispInterface",
           "named": true
         },
@@ -1855,6 +1875,10 @@
         },
         {
           "type": "kPacked",
+          "named": true
+        },
+        {
+          "type": "literalNumber",
           "named": true
         },
         {
@@ -9002,6 +9026,10 @@
   },
   {
     "type": "kAdd",
+    "named": true
+  },
+  {
+    "type": "kAlign",
     "named": true
   },
   {

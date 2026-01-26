@@ -3319,11 +3319,7 @@
           },
           {
             "type": "PATTERN",
-            "value": "[.,:;+\\-*\\[\\]<>&%@]"
-          },
-          {
-            "type": "PATTERN",
-            "value": "\\([^*]|\\)"
+            "value": "[.,:;+\\-*\\[\\]<>&%@()]"
           }
         ]
       }
@@ -7815,6 +7811,27 @@
         {
           "type": "SYMBOL",
           "name": "kEnd"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "kAlign"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "literalNumber"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -10579,6 +10596,11 @@
     "kPacked": {
       "type": "PATTERN",
       "value": "packed",
+      "flags": "i"
+    },
+    "kAlign": {
+      "type": "PATTERN",
+      "value": "align",
       "flags": "i"
     },
     "kGeneric": {

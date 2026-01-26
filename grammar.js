@@ -550,8 +550,7 @@ module.exports = grammar({
 			/"[^"]*"/,                 // Double-quoted literals ("'", "text")
 			/\$[0-9a-fA-F]+/,          // Hex numbers with $ prefix ($0000FFFF)
 			/[0-9]+/,                  // Decimal numbers (123)
-			/[.,:;+\-*\[\]<>&%@]/,     // Punctuation (removed $ - handled above)
-			/\([^*]|\)/                // Parentheses that are not comments
+			/[.,:;+\-*\[\]<>&%@()]/    // Punctuation including parentheses
 		)),
 
 		// EXPRESSIONS ---------------------------------------------------------
@@ -1101,7 +1100,8 @@ module.exports = grammar({
 			optional($._classDeclarations),
 			repeat($.declSection),
 			optional($.declVariant),
-			$.kEnd
+			$.kEnd,
+			optional(seq($.kAlign, $.literalNumber))
 		),
 
 		declSection:     $ => seq(
@@ -1464,6 +1464,7 @@ module.exports = grammar({
 		kOf:               $ => /of/i,
 		kHelper:           $ => /helper/i,
 		kPacked:           $ => /packed/i,
+		kAlign:            $ => /align/i,
 
 		kGeneric:          $ => /generic/i,
 		kSpecialize:       $ => /specialize/i,
