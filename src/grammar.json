@@ -3275,6 +3275,10 @@
             {
               "type": "SYMBOL",
               "name": "_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "label"
             }
           ]
         }
@@ -3299,11 +3303,19 @@
           },
           {
             "type": "PATTERN",
-            "value": "[0-9a-fA-F]"
+            "value": "'[^']*'"
           },
           {
             "type": "PATTERN",
-            "value": "[.,:;+\\-*\\[\\]<>&%$@]"
+            "value": "\\$[0-9a-fA-F]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[0-9]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[.,:;+\\-*\\[\\]<>&%@]"
           },
           {
             "type": "PATTERN",
@@ -3598,6 +3610,14 @@
         {
           "type": "SYMBOL",
           "name": "kMessage"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kTrue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kFalse"
         },
         {
           "type": "SYMBOL",
@@ -6957,7 +6977,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "_ident"
           }
         },
         {
@@ -11302,6 +11322,14 @@
         {
           "type": "SYMBOL",
           "name": "kMessage"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kTrue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kFalse"
         }
       ]
     },
@@ -11459,6 +11487,18 @@
     [
       "_ref",
       "_exprDotRhs"
+    ],
+    [
+      "_literal",
+      "_ident"
+    ],
+    [
+      "_ref",
+      "_ident"
+    ],
+    [
+      "_exprDotRhs",
+      "_literal"
     ]
   ],
   "precedences": [],

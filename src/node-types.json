@@ -1309,7 +1309,15 @@
             "named": true
           },
           {
+            "type": "kFalse",
+            "named": true
+          },
+          {
             "type": "kMessage",
+            "named": true
+          },
+          {
+            "type": "kTrue",
             "named": true
           }
         ]
@@ -1419,6 +1427,22 @@
         "types": [
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "kDefault",
+            "named": true
+          },
+          {
+            "type": "kFalse",
+            "named": true
+          },
+          {
+            "type": "kMessage",
+            "named": true
+          },
+          {
+            "type": "kTrue",
             "named": true
           }
         ]
@@ -1576,7 +1600,15 @@
             "named": true
           },
           {
+            "type": "kFalse",
+            "named": true
+          },
+          {
             "type": "kMessage",
+            "named": true
+          },
+          {
+            "type": "kTrue",
             "named": true
           }
         ]
@@ -3073,7 +3105,15 @@
             "named": true
           },
           {
+            "type": "kFalse",
+            "named": true
+          },
+          {
             "type": "kMessage",
+            "named": true
+          },
+          {
+            "type": "kTrue",
             "named": true
           }
         ]
@@ -4381,6 +4421,10 @@
             "named": true
           },
           {
+            "type": "kFalse",
+            "named": true
+          },
+          {
             "type": "kMessage",
             "named": true
           },
@@ -4394,6 +4438,10 @@
           },
           {
             "type": "kRegister",
+            "named": true
+          },
+          {
+            "type": "kTrue",
             "named": true
           },
           {
@@ -8526,7 +8574,15 @@
           "named": true
         },
         {
+          "type": "kFalse",
+          "named": true
+        },
+        {
           "type": "kMessage",
+          "named": true
+        },
+        {
+          "type": "kTrue",
           "named": true
         },
         {

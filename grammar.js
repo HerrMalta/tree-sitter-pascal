@@ -412,6 +412,13 @@ module.exports = grammar({
 		// Conflict for exprDot RHS: after `_ref kDot`, the next identifier could be
 		// parsed as _ref (through exprDot recursion) or _exprDotRhs (for keyword support).
 		[ $._ref, $._exprDotRhs ],
+
+		// Conflict for True/False as enum members: these keywords can be used as
+		// identifiers in enum declarations (e.g., TUseBoolStrs = (False, True))
+		[ $._literal, $._ident ],
+		[ $._ref, $._ident ],
+		// Conflict for True/False in dot expressions (e.g., TUseBoolStrs.False)
+		[ $._exprDotRhs, $._literal ],
 	],
 
 	rules: {
@@ -531,18 +538,19 @@ module.exports = grammar({
 		_statements:     $ => repeat1(choice($.varDef, $.constDef, $._statement,  $.label)),
 		_statementsTr:   $ => seq(
 			repeat(choice($._statement, $.label)),
-			choice(tr($,'_statement'), $._statement)
+			choice(tr($,'_statement'), $._statement, $.label)
 		),
 
 		statements:      $ => $._statements,
 		statementsTr:    $ => $._statementsTr,
 
 		asmBody: $ => repeat1(choice(
-			///([a-zA-Z0-9_]+([eE][nN][dD])|[eE][nN][dD][a-zA-Z0-9_]+|([^eE]|[eE][^nN]|[eE][nN][^dD]))+/,
-			$.identifier,       // Identifiers
-			/[0-9a-fA-F]/,      // Numbers
-			/[.,:;+\-*\[\]<>&%$@]/, // Punctuation (includes @ for local labels like @@1)
-			/\([^*]|\)/         // Parentheses that are not comments
+			$.identifier,              // Identifiers (registers, instructions, labels)
+			/'[^']*'/,                 // Character/string literals ('a', 'test')
+			/\$[0-9a-fA-F]+/,          // Hex numbers with $ prefix ($0000FFFF)
+			/[0-9]+/,                  // Decimal numbers (123)
+			/[.,:;+\-*\[\]<>&%@]/,     // Punctuation (removed $ - handled above)
+			/\([^*]|\)/                // Parentheses that are not comments
 		)),
 
 		// EXPRESSIONS ---------------------------------------------------------
@@ -612,6 +620,8 @@ module.exports = grammar({
 			$.identifier,
 			// Context-sensitive keywords allowed as member names
 			$.kRegister, $.kRead, $.kWrite, $.kDefault, $.kMessage,
+			// Boolean keywords for qualified enum access (e.g., TUseBoolStrs.False)
+			$.kTrue, $.kFalse,
 			// Hint directive keywords that can appear in unit/namespace names
 			$.kPlatform, $.kExperimental,
 			...enable_if(fpc, $.kWinapi),
@@ -1010,7 +1020,7 @@ module.exports = grammar({
 		// Type declarations
 
 		declEnum:        $ => seq('(', delimited1($.declEnumValue), ')'),
-		declEnumValue:   $ => seq(field('name', $.identifier), field('value', optional($.defaultValue))),
+		declEnumValue:   $ => seq(field('name', $._ident), field('value', optional($.defaultValue))),
 		declSet:         $ => seq($.kSet, $.kOf, $.type),
 		declArray:       $ => seq(
 			optional($.kPacked),
@@ -1629,7 +1639,7 @@ module.exports = grammar({
 		// Extended identifier that also allows directive keywords to be used as identifiers
 		// In Delphi/Pascal, directives like 'default' are context-sensitive keywords,
 		// not reserved words. They can be used as variable/field/const names.
-		_ident:            $ => choice($.identifier, $.kDefault, $.kMessage),
+		_ident:            $ => choice($.identifier, $.kDefault, $.kMessage, $.kTrue, $.kFalse),
 
 	  	_space:            $ => /[\s\r\n\t]+/,
 		pp:                $ => /\{\$[^}]*\}/,

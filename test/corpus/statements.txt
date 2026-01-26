@@ -635,6 +635,41 @@ end;
         (kEnd)))))
 
 ===
+asm with content
+===
+
+procedure AsmTest;
+asm
+  AND    EAX,$0000FFFF
+  CMP    EAX, 'a'
+  SUB    EAX, 'a'-'A'
+@@UC1:
+  MOV    EBX, 123
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (asm
+        (kAsm)
+        (asmBody
+          (identifier)
+          (identifier)
+          (identifier)
+          (identifier)
+          (identifier)
+          (identifier)
+          (identifier)
+          (identifier)
+          (identifier))
+        (kEnd)))))
+
+===
 raise
 ===
 
