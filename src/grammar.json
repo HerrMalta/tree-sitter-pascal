@@ -7770,18 +7770,6 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_declFields"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
               "name": "_classDeclarations"
             },
             {
@@ -7792,8 +7780,17 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "SYMBOL",
-            "name": "declSection"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_declSectionItem"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_declField"
+              }
+            ]
           }
         },
         {
@@ -7868,6 +7865,72 @@
             },
             {
               "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "_declSectionItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "declSection"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_declSectionItem"
+              }
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\{\\$else[^}]*\\}",
+                      "flags": "i"
+                    },
+                    "named": true,
+                    "value": "pp"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_declSectionItem"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\{\\$(?:end|ifend)[^}]*\\}",
+                "flags": "i"
+              },
+              "named": true,
+              "value": "pp"
             }
           ]
         }
@@ -11490,6 +11553,22 @@
     [
       "_sectionMember",
       "_classDeclaration"
+    ],
+    [
+      "declSection"
+    ],
+    [
+      "_classDeclaration",
+      "_declSectionItem",
+      "_declField"
+    ],
+    [
+      "_classDeclaration",
+      "_declSectionItem"
+    ],
+    [
+      "_declSectionItem",
+      "_declField"
     ],
     [
       "_ref",

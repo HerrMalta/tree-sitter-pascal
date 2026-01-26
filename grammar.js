@@ -387,6 +387,16 @@ module.exports = grammar({
 		[ $._sectionMember, $._declField ],
 		[ $._sectionMember, $._classDeclaration ],
 
+		// Conflict for declSection: with ppRecursive wrapper, empty visibility sections
+		// can be ambiguous with subsequent sections or variant parts.
+		[ $.declSection ],
+
+		// Conflict for _declSectionItem: with ppRecursive, empty IFDEF blocks can be
+		// ambiguous with class declarations and fields.
+		[ $._classDeclaration, $._declSectionItem, $._declField ],
+		[ $._classDeclaration, $._declSectionItem ],
+		[ $._declSectionItem, $._declField ],
+
 		// Conflict for subrange types: when parsing `TEnum.Val1..TEnum.Val2` as a type,
 		// the parser sees `identifier.` which could be either _ref (expression for range)
 		// or _typeref (type reference). We need both to be valid.
@@ -1096,9 +1106,8 @@ module.exports = grammar({
 
 		_declClass:      $ => seq(
 			$._class_body_start, // Zero-width sentinel to disambiguate class bodies from forward declarations
-			optional($._declFields),
 			optional($._classDeclarations),
-			repeat($.declSection),
+			repeat(choice($._declSectionItem, $._declField)),
 			optional($.declVariant),
 			$.kEnd,
 			optional(seq($.kAlign, $.literalNumber))
@@ -1109,6 +1118,9 @@ module.exports = grammar({
 			choice($._visibility, ...enable_if(objc, $.kRequired, $.kOptional)),
 			optional($._sectionMembers)
 		),
+
+		// Wrapper for declSection to support IFDEF blocks containing visibility sections
+		_declSectionItem: $ => ppRecursive($, '_declSectionItem', $.declSection),
 
 		// Unified section member rule for nested IFDEF support in class bodies.
 		// This handles both fields and methods together, allowing them to be
