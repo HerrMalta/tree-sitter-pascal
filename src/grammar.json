@@ -3307,6 +3307,10 @@
           },
           {
             "type": "PATTERN",
+            "value": "\"[^\"]*\""
+          },
+          {
+            "type": "PATTERN",
             "value": "\\$[0-9a-fA-F]+"
           },
           {

@@ -546,7 +546,8 @@ module.exports = grammar({
 
 		asmBody: $ => repeat1(choice(
 			$.identifier,              // Identifiers (registers, instructions, labels)
-			/'[^']*'/,                 // Character/string literals ('a', 'test')
+			/'[^']*'/,                 // Single-quoted literals ('a', 'test')
+			/"[^"]*"/,                 // Double-quoted literals ("'", "text")
 			/\$[0-9a-fA-F]+/,          // Hex numbers with $ prefix ($0000FFFF)
 			/[0-9]+/,                  // Decimal numbers (123)
 			/[.,:;+\-*\[\]<>&%@]/,     // Punctuation (removed $ - handled above)
