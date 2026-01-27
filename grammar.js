@@ -1106,8 +1106,7 @@ module.exports = grammar({
 
 		_declClass:      $ => seq(
 			$._class_body_start, // Zero-width sentinel to disambiguate class bodies from forward declarations
-			optional($._classDeclarations),
-			repeat(choice($._declSectionItem, $._declField)),
+			repeat(choice($._declSectionItem, $._classDeclaration, $._declField)),
 			optional($.declVariant),
 			$.kEnd,
 			optional(seq($.kAlign, $.literalNumber))

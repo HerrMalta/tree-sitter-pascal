@@ -7766,18 +7766,6 @@
           "name": "_class_body_start"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_classDeclarations"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
           "type": "REPEAT",
           "content": {
             "type": "CHOICE",
@@ -7785,6 +7773,10 @@
               {
                 "type": "SYMBOL",
                 "name": "_declSectionItem"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_classDeclaration"
               },
               {
                 "type": "SYMBOL",
