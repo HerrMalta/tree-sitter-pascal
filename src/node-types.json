@@ -4758,6 +4758,10 @@
           "named": true
         },
         {
+          "type": "typerefCodepage",
+          "named": true
+        },
+        {
           "type": "typerefDot",
           "named": true
         },
@@ -8256,6 +8260,10 @@
           "named": true
         },
         {
+          "type": "typerefCodepage",
+          "named": true
+        },
+        {
           "type": "typerefDot",
           "named": true
         },
@@ -8287,6 +8295,45 @@
           "named": true
         },
         {
+          "type": "typerefCodepage",
+          "named": true
+        },
+        {
+          "type": "typerefDot",
+          "named": true
+        },
+        {
+          "type": "typerefPtr",
+          "named": true
+        },
+        {
+          "type": "typerefTpl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "typerefCodepage",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "kString",
+          "named": true
+        },
+        {
+          "type": "typerefCodepage",
+          "named": true
+        },
+        {
           "type": "typerefDot",
           "named": true
         },
@@ -8315,6 +8362,10 @@
           },
           {
             "type": "kString",
+            "named": true
+          },
+          {
+            "type": "typerefCodepage",
             "named": true
           },
           {
@@ -8354,6 +8405,10 @@
             "named": true
           },
           {
+            "type": "typerefCodepage",
+            "named": true
+          },
+          {
             "type": "typerefDot",
             "named": true
           },
@@ -8383,6 +8438,10 @@
           },
           {
             "type": "kString",
+            "named": true
+          },
+          {
+            "type": "typerefCodepage",
             "named": true
           },
           {
@@ -8435,6 +8494,10 @@
           },
           {
             "type": "kString",
+            "named": true
+          },
+          {
+            "type": "typerefCodepage",
             "named": true
           },
           {

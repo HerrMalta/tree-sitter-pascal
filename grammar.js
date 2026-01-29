@@ -783,12 +783,14 @@ module.exports = grammar({
 			$.identifier, $.typerefDot,
 			...enable_if(templates, $.typerefTpl),
 			$.typerefPtr,
+			$.typerefCodepage,
 			prec(1, $.kString),  // Allow 'string' keyword as a type reference (higher precedence than declString)
 		),
 
 		typerefDot:      $ => op.infix(1,$._typeref, $.kDot, $._typeref),
 		typerefTpl:      $ => op.args(1, $._typeref, $.kLt, $.typerefArgs, $.kGt),
 		typerefPtr:      $ => op.prefix(1,$.kHat, $._typeref),
+		typerefCodepage: $ => prec(2, seq($._typeref, '(', $._literalInt, ')')),
 		typerefArgs:     $ => delimited1($._typeref),
 
 		// GENERIC TYPE DECLARATION --------------------------------------------
