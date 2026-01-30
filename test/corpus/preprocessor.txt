@@ -1061,3 +1061,57 @@ end.
         (kEnd)))
     (kEnd)
     (kEndDot)))
+
+===
+Inline IFDEF in const value (consecutive blocks without ELSE)
+===
+
+unit TestPPConst;
+interface
+const
+  SwitchChars = {$IFDEF MSWINDOWS} ['/','-']; {$ENDIF}
+                {$IFDEF LINUX}  ['-'];  {$ENDIF}
+
+function FindSwitch(const S: string): Boolean;
+implementation
+end.
+
+---
+
+(root
+  (unit
+    (kUnit)
+    (moduleName
+      (identifier))
+    (interface
+      (kInterface)
+      (declConsts
+        (kConst)
+        (declConst
+          name: (identifier)
+          (kEq)
+          (pp)
+          (exprBrackets
+            (literalString)
+            (literalString))
+          (pp)
+          (pp)
+          (exprBrackets
+            (literalString))
+          (pp)))
+      (declProc
+        (kFunction)
+        name: (identifier)
+        args: (declArgs
+          (declArg
+            (kConst)
+            name: (identifier)
+            type: (type
+              (typeref
+                (kString)))))
+        type: (typeref
+          (identifier))))
+    (implementation
+      (kImplementation))
+    (kEnd)
+    (kEndDot)))

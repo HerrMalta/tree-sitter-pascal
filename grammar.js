@@ -1018,10 +1018,30 @@ module.exports = grammar({
 			...enable_if(rtti, optional($.rttiAttributes)),
 			field('name', $._ident),
 			optional(seq(':', field('type', $.type))),
-			field('defaultValue', $.defaultValue),
-			optional($.hintDirective),
-			$._semicolon,
+			choice(
+				seq(
+					field('defaultValue', $.defaultValue),
+					optional($.hintDirective),
+					$._semicolon
+				),
+				// Inline pp: name = {$IFDEF X} value; {$ENDIF} [{$IFDEF Y} value; {$ENDIF}]...
+				seq(
+					$.kEq,
+					repeat1($._ppConstValue)
+				)
+			),
 			repeat($._procAttribute)
+		),
+
+		// Handles a single {$IFDEF}...{$ENDIF} block wrapping a const value and semicolon.
+		_ppConstValue: $ => seq(
+			alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
+			optional(seq($._initializer, optional($.hintDirective), $._semicolon)),
+			repeat(seq(
+				alias(/\{\$else[^}]*\}/i, $.pp),
+				optional(seq($._initializer, optional($.hintDirective), $._semicolon))
+			)),
+			alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp)
 		),
 
 		declLabels:      $ => seq($.kLabel, delimited1($.declLabel), ';'),
