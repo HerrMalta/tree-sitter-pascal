@@ -50,6 +50,10 @@
         {
           "type": "SYMBOL",
           "name": "automatic_semicolon"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_implicit_semicolon"
         }
       ]
     },
@@ -11775,6 +11779,10 @@
     {
       "type": "SYMBOL",
       "name": "_dot_marker"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_implicit_semicolon"
     }
   ],
   "inline": [],

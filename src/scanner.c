@@ -21,11 +21,12 @@
 #include <stdbool.h>
 
 // Token types must match the order in grammar.js externals array:
-// externals: $ => [ $.automatic_semicolon, $._class_body_start, $._dot_marker ]
+// externals: $ => [ $.automatic_semicolon, $._class_body_start, $._dot_marker, $._implicit_semicolon ]
 enum TokenType {
     AUTOMATIC_SEMICOLON = 0, // Index 0: matches $.automatic_semicolon
     CLASS_BODY_START = 1,    // Index 1: matches $._class_body_start
     DOT_MARKER = 2,          // Index 2: matches $._dot_marker (prevents ASI after dots)
+    IMPLICIT_SEMICOLON = 3,  // Index 3: matches $._implicit_semicolon (hidden, no diagnostic)
 };
 
 /**
@@ -62,6 +63,20 @@ static const char* no_insert_keywords[] = {
     "absolute", "helper", "forward", "external", "name",
     // Binary operators that can continue expressions across lines
     "or", "and", "xor", "div", "mod", "shl", "shr", "in", "is", "as",
+    NULL
+};
+
+/**
+ * Procedure attribute keywords that trigger ASI even without a preceding newline.
+ * Delphi allows omitting the semicolon between a method declaration's closing
+ * paren and its directives, e.g.: procedure Foo(x: Integer) overload;
+ * These are keywords that are exclusively proc attributes (not calling conventions
+ * or hint directives, which are handled by separate grammar rules before the semicolon).
+ */
+static const char* force_insert_keywords[] = {
+    "overload", "virtual", "dynamic", "abstract", "override", "final",
+    "reintroduce", "inline", "static",
+    "assembler", "noreturn", "local", "far", "near",
     NULL
 };
 
@@ -503,6 +518,28 @@ bool tree_sitter_pascal_external_scanner_scan(
             } else {
                 // EOF - insert semicolon at end of file
                 lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                return true;
+            }
+        }
+
+        // Same-line ASI: insert semicolon before proc attribute keywords even
+        // without a newline. Delphi allows: procedure Foo(x: Integer) overload;
+        // where the semicolon between ')' and 'overload' is omitted.
+        if (!saw_newline && !valid_symbols[DOT_MARKER]
+            && is_identifier_start(lexer->lookahead)) {
+            char word[256];
+            size_t len = 0;
+            int32_t c = lexer->lookahead;
+
+            while (is_identifier_char(c) && len < sizeof(word) - 1) {
+                word[len++] = (char)c;
+                lexer->advance(lexer, true);
+                c = lexer->lookahead;
+            }
+            word[len] = '\0';
+
+            if (is_in_keyword_list(word, len, force_insert_keywords)) {
+                lexer->result_symbol = IMPLICIT_SEMICOLON;
                 return true;
             }
         }

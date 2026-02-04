@@ -338,6 +338,7 @@ module.exports = grammar({
 		$.automatic_semicolon,
 		$._class_body_start,
 		$._dot_marker,  // Prevents ASI after dot operators (for method chaining across lines)
+		$._implicit_semicolon, // Hidden ASI for valid Delphi syntax (e.g., omitted semicolon before proc directives)
 	],
 
 	word: $ => $.identifier,
@@ -450,7 +451,7 @@ module.exports = grammar({
 		// Accepts either a real semicolon or an automatically inserted one (zero-width token).
 		// Used in declaration rules to enable error recovery for missing semicolons.
 		// The literal ';' is listed first to ensure it's preferred when present.
-		_semicolon: $ => choice(';', $.automatic_semicolon),
+		_semicolon: $ => choice(';', $.automatic_semicolon, $._implicit_semicolon),
 
 		// HIGH LEVEL ----------------------------------------------------------
 

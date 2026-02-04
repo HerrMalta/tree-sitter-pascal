@@ -559,6 +559,55 @@ type
           (kEnd))))))
 
 ===
+Method directives without preceding semicolon
+===
+
+type
+  a = class
+    procedure b(c: d = false) overload;
+    procedure b(c, e: d) overload;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declProc
+            (kProcedure)
+            (identifier)
+            (declArgs
+              (declArg
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))
+                (defaultValue
+                  (kEq)
+                  (kFalse))))
+            (procAttribute
+              (kOverload)))
+          (declProc
+            (kProcedure)
+            (identifier)
+            (declArgs
+              (declArg
+                (identifier)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (procAttribute
+              (kOverload)))
+          (kEnd))))))
+
+===
 Visibility
 ===
 
