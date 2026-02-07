@@ -343,6 +343,32 @@ end;
         (kEnd)))))
 
 ===
+RTTI attribute with preprocessor on type declaration
+===
+
+type
+  {$IFDEF CLR}[TMyAttribute]{$ENDIF}
+  TTestClass = class
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (pp)
+        (rttiAttributes
+          (identifier))
+        (pp)
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (kEnd))))))
+
+===
 Deprecated hints on declarations
 ===
 

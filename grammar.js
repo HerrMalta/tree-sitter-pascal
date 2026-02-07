@@ -556,6 +556,7 @@ module.exports = grammar({
 		statementsTr:    $ => $._statementsTr,
 
 		asmBody: $ => repeat1(choice(
+			/@@[a-zA-Z_0-9]+/,         // ASM local labels (@@END, @@1, @@386) - must precede identifier to prevent keyword conflicts
 			$.identifier,              // Identifiers (registers, instructions, labels)
 			/'[^']*'/,                 // Single-quoted literals ('a', 'test')
 			/"[^"]*"/,                 // Double-quoted literals ("'", "text")
@@ -978,22 +979,45 @@ module.exports = grammar({
 
 		// Declarations
 
-		declType:        $ => seq(
-			...enable_if(rtti, optional($.rttiAttributes)),
-			...enable_if(fpc, optional($.kGeneric)),
-			field('name', $._genericName), $.kEq,
-			field('type',
-				choice(
-					seq(optional($.kType), $.type),
-					choice($.type),
-					$.declClass,
-					$.declIntf,
-					$.declHelper,
-				)
+		declType:        $ => choice(
+			seq(
+				...enable_if(rtti, optional($.rttiAttributes)),
+				...enable_if(fpc, optional($.kGeneric)),
+				field('name', $._genericName), $.kEq,
+				field('type',
+					choice(
+						seq(optional($.kType), $.type),
+						choice($.type),
+						$.declClass,
+						$.declIntf,
+						$.declHelper,
+					)
+				),
+				optional($.hintDirective),
+				$._semicolon,
+				repeat($._procAttribute)
 			),
-			optional($.hintDirective),
-			$._semicolon,
-			repeat($._procAttribute)
+			// Type declaration with RTTI attribute wrapped in preprocessor block
+			// Handles: {$IFDEF X} [Attr] {$ENDIF} TMyClass = class...end;
+			...enable_if(rtti, seq(
+				alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
+				$.rttiAttributes,
+				alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp),
+				...enable_if(fpc, optional($.kGeneric)),
+				field('name', $._genericName), $.kEq,
+				field('type',
+					choice(
+						seq(optional($.kType), $.type),
+						choice($.type),
+						$.declClass,
+						$.declIntf,
+						$.declHelper,
+					)
+				),
+				optional($.hintDirective),
+				$._semicolon,
+				repeat($._procAttribute)
+			))
 		),
 
 		declProc:        $ => seq(
@@ -1206,8 +1230,10 @@ module.exports = grammar({
 					$.kNodefault,
 				)),
 			)),
-			// Allow default/nodefault/stored for property redeclarations (no type required)
-			optional(choice(
+			// Allow read/write/default/nodefault/stored for property redeclarations (no type required)
+			repeat(choice(
+				seq($.kRead, field('getter', $._ref)),
+				seq($.kWrite, field('setter', $._ref)),
 				seq($.kDefault, field('defaultValue', $._expr)),
 				seq($.kStored, field('stored', $._expr)),
 				$.kNodefault,

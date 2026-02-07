@@ -991,6 +991,67 @@ type
           (kEnd))))))
 
 ===
+Property redeclaration with read/write
+===
+
+type
+  a = class
+    property b write SetB;
+    property c read GetC;
+    property d read GetD write SetD;
+    property e write SetE stored True;
+    property f read GetF write SetF stored False default 0;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declProp
+            (kProperty)
+            (identifier)
+            (kWrite)
+            (identifier))
+          (declProp
+            (kProperty)
+            (identifier)
+            (kRead)
+            (identifier))
+          (declProp
+            (kProperty)
+            (identifier)
+            (kRead)
+            (identifier)
+            (kWrite)
+            (identifier))
+          (declProp
+            (kProperty)
+            (identifier)
+            (kWrite)
+            (identifier)
+            (kStored)
+            (kTrue))
+          (declProp
+            (kProperty)
+            (identifier)
+            (kRead)
+            (identifier)
+            (kWrite)
+            (identifier)
+            (kStored)
+            (kFalse)
+            (kDefault)
+            (literalNumber))
+          (kEnd))))))
+
+===
 Variant Records
 ===
 

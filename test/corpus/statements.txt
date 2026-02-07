@@ -643,8 +643,10 @@ asm
   AND    EAX,$0000FFFF
   CMP    EAX, 'a'
   SUB    EAX, 'a'-'A'
+  JS     @@END
 @@UC1:
   MOV    EBX, 123
+@@END:
 end;
 
 ---

@@ -3097,6 +3097,10 @@
           "named": true
         },
         {
+          "type": "pp",
+          "named": true
+        },
+        {
           "type": "rttiAttributes",
           "named": true
         }
