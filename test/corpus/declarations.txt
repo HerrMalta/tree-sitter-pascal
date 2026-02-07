@@ -1232,6 +1232,64 @@ type
           (kEnd))))))
 
 ===
+Variant Records with IFDEF
+===
+
+type
+  a = record
+    case b of
+    0: (c: d);
+    1:
+{$IFDEF X}
+    (e: f);
+{$ELSE}
+    (g: h);
+{$ENDIF}
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (declVariant
+            (kCase)
+            (typeref
+              (identifier))
+            (kOf)
+            (declVariantClause
+              (caseLabel
+                (literalNumber))
+              (declField
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (declVariantClause
+              (caseLabel
+                (literalNumber))
+              (pp)
+              (declField
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))
+              (pp)
+              (declField
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))
+              (pp)))
+          (kEnd))))))
+
+===
 Operator overloads (TODO: investigate)
 :skip
 ===

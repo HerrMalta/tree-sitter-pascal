@@ -1251,19 +1251,24 @@ module.exports = grammar({
 			$.kCase,
 			field('name', optional(seq($.identifier, ':'))),
 			field('type', $.typeref), $.kOf,
-			delimited1($.declVariantClause, ';'),
-			optional(';'),
+			repeat1($.declVariantClause),
 		)),
 
 		declVariantClause: $ => seq(
 			$.caseLabel,
-			'(',
-			choice(
-				seq(delimited(alias($.declVariantField, $.declField), ';'), optional(seq(';', $.declVariant))),
-				seq($.declVariant),
-			),
-			optional(';'),
-			')',
+			$._declVariantClauseBody,
+		),
+
+		_declVariantClauseBody: $ => ppRecursive($, '_declVariantClauseBody',
+			prec.right(seq('(',
+				choice(
+					seq(delimited(alias($.declVariantField, $.declField), ';'), optional(seq(';', $.declVariant))),
+					seq($.declVariant),
+				),
+				optional(';'),
+				')',
+				optional(';'),
+			))
 		),
 
 		declVariantField: $ => seq(

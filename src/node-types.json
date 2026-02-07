@@ -3395,6 +3395,10 @@
         {
           "type": "declVariant",
           "named": true
+        },
+        {
+          "type": "pp",
+          "named": true
         }
       ]
     }
