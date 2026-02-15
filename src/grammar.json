@@ -3528,8 +3528,53 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "identifier"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "identifier"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kRegister"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kRead"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kWrite"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kDefault"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kMessage"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kName"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kTrue"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kFalse"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kPlatform"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "kExperimental"
+                  }
+                ]
               },
               {
                 "type": "BLANK"

@@ -609,7 +609,12 @@ module.exports = grammar({
 			field('body', choice(tr($, 'block'), tr($, 'asm'))),
 		),
 
-		inherited:       $ => prec.right(seq($.kInherited, optional($.identifier))),
+		inherited:       $ => prec.right(seq($.kInherited, optional(choice(
+			$.identifier,
+			$.kRegister, $.kRead, $.kWrite, $.kDefault, $.kMessage, $.kName,
+			$.kTrue, $.kFalse,
+			$.kPlatform, $.kExperimental,
+		)))),
 
 		// Member access expression with optional RHS for error recovery.
 		// When typing "obj." for IntelliSense, the RHS is missing - we allow this

@@ -6335,7 +6335,47 @@
           "named": true
         },
         {
+          "type": "kDefault",
+          "named": true
+        },
+        {
+          "type": "kExperimental",
+          "named": true
+        },
+        {
+          "type": "kFalse",
+          "named": true
+        },
+        {
           "type": "kInherited",
+          "named": true
+        },
+        {
+          "type": "kMessage",
+          "named": true
+        },
+        {
+          "type": "kName",
+          "named": true
+        },
+        {
+          "type": "kPlatform",
+          "named": true
+        },
+        {
+          "type": "kRead",
+          "named": true
+        },
+        {
+          "type": "kRegister",
+          "named": true
+        },
+        {
+          "type": "kTrue",
+          "named": true
+        },
+        {
+          "type": "kWrite",
           "named": true
         }
       ]

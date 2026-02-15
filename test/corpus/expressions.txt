@@ -680,3 +680,60 @@ end;
               (kDot)
               (kMessage))))
         (kEnd)))))
+
+===
+Inherited calls
+===
+
+procedure Main;
+begin
+  inherited;
+  inherited Create;
+  inherited Create(42);
+  inherited Read(Buffer, Count);
+  Result := inherited Write(ABuffer, ACount);
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (statement
+          (inherited
+            (kInherited)))
+        (statement
+          (inherited
+            (kInherited)
+            (identifier)))
+        (statement
+          (exprCall
+            (inherited
+              (kInherited)
+              (identifier))
+            (exprArgs
+              (literalNumber))))
+        (statement
+          (exprCall
+            (inherited
+              (kInherited)
+              (kRead))
+            (exprArgs
+              (identifier)
+              (identifier))))
+        (assignment
+          (identifier)
+          (kAssign)
+          (exprCall
+            (inherited
+              (kInherited)
+              (kWrite))
+            (exprArgs
+              (identifier)
+              (identifier))))
+        (kEnd)))))
