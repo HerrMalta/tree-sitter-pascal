@@ -81,6 +81,16 @@ static const char* force_insert_keywords[] = {
 };
 
 /**
+ * Keywords that trigger silent IMPLICIT_SEMICOLON insertion (no diagnostic).
+ * In Pascal, the semicolon is a separator, not a terminator. The last
+ * declaration before 'end' does not require a trailing semicolon.
+ */
+static const char* implicit_insert_keywords[] = {
+    "end",
+    NULL
+};
+
+/**
  * Check if character is alphanumeric or underscore.
  */
 static inline bool is_identifier_char(int32_t c) {
@@ -439,6 +449,12 @@ bool tree_sitter_pascal_external_scanner_scan(
                     lexer->result_symbol = AUTOMATIC_SEMICOLON;
                     return true;
                 }
+                // Pascal semicolon is a separator, not terminator — omitting
+                // the semicolon before 'end' is valid syntax
+                if (is_in_keyword_list(word, len, implicit_insert_keywords)) {
+                    lexer->result_symbol = IMPLICIT_SEMICOLON;
+                    return true;
+                }
             } else if (lexer->lookahead != 0) {
                 // Not an identifier - check for symbols that start new statements
 
@@ -512,6 +528,12 @@ bool tree_sitter_pascal_external_scanner_scan(
 
                     if (!is_in_keyword_list(word, len, no_insert_keywords)) {
                         lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                        return true;
+                    }
+                    // Pascal semicolon is a separator, not terminator — omitting
+                    // the semicolon before 'end' is valid syntax
+                    if (is_in_keyword_list(word, len, implicit_insert_keywords)) {
+                        lexer->result_symbol = IMPLICIT_SEMICOLON;
                         return true;
                     }
                 }

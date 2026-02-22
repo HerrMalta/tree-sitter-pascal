@@ -559,6 +559,39 @@ type
           (kEnd))))))
 
 ===
+Record field without trailing semicolon before end
+===
+
+type
+  a = record
+    b: c;
+    d: e
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (kEnd))))))
+
+===
 Method directives without preceding semicolon
 ===
 
