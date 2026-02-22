@@ -1323,6 +1323,136 @@ type
           (kEnd))))))
 
 ===
+Inline anonymous record - empty
+===
+
+type
+  a = record
+    b: record end;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (declField
+            (identifier)
+            (declInlineRecord
+              (kRecord)
+              (kEnd)))
+          (kEnd))))))
+
+===
+Inline anonymous record - with fields
+===
+
+type
+  a = record
+    b: record
+      c: Integer;
+      d: Integer;
+    end;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kRecord)
+          (declField
+            (identifier)
+            (declInlineRecord
+              (kRecord)
+              (declField
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))
+              (declField
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))
+              (kEnd)))
+          (kEnd))))))
+
+===
+Inline anonymous record - variant in class field
+===
+
+type
+  a = class
+    b: TObject;
+    c:
+      record
+        case Boolean of
+          False: (d: Integer);
+          True: (e: Integer);
+      end;
+    constructor Create;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declField
+            (identifier)
+            (type
+              (typeref
+                (identifier))))
+          (declField
+            (identifier)
+            (declInlineRecord
+              (kRecord)
+              (declVariant
+                (kCase)
+                (typeref
+                  (identifier))
+                (kOf)
+                (declVariantClause
+                  (caseLabel
+                    (kFalse))
+                  (declField
+                    (identifier)
+                    (type
+                      (typeref
+                        (identifier)))))
+                (declVariantClause
+                  (caseLabel
+                    (kTrue))
+                  (declField
+                    (identifier)
+                    (type
+                      (typeref
+                        (identifier))))))
+              (kEnd)))
+          (declProc
+            (kConstructor)
+            (identifier))
+          (kEnd))))))
+
+===
 Operator overloads (TODO: investigate)
 :skip
 ===

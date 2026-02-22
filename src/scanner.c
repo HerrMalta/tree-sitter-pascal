@@ -267,69 +267,43 @@ static bool skip_paren_star_comment(TSLexer* lexer) {
  * - '(' (class heritage: `type T = class(TBase)`)
  */
 static bool is_class_member_start(TSLexer* lexer) {
-    // Skip whitespace and newlines for lookahead
     bool saw_newline = false;
     skip_whitespace_and_newlines(lexer, &saw_newline);
 
     int32_t c = lexer->lookahead;
 
     // '[' could be RTTI attributes or GUID
-    // GUID format: ['string'] - starts with string literal after [
-    // RTTI format: [Identifier] or [Identifier(args)]
-    // If it's a GUID (string literal), it's NOT a class body start
     if (c == '[') {
-        lexer->advance(lexer, true);  // Skip [
+        lexer->advance(lexer, true);
         skip_whitespace_not_newline(lexer);
-        // Check if next char is a string delimiter (GUID)
         if (lexer->lookahead == '\'' || lexer->lookahead == '#') {
-            // It's a GUID like ['{...}'] or ['...'] - NOT a class body start
             return false;
         }
-        // It's an RTTI attribute - IS a class body start
         return true;
     }
 
-    // ';' means forward declaration - NOT a class body
-    if (c == ';') {
-        return false;
-    }
+    if (c == ';') return false;
+    if (c == '(') return false;
 
-    // '(' means class heritage - NOT directly a class body start
-    if (c == '(') {
-        return false;
-    }
-
-    // Check for identifier or keyword
     if (is_identifier_start(c)) {
         char buffer[256];
         size_t len = 0;
 
-        // Collect the word
         while (is_identifier_char(lexer->lookahead) && len < 255) {
             buffer[len++] = (char)lexer->lookahead;
             lexer->advance(lexer, true);
         }
         buffer[len] = '\0';
 
-        // Check if it's a class member keyword
         if (is_in_keyword_list(buffer, len, class_member_keywords)) {
             return true;
         }
 
-        // Skip whitespace after the identifier
         skip_whitespace_not_newline(lexer);
 
-        // If followed by ':', it's a field declaration
-        if (lexer->lookahead == ':') {
-            return true;
-        }
+        if (lexer->lookahead == ':') return true;
+        if (lexer->lookahead == ',') return true;
 
-        // If followed by ',', it's also a field (multiple fields: a, b: Type)
-        if (lexer->lookahead == ',') {
-            return true;
-        }
-
-        // Otherwise, it's not clearly a class member start
         return false;
     }
 

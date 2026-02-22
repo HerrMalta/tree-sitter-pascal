@@ -6876,8 +6876,17 @@
           "type": "FIELD",
           "name": "type",
           "content": {
-            "type": "SYMBOL",
-            "name": "type"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "type"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "declInlineRecord"
+              }
+            ]
           }
         },
         {
@@ -7701,6 +7710,71 @@
         }
       ]
     },
+    "declInlineRecord": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "kPacked"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kRecord"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_declField"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "declVariant"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kEnd"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "kAlign"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "literalNumber"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
     "declClass": {
       "type": "SEQ",
       "members": [
@@ -8498,8 +8572,17 @@
               "type": "FIELD",
               "name": "type",
               "content": {
-                "type": "SYMBOL",
-                "name": "type"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "type"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "declInlineRecord"
+                  }
+                ]
               }
             },
             {
@@ -8612,8 +8695,17 @@
               "type": "FIELD",
               "name": "type",
               "content": {
-                "type": "SYMBOL",
-                "name": "type"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "type"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "declInlineRecord"
+                  }
+                ]
               }
             },
             {
@@ -9387,8 +9479,17 @@
           "type": "FIELD",
           "name": "type",
           "content": {
-            "type": "SYMBOL",
-            "name": "type"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "type"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "declInlineRecord"
+              }
+            ]
           }
         },
         {

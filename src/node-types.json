@@ -1706,6 +1706,10 @@
         "required": true,
         "types": [
           {
+            "type": "declInlineRecord",
+            "named": true
+          },
+          {
             "type": "type",
             "named": true
           }
@@ -1859,6 +1863,49 @@
         },
         {
           "type": "typeref",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "declInlineRecord",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "declField",
+          "named": true
+        },
+        {
+          "type": "declVariant",
+          "named": true
+        },
+        {
+          "type": "kAlign",
+          "named": true
+        },
+        {
+          "type": "kEnd",
+          "named": true
+        },
+        {
+          "type": "kPacked",
+          "named": true
+        },
+        {
+          "type": "kRecord",
+          "named": true
+        },
+        {
+          "type": "literalNumber",
+          "named": true
+        },
+        {
+          "type": "pp",
           "named": true
         }
       ]
@@ -3230,6 +3277,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "declInlineRecord",
+            "named": true
+          },
           {
             "type": "type",
             "named": true

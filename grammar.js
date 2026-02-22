@@ -1034,7 +1034,7 @@ module.exports = grammar({
 			...enable_if(rtti, optional($.rttiAttributes)),
 			field('name', delimited1($._ident)),
 			':',
-			field('type', $.type),
+			field('type', choice($.type, $.declInlineRecord)),
 			optional(choice(
 				seq($.kAbsolute, $._ref),
 				field('defaultValue', $.defaultValue)
@@ -1116,6 +1116,19 @@ module.exports = grammar({
 
 		declMetaClass:   $ => seq($.kClass, $.kOf, $.typeref),
 
+		// Inline anonymous record type (used in field/var declarations).
+		// Unlike declClass, this does NOT use _class_body_start sentinel,
+		// avoiding the CLASS_BODY_START / AUTOMATIC_SEMICOLON scanner conflict
+		// caused by GLR state merging when declClass appears as a field type.
+		declInlineRecord: $ => seq(
+			optional($.kPacked),
+			$.kRecord,
+			repeat($._declField),
+			optional($.declVariant),
+			$.kEnd,
+			optional(seq($.kAlign, $.literalNumber))
+		),
+
 		declClass:       $ => seq(
 			optional($.kPacked),
 			choice(
@@ -1192,7 +1205,7 @@ module.exports = grammar({
 				...enable_if(rtti, optional($.rttiAttributes)),
 				field('name', delimited1($._ident)),
 				':',
-				field('type', $.type),
+				field('type', choice($.type, $.declInlineRecord)),
 				field('defaultValue', optional($.defaultValue)),
 				optional($.hintDirective),
 				$._semicolon
@@ -1205,7 +1218,7 @@ module.exports = grammar({
 				alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp),
 				field('name', delimited1($._ident)),
 				':',
-				field('type', $.type),
+				field('type', choice($.type, $.declInlineRecord)),
 				field('defaultValue', optional($.defaultValue)),
 				optional($.hintDirective),
 				$._semicolon
@@ -1279,7 +1292,7 @@ module.exports = grammar({
 		declVariantField: $ => seq(
 			field('name', delimited1($.identifier)),
 			':',
-			field('type', $.type),
+			field('type', choice($.type, $.declInlineRecord)),
 			field('defaultValue', optional($.defaultValue))
 		),
 
