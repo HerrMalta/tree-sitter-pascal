@@ -8466,6 +8466,10 @@
       "required": true,
       "types": [
         {
+          "type": "declArray",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },

@@ -210,6 +210,59 @@ var
               (kGt))))))))
 
 ===
+Array type as generic argument
+===
+
+type
+  a = b<array[1..2] of c>;
+
+var
+  a: b<array of c>;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (type
+          (typeref
+            (typerefTpl
+              (identifier)
+              (kLt)
+              (typerefArgs
+                (declArray
+                  (kArray)
+                  (range
+                    (literalNumber)
+                    (literalNumber))
+                  (kOf)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (kGt))))))
+    (declVars
+      (kVar)
+      (declVar
+        (identifier)
+        (type
+          (typeref
+            (typerefTpl
+              (identifier)
+              (kLt)
+              (typerefArgs
+                (declArray
+                  (kArray)
+                  (kOf)
+                  (type
+                    (typeref
+                      (identifier)))))
+              (kGt))))))))
+
+===
 Generic Routines
 ===
 

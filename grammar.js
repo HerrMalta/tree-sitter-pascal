@@ -798,7 +798,7 @@ module.exports = grammar({
 		typerefTpl:      $ => op.args(1, $._typeref, $.kLt, $.typerefArgs, $.kGt),
 		typerefPtr:      $ => op.prefix(1,$.kHat, $._typeref),
 		typerefCodepage: $ => prec(2, seq($._typeref, '(', $._literalInt, ')')),
-		typerefArgs:     $ => delimited1($._typeref),
+		typerefArgs:     $ => delimited1(choice($._typeref, $.declArray)),
 
 		// GENERIC TYPE DECLARATION --------------------------------------------
 		//
@@ -1416,7 +1416,7 @@ module.exports = grammar({
 		// constructor CreateRes(...); {$IFNDEF NEXTGEN} overload; {$ENDIF}
 		// Delphi allows chaining attributes without semicolons: stdcall deprecated 'msg';
 		_procAttributeNoExt: $ => ppRecursive($, '_procAttributeNoExt',
-			seq(repeat1(field('attribute', $.procAttribute)), ';'),
+			seq(repeat1(field('attribute', $.procAttribute)), choice(';', $._implicit_semicolon)),
 			// FPC-specific syntax, e.g. procedure myproc; [public; alias:'bla'; cdecl];
 			...enable_if(fpc, seq('[', delimited(field('attribute', choice($.procAttribute)), ';'), ']', ';'))
 		),

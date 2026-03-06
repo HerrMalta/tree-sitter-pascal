@@ -283,6 +283,54 @@ end;
         (kEnd)))))
 
 ================================================================================
+Missing semicolon after deprecated proc attribute with message
+================================================================================
+
+type
+  TFoo = class
+    procedure Execute1(const AData: Integer); overload; deprecated 'do not use'
+    procedure Execute2(const AData: String);
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declProc
+            (kProcedure)
+            (identifier)
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (procAttribute
+              (kOverload))
+            (procAttribute
+              (kDeprecated)
+              (literalString)))
+          (declProc
+            (kProcedure)
+            (identifier)
+            (declArgs
+              (declArg
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (kString))))))
+          (kEnd))))))
+
+================================================================================
 Method chaining across lines (trailing dot continues to next line)
 ================================================================================
 

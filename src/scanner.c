@@ -361,17 +361,21 @@ bool tree_sitter_pascal_external_scanner_scan(
     }
 
     // =========================================================================
-    // 2. Check for AUTOMATIC_SEMICOLON (ASI)
+    // 2. Check for AUTOMATIC_SEMICOLON / IMPLICIT_SEMICOLON (ASI)
     // =========================================================================
     // Implements Automatic Semicolon Insertion:
     // - This is a ZERO-WIDTH token - we never consume any characters
     // - If we see a newline followed by a non-continuation token, insert virtual semicolon
     // - Real semicolons are handled by the literal ';' in the grammar, not here
     //
+    // When only IMPLICIT_SEMICOLON is valid (e.g., proc attributes), the missing
+    // semicolon is valid Delphi syntax and should not produce a diagnostic.
+    //
     // IMPORTANT: Only check for ASI if CLASS_BODY_START is NOT also valid.
     // When both are valid, we're likely at a class/record body start and should
     // not interfere with that parsing.
-    if (valid_symbols[AUTOMATIC_SEMICOLON] && !valid_symbols[CLASS_BODY_START]) {
+    bool asi_valid = valid_symbols[AUTOMATIC_SEMICOLON] || valid_symbols[IMPLICIT_SEMICOLON];
+    if (asi_valid && !valid_symbols[CLASS_BODY_START]) {
         lexer->mark_end(lexer);  // Mark the insertion point (zero-width)
         bool saw_newline = false;
 
@@ -418,13 +422,10 @@ bool tree_sitter_pascal_external_scanner_scan(
 
                 // Check if it's a continuation keyword
                 if (!is_in_keyword_list(word, len, no_insert_keywords)) {
-                    // Not a continuation keyword - insert virtual semicolon
-                    // The token is zero-width at the mark_end position
-                    lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                    lexer->result_symbol = valid_symbols[AUTOMATIC_SEMICOLON]
+                        ? AUTOMATIC_SEMICOLON : IMPLICIT_SEMICOLON;
                     return true;
                 }
-                // Pascal semicolon is a separator, not terminator — omitting
-                // the semicolon before 'end' is valid syntax
                 if (is_in_keyword_list(word, len, implicit_insert_keywords)) {
                     lexer->result_symbol = IMPLICIT_SEMICOLON;
                     return true;
@@ -483,7 +484,8 @@ bool tree_sitter_pascal_external_scanner_scan(
 
                 // '[' starts RTTI attributes - insert semicolon before these
                 if (lexer->lookahead == '[') {
-                    lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                    lexer->result_symbol = valid_symbols[AUTOMATIC_SEMICOLON]
+                        ? AUTOMATIC_SEMICOLON : IMPLICIT_SEMICOLON;
                     return true;
                 }
 
@@ -501,11 +503,10 @@ bool tree_sitter_pascal_external_scanner_scan(
                     word[len] = '\0';
 
                     if (!is_in_keyword_list(word, len, no_insert_keywords)) {
-                        lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                        lexer->result_symbol = valid_symbols[AUTOMATIC_SEMICOLON]
+                            ? AUTOMATIC_SEMICOLON : IMPLICIT_SEMICOLON;
                         return true;
                     }
-                    // Pascal semicolon is a separator, not terminator — omitting
-                    // the semicolon before 'end' is valid syntax
                     if (is_in_keyword_list(word, len, implicit_insert_keywords)) {
                         lexer->result_symbol = IMPLICIT_SEMICOLON;
                         return true;
@@ -513,7 +514,8 @@ bool tree_sitter_pascal_external_scanner_scan(
                 }
             } else {
                 // EOF - insert semicolon at end of file
-                lexer->result_symbol = AUTOMATIC_SEMICOLON;
+                lexer->result_symbol = valid_symbols[AUTOMATIC_SEMICOLON]
+                    ? AUTOMATIC_SEMICOLON : IMPLICIT_SEMICOLON;
                 return true;
             }
         }
