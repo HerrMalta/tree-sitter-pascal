@@ -1377,16 +1377,20 @@ module.exports = grammar({
 		declArg:         $ => choice(
 			seq(
 				choice($.kVar, $.kConst, $.kOut, $.kConstref),
-				// RTTI attributes like [ref] can appear between modifier and name
-				...enable_if(rtti, optional($.rttiAttributes)),
-				field('name', delimited1($.identifier)),
+				field('name', delimited1(seq(
+					...enable_if(rtti, optional($.rttiAttributes)),
+					$.identifier
+				))),
 				optional(seq(
 					':', field('type', $.type),
 					field('defaultValue', optional($.defaultValue))
 				))
 			),
 			seq(
-				field('name', delimited1($.identifier)), ':',
+				field('name', delimited1(seq(
+					...enable_if(rtti, optional($.rttiAttributes)),
+					$.identifier
+				))), ':',
 				field('type', $.type),
 				field('defaultValue', optional($.defaultValue))
 			)

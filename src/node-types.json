@@ -1023,6 +1023,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "rttiAttributes",
+            "named": true
           }
         ]
       },
@@ -1038,7 +1042,7 @@
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -1055,10 +1059,6 @@
         },
         {
           "type": "kVar",
-          "named": true
-        },
-        {
-          "type": "rttiAttributes",
           "named": true
         }
       ]
