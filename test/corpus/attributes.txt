@@ -539,3 +539,74 @@ end.
       (kImplementation))
     (kEnd)
     (kEndDot)))
+
+===
+RTTI attributes on parameters before const modifier
+===
+
+type
+  IMyService = interface
+    function Login([XDefault(True)] const Extern: Boolean; [XDefault(False)] const Auto: Boolean): Integer;
+    procedure DoWork([MyAttr] var Data: String; [MyAttr] out Result: Integer);
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declIntf
+          (kInterface)
+          (declProc
+            (kFunction)
+            (identifier)
+            (declArgs
+              (declArg
+                (rttiAttributes
+                  (exprCall
+                    (identifier)
+                    (exprArgs
+                      (kTrue))))
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))
+              (declArg
+                (rttiAttributes
+                  (exprCall
+                    (identifier)
+                    (exprArgs
+                      (kFalse))))
+                (kConst)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier)))))
+            (typeref
+              (identifier)))
+          (declProc
+            (kProcedure)
+            (identifier)
+            (declArgs
+              (declArg
+                (rttiAttributes
+                  (identifier))
+                (kVar)
+                (identifier)
+                (type
+                  (typeref
+                    (kString))))
+              (declArg
+                (rttiAttributes
+                  (identifier))
+                (kOut)
+                (identifier)
+                (type
+                  (typeref
+                    (identifier))))))
+          (kEnd))))))

@@ -394,6 +394,8 @@ module.exports = grammar({
 
 		// Conflict for _declSectionItem: with ppRecursive, empty IFDEF blocks can be
 		// ambiguous with class declarations and fields.
+		[ $._classDeclaration, $.declSection, $._declSectionItem, $._declField ],
+		[ $.declSection, $._declSectionItem ],
 		[ $._classDeclaration, $._declSectionItem, $._declField ],
 		[ $._classDeclaration, $._declSectionItem ],
 		[ $._declSectionItem, $._declField ],
@@ -1178,7 +1180,7 @@ module.exports = grammar({
 		),
 
 		declSection:     $ => seq(
-			optional($.kStrict),
+			optional(pp($, $.kStrict)),
 			choice($._visibility, ...enable_if(objc, $.kRequired, $.kOptional)),
 			optional($._sectionMembers)
 		),
@@ -1376,6 +1378,7 @@ module.exports = grammar({
 
 		declArg:         $ => choice(
 			seq(
+				...enable_if(rtti, optional($.rttiAttributes)),
 				choice($.kVar, $.kConst, $.kOut, $.kConstref),
 				field('name', delimited1(seq(
 					...enable_if(rtti, optional($.rttiAttributes)),

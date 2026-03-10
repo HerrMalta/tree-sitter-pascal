@@ -1115,3 +1115,41 @@ end.
       (kImplementation))
     (kEnd)
     (kEndDot)))
+
+===
+IFDEF wrapping strict keyword in class visibility section
+===
+
+type
+  TMyClass = class(TBase)
+  private
+  {$IFDEF USE_STRICT} strict{$ENDIF} protected
+    fField: Integer;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (typeref
+            (identifier))
+          (declSection
+            (kPrivate))
+          (declSection
+            (pp)
+            (kStrict)
+            (pp)
+            (kProtected)
+            (declField
+              (identifier)
+              (type
+                (typeref
+                  (identifier)))))
+          (kEnd))))))

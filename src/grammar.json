@@ -8260,8 +8260,85 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "kStrict"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "kStrict"
+                    }
+                  ]
+                },
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "\\{\\$(?:ifdef|ifndef|ifopt|if\\s)[^}]*\\}",
+                        "flags": "i"
+                      },
+                      "named": true,
+                      "value": "pp"
+                    },
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "kStrict"
+                        },
+                        {
+                          "type": "BLANK"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "REPEAT",
+                      "content": {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "\\{\\$else[^}]*\\}",
+                              "flags": "i"
+                            },
+                            "named": true,
+                            "value": "pp"
+                          },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "kStrict"
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "\\{\\$(?:end|ifend)[^}]*\\}",
+                        "flags": "i"
+                      },
+                      "named": true,
+                      "value": "pp"
+                    }
+                  ]
+                }
+              ]
             },
             {
               "type": "BLANK"
@@ -10136,6 +10213,18 @@
         {
           "type": "SEQ",
           "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "rttiAttributes"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
             {
               "type": "CHOICE",
               "members": [
@@ -12143,6 +12232,16 @@
     ],
     [
       "declSection"
+    ],
+    [
+      "_classDeclaration",
+      "declSection",
+      "_declSectionItem",
+      "_declField"
+    ],
+    [
+      "declSection",
+      "_declSectionItem"
     ],
     [
       "_classDeclaration",
