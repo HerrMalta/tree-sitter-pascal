@@ -348,22 +348,110 @@ end;
         (if
           (kIf)
           (exprBinary
-            (exprBinary
-              (identifier)
-              (kLt)
-              (identifier))
-            (kGt)
-            (exprBinary
-              (exprParens
-                (identifier))
-              (kLt)
+            (exprCall
               (exprTpl
                 (identifier)
                 (kLt)
                 (exprTplArg
                   (identifier))
-                (exprTplArg
-                  (identifier))
-                (kGt))))
+                (kGt))
+              (exprArgs
+                (identifier)))
+            (kLt)
+            (exprTpl
+              (identifier)
+              (kLt)
+              (exprTplArg
+                (identifier))
+              (exprTplArg
+                (identifier))
+              (kGt)))
           (kThen))
+        (kEnd)))))
+
+===
+Generic expression in if-then-else (inline var)
+===
+
+procedure a;
+begin
+  if True then
+    var x := Foo<Bar>
+  else
+    var y := Foo<Baz>;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (ifElse
+          (kIf)
+          (kTrue)
+          (kThen)
+          (assignment
+            (varAssignDef
+              (kVar)
+              (identifier))
+            (kAssign)
+            (exprTpl
+              (identifier)
+              (kLt)
+              (exprTplArg
+                (identifier))
+              (kGt)))
+          (kElse)
+          (assignment
+            (varAssignDef
+              (kVar)
+              (identifier))
+            (kAssign)
+            (exprTpl
+              (identifier)
+              (kLt)
+              (exprTplArg
+                (identifier))
+              (kGt))))
+        (kEnd)))))
+
+===
+Comparison with identifier RHS in trailing context (must not become generic)
+===
+
+procedure a;
+begin
+  if True then
+    x := a < b
+  else
+    ;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (ifElse
+          (kIf)
+          (kTrue)
+          (kThen)
+          (assignment
+            (identifier)
+            (kAssign)
+            (exprBinary
+              (identifier)
+              (kLt)
+              (identifier)))
+          (kElse))
         (kEnd)))))

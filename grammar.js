@@ -718,7 +718,13 @@ module.exports = grammar({
 		//
 		// Therefore we restrict template arguments to *type-ish* references rather
 		// than arbitrary expressions.
-		exprTpl:         $ => op.args(5, $._ref, $.kLt, delimited1($.exprTplArg, ',', 5),  $.kGt),
+		//
+		// prec.dynamic(1): Static precedence (5 vs 1) cannot resolve the
+		// exprTpl/exprBinary ambiguity because both GLR branches are alive
+		// until `>` is consumed — they diverge before structural precedence
+		// applies. Dynamic scoring is the only mechanism that prefers one
+		// completed reduction over another at that point.
+		exprTpl:         $ => prec.dynamic(1, op.args(5, $._ref, $.kLt, delimited1($.exprTplArg, ',', 5),  $.kGt)),
 		exprSubscript:   $ => op.args(5, $._ref, '[',   $.exprArgs,  ']'  ),
 		exprCall:        $ => op.args(5, $._ref, '(',   optional($.exprArgs), ')'  ),
 
@@ -839,10 +845,10 @@ module.exports = grammar({
 		literalChar:     $ => seq('#', $._literalInt),
 		literalNumber:   $ => choice($._literalInt, $._literalFloat),
 		_literalInt:     $ => choice(
-			token.immediate(/[-+]?[0-9]+/),
-			token.immediate(/\$[a-fA-F0-9]+/)
+			token.immediate(/[-+]?[0-9]+(_[0-9]+)*/),
+			token.immediate(/\$[a-fA-F0-9]+(_[a-fA-F0-9]+)*/)
 		),
-		_literalFloat:   $ => prec(10, /[-+]?[0-9]*\.?[0-9]+([eE][+-]?[0-9]+)?/),
+		_literalFloat:   $ => prec(10, /[-+]?([0-9]+(_[0-9]+)*)?\.?[0-9]+(_[0-9]+)*([eE][+-]?[0-9]+(_[0-9]+)*)?/),
 
 		range:           $ => seq(
 			$._expr, '..', $._expr

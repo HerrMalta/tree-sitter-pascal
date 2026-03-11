@@ -36,6 +36,49 @@ const
           (literalNumber))))))
 
 ===
+Numeric literals with digit separators (Delphi 11+)
+===
+
+const
+  a = 10_000_000;
+  b = $FF_FF_FF;
+  c = 1_000;
+  d = $FF_00;
+  e = 1_0_0_0_0_0_0_0;
+
+---
+
+(root
+  (codeFragment
+    (declConsts
+      (kConst)
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber)))
+      (declConst
+        (identifier)
+        (defaultValue
+          (kEq)
+          (literalNumber))))))
+
+===
 Floating point numbers
 ===
 
