@@ -369,6 +369,45 @@ type
           (kEnd))))))
 
 ===
+RTTI attribute with preprocessor on field declaration followed by more attributes
+===
+
+type
+  TMyClass = class
+  strict private
+    {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
+    [JsonIgnore]
+    FParent: TMyClass;
+  end;
+
+---
+
+(root
+  (codeFragment
+    (declTypes
+      (kType)
+      (declType
+        (identifier)
+        (kEq)
+        (declClass
+          (kClass)
+          (declSection
+            (kStrict)
+            (kPrivate)
+            (declField
+              (pp)
+              (rttiAttributes
+                (identifier))
+              (pp)
+              (rttiAttributes
+                (identifier))
+              (identifier)
+              (type
+                (typeref
+                  (identifier)))))
+          (kEnd))))))
+
+===
 Deprecated hints on declarations
 ===
 

@@ -1011,11 +1011,12 @@ module.exports = grammar({
 				repeat($._procAttribute)
 			),
 			// Type declaration with RTTI attribute wrapped in preprocessor block
-			// Handles: {$IFDEF X} [Attr] {$ENDIF} TMyClass = class...end;
+			// Handles: {$IFDEF X} [Attr] {$ENDIF} [MoreAttrs] TMyClass = class...end;
 			...enable_if(rtti, seq(
 				alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
 				$.rttiAttributes,
 				alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp),
+				optional($.rttiAttributes),
 				...enable_if(fpc, optional($.kGeneric)),
 				field('name', $._genericName), $.kEq,
 				field('type',
@@ -1219,11 +1220,12 @@ module.exports = grammar({
 				$._semicolon
 			),
 			// Field with RTTI attribute wrapped in preprocessor block
-			// Handles: {$IFDEF X} [Attr] {$ENDIF} fieldName: Type;
+			// Handles: {$IFDEF X} [Attr] {$ENDIF} [MoreAttrs] fieldName: Type;
 			...enable_if(rtti, seq(
 				alias(/\{\$(?:ifdef|ifndef|ifopt|if\s)[^}]*\}/i, $.pp),
 				$.rttiAttributes,
 				alias(/\{\$(?:end|ifend)[^}]*\}/i, $.pp),
+				optional($.rttiAttributes),
 				field('name', delimited1($._ident)),
 				':',
 				field('type', choice($.type, $.declInlineRecord)),
