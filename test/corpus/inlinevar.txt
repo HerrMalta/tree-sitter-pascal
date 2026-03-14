@@ -19,14 +19,16 @@ end;
         (varDef
           (kVar)
           (identifier)
-          (typeref
-            (kString)))
+          (type
+            (typeref
+              (kString))))
         (assignment
           (varAssignDef
             (kVar)
             (identifier)
-            (typeref
-              (identifier)))
+            (type
+              (typeref
+                (identifier))))
           (kAssign)
           (literalNumber))
         (kEnd)))))
@@ -53,8 +55,9 @@ end;
           (identifier)
           (identifier)
           (identifier)
-          (typeref
-            (kString)))
+          (type
+            (typeref
+              (kString))))
         (kEnd)))))
 
 ===
@@ -152,8 +155,9 @@ end;
             (varAssignDef
               (kVar)
               (identifier)
-              (typeref
-                (identifier)))
+              (type
+                (typeref
+                  (identifier))))
             (kAssign)
             (literalNumber))
           (kTo)

@@ -3033,7 +3033,7 @@
                   "name": "type",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "typeref"
+                    "name": "type"
                   }
                 }
               ]
@@ -3098,7 +3098,7 @@
           "name": "type",
           "content": {
             "type": "SYMBOL",
-            "name": "typeref"
+            "name": "type"
           }
         }
       ]
@@ -10992,39 +10992,34 @@
           "value": "("
         },
         {
-          "type": "SEQ",
+          "type": "SYMBOL",
+          "name": "recInitializerField"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ";"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "recInitializerField"
+              }
+            ]
+          }
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "REPEAT1",
-                  "content": {
-                    "type": "PREC",
-                    "value": 0,
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "SYMBOL",
-                          "name": "recInitializerField"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": ";"
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "STRING",
+              "value": ";"
             },
             {
-              "type": "SYMBOL",
-              "name": "recInitializerField"
+              "type": "BLANK"
             }
           ]
         },

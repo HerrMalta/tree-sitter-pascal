@@ -8799,7 +8799,7 @@
         "required": false,
         "types": [
           {
-            "type": "typeref",
+            "type": "type",
             "named": true
           }
         ]
@@ -8829,7 +8829,7 @@
         "required": true,
         "types": [
           {
-            "type": "typeref",
+            "type": "type",
             "named": true
           }
         ]

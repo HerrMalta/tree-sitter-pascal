@@ -539,9 +539,9 @@ module.exports = grammar({
 		varAssignDef:          $ => seq($.kVar, $.identifier,
 			optional(seq(
 				':',
-				field('type', $.typeref)
+				field('type', $.type)
 			))),
-		varDef:          $ => seq($.kVar, delimited1($._ident), ':', field('type', $.typeref)),
+		varDef:          $ => seq($.kVar, delimited1($._ident), ':', field('type', $.type)),
 		constDef:        $ => seq($.kConst, $.identifier,
 			optional(seq(':', field('type', $.type))),
 			'=', $._expr),
@@ -1494,7 +1494,9 @@ module.exports = grammar({
 		// record initializer
 		recInitializer:  $ => seq(
 			'(',
-			delimited1( $.recInitializerField, ';'),
+			$.recInitializerField,
+			repeat(seq(';', $.recInitializerField)),
+			optional(';'),
 			')'
 		),
 
