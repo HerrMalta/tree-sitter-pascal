@@ -460,7 +460,7 @@ module.exports = grammar({
 		program:            $ => seq(
 			$.kProgram, $.moduleName, ';',
 			optional($._definitions),
-			tr($,'block'),
+			choice(tr($,'block'), $.kEnd),
 			$.kEndDot
 		),
 
@@ -1440,7 +1440,7 @@ module.exports = grammar({
 			$.kStatic, $.kVirtual, $.kDynamic, $.kAbstract, $.kOverride, $.kFinal,
 			$.kOverload, $.kReintroduce, $.kInline, $.kStdcall,
 			$.kCdecl, $.kPascal, $.kRegister, $.kSafecall, $.kAssembler,
-			$.kNoreturn, $.kLocal,  $.kFar, $.kNear,
+			$.kNoreturn, $.kLocal,  $.kFar, $.kNear, $.kVarargs,
 			$.kDefault, $.kNodefault, $.kDeprecated, $.kExperimental, $.kPlatform,
 
 			seq(
@@ -1457,7 +1457,7 @@ module.exports = grammar({
 				$.kInterrupt, $.kIocheck, $.kHardfloat,
 				$.kSoftfloat, $.kMs_abi_default, $.kMs_abi_cdecl,
 				$.kSaveregisters, $.kSysv_abi_default, $.kSysv_abi_cdecl,
-				$.kVectorcall, $.kVarargs, $.kWinapi,
+				$.kVectorcall, $.kWinapi,
 				...enable_if(public_name, $.kPublic),
 				seq(
 					choice(
