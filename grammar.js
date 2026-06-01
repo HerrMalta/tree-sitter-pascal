@@ -846,7 +846,8 @@ module.exports = grammar({
 		literalNumber:   $ => choice($._literalInt, $._literalFloat),
 		_literalInt:     $ => choice(
 			token.immediate(/[-+]?[0-9]+(_[0-9]+)*/),
-			token.immediate(/\$[a-fA-F0-9]+(_[a-fA-F0-9]+)*/)
+			token.immediate(/\$[a-fA-F0-9]+(_[a-fA-F0-9]+)*/),
+			token.immediate(/%[01]+(_[01]+)*/)
 		),
 		_literalFloat:   $ => prec(10, /[-+]?([0-9]+(_[0-9]+)*)?\.?[0-9]+(_[0-9]+)*([eE][+-]?[0-9]+(_[0-9]+)*)?/),
 
