@@ -98,7 +98,7 @@ static inline bool is_identifier_char(int32_t c) {
            (c >= 'A' && c <= 'Z') ||
            (c >= '0' && c <= '9') ||
            c == '_' ||
-           (c >= 0x00C0 && c <= 0x024F);  // Latin Extended (German umlauts, etc.)
+           (c >= 0x00C0 && c <= 0xFFFF);  // Delphi allows Unicode letters in identifiers (BMP)
 }
 
 /**
@@ -108,7 +108,7 @@ static inline bool is_identifier_start(int32_t c) {
     return (c >= 'a' && c <= 'z') ||
            (c >= 'A' && c <= 'Z') ||
            c == '_' ||
-           (c >= 0x00C0 && c <= 0x024F);  // Latin Extended (German umlauts, etc.)
+           (c >= 0x00C0 && c <= 0xFFFF);  // Delphi allows Unicode letters in identifiers (BMP)
 }
 
 /**

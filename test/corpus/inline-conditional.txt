@@ -1,0 +1,226 @@
+===
+Inline conditional - assignment
+===
+
+procedure Main;
+begin
+  X := if (Mode.Left < 100) then 22 else 45;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (exprConditional
+            (kIf)
+            (exprParens
+              (exprBinary
+                (exprDot
+                  (identifier)
+                  (kDot)
+                  (identifier))
+                (kLt)
+                (literalNumber)))
+            (kThen)
+            (literalNumber)
+            (kElse)
+            (literalNumber)))
+        (kEnd)))))
+
+===
+Inline conditional - call argument
+===
+
+procedure Main;
+begin
+  ShowMessage(if Left < 100 then 'Small' else 'Big');
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (exprConditional
+                (kIf)
+                (exprBinary
+                  (identifier)
+                  (kLt)
+                  (literalNumber))
+                (kThen)
+                (literalString)
+                (kElse)
+                (literalString)))))
+        (kEnd)))))
+
+===
+Inline conditional - lowest precedence (else absorbs +)
+===
+
+procedure Main;
+begin
+  s := if Left < 100 then 'Small' else 'Large' + 'Nice';
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (exprConditional
+            (kIf)
+            (exprBinary
+              (identifier)
+              (kLt)
+              (literalNumber))
+            (kThen)
+            (literalString)
+            (kElse)
+            (exprBinary
+              (literalString)
+              (kAdd)
+              (literalString))))
+        (kEnd)))))
+
+===
+Inline conditional - parentheses override precedence
+===
+
+procedure Main;
+begin
+  ShowMessage((if Left < 100 then 'Small' else 'Large') + 'Nice');
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (statement
+          (exprCall
+            (identifier)
+            (exprArgs
+              (exprBinary
+                (exprParens
+                  (exprConditional
+                    (kIf)
+                    (exprBinary
+                      (identifier)
+                      (kLt)
+                      (literalNumber))
+                    (kThen)
+                    (literalString)
+                    (kElse)
+                    (literalString)))
+                (kAdd)
+                (literalString)))))
+        (kEnd)))))
+
+===
+Inline conditional - nested else-if chain
+===
+
+procedure Main;
+begin
+  x := if a then 1 else if b then 2 else 3;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (assignment
+          (identifier)
+          (kAssign)
+          (exprConditional
+            (kIf)
+            (identifier)
+            (kThen)
+            (literalNumber)
+            (kElse)
+            (exprConditional
+              (kIf)
+              (identifier)
+              (kThen)
+              (literalNumber)
+              (kElse)
+              (literalNumber))))
+        (kEnd)))))
+
+===
+Inline conditional - statement and expression forms coexist
+===
+
+procedure Main;
+begin
+  if a then b else c;
+  x := if a then b else c;
+end;
+
+---
+
+(root
+  (codeFragment
+    (defProc
+      (declProc
+        (kProcedure)
+        (identifier))
+      (block
+        (kBegin)
+        (ifElse
+          (kIf)
+          (identifier)
+          (kThen)
+          (statement
+            (identifier))
+          (kElse)
+          (statement
+            (identifier)))
+        (assignment
+          (identifier)
+          (kAssign)
+          (exprConditional
+            (kIf)
+            (identifier)
+            (kThen)
+            (identifier)
+            (kElse)
+            (identifier)))
+        (kEnd)))))

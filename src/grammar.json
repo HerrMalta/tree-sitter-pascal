@@ -3355,6 +3355,10 @@
         {
           "type": "SYMBOL",
           "name": "exprUnary"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "exprConditional"
         }
       ]
     },
@@ -4867,6 +4871,55 @@
           "value": "]"
         }
       ]
+    },
+    "exprConditional": {
+      "type": "PREC_DYNAMIC",
+      "value": -1,
+      "content": {
+        "type": "PREC_RIGHT",
+        "value": 0,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "kIf"
+            },
+            {
+              "type": "FIELD",
+              "name": "condition",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_expr"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "kThen"
+            },
+            {
+              "type": "FIELD",
+              "name": "then",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_expr"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "kElse"
+            },
+            {
+              "type": "FIELD",
+              "name": "else",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_expr"
+              }
+            }
+          ]
+        }
+      }
     },
     "type": {
       "type": "CHOICE",
@@ -12114,7 +12167,7 @@
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[&]?[a-zA-Z_\\u00C0-\\u024F][0-9_a-zA-Z\\u00C0-\\u024F]*"
+      "value": "[&]?[a-zA-Z_\\u00C0-\\uFFFF][0-9_a-zA-Z\\u00C0-\\uFFFF]*"
     },
     "_ident": {
       "type": "CHOICE",
@@ -12333,6 +12386,10 @@
     [
       "_exprDotRhs",
       "_literal"
+    ],
+    [
+      "statementTr",
+      "exprConditional"
     ]
   ],
   "precedences": [],

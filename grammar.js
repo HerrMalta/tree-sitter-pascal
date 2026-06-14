@@ -432,6 +432,15 @@ module.exports = grammar({
 		[ $._ref, $._ident ],
 		// Conflict for True/False in dot expressions (e.g., TUseBoolStrs.False)
 		[ $._exprDotRhs, $._literal ],
+
+		// Delphi 13 inline conditional expression (`if c then a else b`) shares
+		// its `if ... then ... else ...` prefix with the if / ifElse statements.
+		// At statement position both can match; exprConditional's lowered dynamic
+		// precedence makes the statement form win there, while the conditional
+		// expression is used in value positions (assignment RHS, call args, ...).
+		...enable_if(delphi,
+			[ $.statementTr, $.exprConditional ]
+		),
 	],
 
 	rules: {
@@ -570,7 +579,8 @@ module.exports = grammar({
 		// EXPRESSIONS ---------------------------------------------------------
 
 		_expr:           $ => choice(
-			$._ref, $.exprBinary, $.exprUnary
+			$._ref, $.exprBinary, $.exprUnary,
+			...enable_if(delphi, $.exprConditional)
 		),
 
 		_ref:            $ => choice(
@@ -771,6 +781,21 @@ module.exports = grammar({
 		exprBrackets:       $ => seq(
 			'[', delimited(choice($._expr, $.range)), ']'
 		),
+
+		// Delphi 13 inline conditional operator (a.k.a. ternary / "inline if").
+		// An *expression* of the form `if <cond> then <a> else <b>` that yields a
+		// value, as opposed to the if / ifElse *statements*. Both branches are
+		// expressions and the else branch is mandatory. It binds more weakly than
+		// every binary operator, so unparenthesised operators are absorbed into the
+		// branches (e.g. `if c then a else b + d` parses the else branch as `b + d`,
+		// matching Delphi's "lowest priority" rule for the conditional operator).
+		// The lowered dynamic precedence keeps the if / ifElse statements preferred
+		// over a bare conditional-expression statement at statement position.
+		exprConditional: $ => prec.dynamic(-1, prec.right(seq(
+			$.kIf,   field('condition', $._expr),
+			$.kThen, field('then',      $._expr),
+			$.kElse, field('else',      $._expr)
+		))),
 
 		// TYPES ---------------------------------------------------------------
 
@@ -1737,7 +1762,7 @@ module.exports = grammar({
 
 		// Identifier rule - supports optional & prefix for escaping keywords
 		// e.g., &end, &begin, &type are valid identifiers
-		identifier:        $ => /[&]?[a-zA-Z_\u00C0-\u024F][0-9_a-zA-Z\u00C0-\u024F]*/,
+		identifier:        $ => /[&]?[a-zA-Z_\u00C0-\uFFFF][0-9_a-zA-Z\u00C0-\uFFFF]*/,
 
 		// Extended identifier that also allows directive keywords to be used as identifiers
 		// In Delphi/Pascal, directives like 'default' are context-sensitive keywords,

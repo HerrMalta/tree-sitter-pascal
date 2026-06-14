@@ -24,6 +24,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -141,6 +145,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -222,6 +230,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -550,6 +562,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -795,6 +811,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -937,6 +957,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -1101,6 +1125,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -1370,6 +1398,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -1569,6 +1601,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -2320,6 +2356,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -2387,6 +2427,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -2534,6 +2578,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -2601,6 +2649,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -2751,6 +2803,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -3011,6 +3067,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -3728,6 +3788,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -4024,6 +4088,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -4100,6 +4168,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -4259,6 +4331,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -4332,6 +4408,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -4477,6 +4557,252 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "exprConditional",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "exprBinary",
+            "named": true
+          },
+          {
+            "type": "exprBrackets",
+            "named": true
+          },
+          {
+            "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
+            "type": "exprDot",
+            "named": true
+          },
+          {
+            "type": "exprParens",
+            "named": true
+          },
+          {
+            "type": "exprSubscript",
+            "named": true
+          },
+          {
+            "type": "exprTpl",
+            "named": true
+          },
+          {
+            "type": "exprUnary",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inherited",
+            "named": true
+          },
+          {
+            "type": "kFalse",
+            "named": true
+          },
+          {
+            "type": "kNil",
+            "named": true
+          },
+          {
+            "type": "kTrue",
+            "named": true
+          },
+          {
+            "type": "lambda",
+            "named": true
+          },
+          {
+            "type": "literalNumber",
+            "named": true
+          },
+          {
+            "type": "literalString",
+            "named": true
+          }
+        ]
+      },
+      "else": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "exprBinary",
+            "named": true
+          },
+          {
+            "type": "exprBrackets",
+            "named": true
+          },
+          {
+            "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
+            "type": "exprDot",
+            "named": true
+          },
+          {
+            "type": "exprParens",
+            "named": true
+          },
+          {
+            "type": "exprSubscript",
+            "named": true
+          },
+          {
+            "type": "exprTpl",
+            "named": true
+          },
+          {
+            "type": "exprUnary",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inherited",
+            "named": true
+          },
+          {
+            "type": "kFalse",
+            "named": true
+          },
+          {
+            "type": "kNil",
+            "named": true
+          },
+          {
+            "type": "kTrue",
+            "named": true
+          },
+          {
+            "type": "lambda",
+            "named": true
+          },
+          {
+            "type": "literalNumber",
+            "named": true
+          },
+          {
+            "type": "literalString",
+            "named": true
+          }
+        ]
+      },
+      "then": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "exprBinary",
+            "named": true
+          },
+          {
+            "type": "exprBrackets",
+            "named": true
+          },
+          {
+            "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
+            "type": "exprDot",
+            "named": true
+          },
+          {
+            "type": "exprParens",
+            "named": true
+          },
+          {
+            "type": "exprSubscript",
+            "named": true
+          },
+          {
+            "type": "exprTpl",
+            "named": true
+          },
+          {
+            "type": "exprUnary",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inherited",
+            "named": true
+          },
+          {
+            "type": "kFalse",
+            "named": true
+          },
+          {
+            "type": "kNil",
+            "named": true
+          },
+          {
+            "type": "kTrue",
+            "named": true
+          },
+          {
+            "type": "lambda",
+            "named": true
+          },
+          {
+            "type": "literalNumber",
+            "named": true
+          },
+          {
+            "type": "literalString",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "kElse",
+          "named": true
+        },
+        {
+          "type": "kIf",
+          "named": true
+        },
+        {
+          "type": "kThen",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -4637,6 +4963,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -4940,6 +5270,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -5215,6 +5549,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -5405,6 +5743,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -5472,6 +5814,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -5830,6 +6176,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -5914,6 +6264,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -6086,6 +6440,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -6737,6 +7095,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -7193,6 +7555,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -7265,6 +7631,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -7451,6 +7821,10 @@
           "named": true
         },
         {
+          "type": "exprConditional",
+          "named": true
+        },
+        {
           "type": "exprDot",
           "named": true
         },
@@ -7617,6 +7991,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -7684,6 +8062,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -7774,6 +8156,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -7881,6 +8267,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -7968,6 +8358,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
@@ -8169,6 +8563,10 @@
         },
         {
           "type": "exprCall",
+          "named": true
+        },
+        {
+          "type": "exprConditional",
           "named": true
         },
         {
@@ -8977,6 +9375,10 @@
             "named": true
           },
           {
+            "type": "exprConditional",
+            "named": true
+          },
+          {
             "type": "exprDot",
             "named": true
           },
@@ -9146,6 +9548,10 @@
           },
           {
             "type": "exprCall",
+            "named": true
+          },
+          {
+            "type": "exprConditional",
             "named": true
           },
           {
