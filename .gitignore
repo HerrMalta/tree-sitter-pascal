@@ -1,3 +1,16 @@
 node_modules
 build
 *.log
+
+# Swift Package Manager working dir
+.build/
+
+# npm lockfile (dev-only; not tracked upstream)
+package-lock.json
+
+# compiled grammar outputs (Makefile targets)
+*.dylib
+*.so
+*.a
+*.pc
+src/*.o
